@@ -1,99 +1,68 @@
-import React from "react";
 import { Link } from "react-router-dom";
-
-const movies = [
-    {
-        title: "28 Years Later (2025)",
-        slug: "28-years-later",
-        image: "/assets/28-years.png",
-        quality: "WEB-DL 480p [410MB] || 720p [1GB] || 1080p [2.3GB]",
-    },
-    {
-        title: "The Fantastic 4: First Steps (2025)",
-        slug: "the-fantastic-4",
-        image: "/assets/fantastic4.png",
-        quality: "HDTS 480p [350MB] || 720p [970MB] || 1080p [2GB]",
-    },
-    {
-        title: "Trigger (Season 1)",
-        slug: "trigger",
-        image: "/assets/trigger.png",
-        quality: "HD 480p [180MB] || 720p [310MB] || 1080p [1.2GB]",
-    },
-    {
-        title: "Pushpa The Rise",
-        slug: "pushpa",
-        image: "/assets/pushpa1.jpeg",
-        quality: "HD 480p [180MB] || 720p [1.27GB] || 1080p [2.1GB]",
-    },
-    {
-        title: "KGF",
-        slug: "kgf",
-        image: "/assets/kgf.png",
-        quality: "WEB-DL 480p [400MB] || 720p [1.2GB] || 1080p [2.2GB]",
-    },
-    {
-        title: "28 Years Later (2025)",
-        slug: "28-years-later",
-        image: "/assets/28-years.png",
-        quality: "WEB-DL 480p [410MB] || 720p [1GB] || 1080p [2.3GB]",
-    },
-    {
-        title: "The Fantastic 4: First Steps (2025)",
-        slug: "the-fantastic-4",
-        image: "/assets/fantastic4.png",
-        quality: "HDTS 480p [350MB] || 720p [970MB] || 1080p [2GB]",
-    },
-    {
-        title: "Trigger (Season 1)",
-        slug: "trigger",
-        image: "/assets/trigger.png",
-        quality: "WeB-DL 480p [180MB] || 720p [310MB] || 1080p [1.2GB]",
-    },
-    {
-        title: "Pushpa The Rise",
-        slug: "pushpa",
-        image: "/assets/pushpa1.jpeg",
-        quality: "480p [180MB] || 720p [1.27GB] || 1080p [2.1GB]",
-    },
-    {
-        title: "KGF",
-        slug: "kgf",
-        image: "/assets/kgf.png",
-        quality: "WEB-DL 480p [400MB] || 720p [1.2GB] || 1080p [2.2GB]",
-    },
-];
+import axios from 'axios';
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Home = () => {
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/api/v1/movie/all")
+            .then((res) => {
+                const updatedMovies = res.data.movies.map(movie => {
+                    const bufferData = movie.poster_image?.data?.data;
+                    const contentType = movie.poster_image?.contentType || "image/jpeg";
+
+                    let posterUrl = "";
+                    if (bufferData) {
+                        const binary = new Uint8Array(bufferData).reduce((str, byte) => str + String.fromCharCode(byte), "");
+                        posterUrl = `data:${contentType};base64,${btoa(binary)}`;
+                    }
+
+                    return { ...movie, posterUrl };
+                });
+
+                setMovies(updatedMovies);
+            })
+            .catch(err => {
+                console.error("Error fetching movies:", err.message);
+            });
+    }, []);
+
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-10 px-2 sm:px-4 text-white">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl font-bold text-yellow-400 text-center mb-10 tracking-wide">
-                    🎬 Latest Movies
+                    🎬 Popular Movies
                 </h1>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                     {movies.map((movie, index) => (
                         <div
                             key={index}
-                            className="bg-[#1a1a1a] rounded-xl group overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-xl border border-[#2a2a2a]"
+                            className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                         >
-                            <Link to={`https://t.me/movieladownloadbot?start=${movie.slug}`} target="_blank">
-                                <div className="overflow-hidden h-60 sm:h-70 flex items-center justify-center">
+                            <Link to={`/movie/${movie._id}`}>
+                                <div className="relative w-full aspect-[2/3] overflow-hidden">
                                     <img
-                                        src={movie.image}
-                                        alt={movie.title}
-                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-115"
+                                        src={movie.posterUrl}
+                                        alt={movie.movie_name}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
+                                    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
                                 </div>
 
-                                <div className="p-4 text-sm space-y-2 p">
-                                    <p className="font-semibold text-white leading-tight">
-                                        {movie.title}
+                                <div className="p-4 text-sm space-y-2">
+                                    <p className="font-semibold text-white leading-tight line-clamp-1">
+                                        {movie.movie_name}
                                     </p>
-                                    <p className="text-gray-400 text-xs leading-snug">
-                                        {movie.quality}
+                                    <p className="text-gray-400 text-xs leading-snug line-clamp-2">
+                                        {movie.description}
                                     </p>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-yellow-400 text-xs font-semibold">{movie.rating} ⭐</span>
+                                        <span className="bg-yellow-500 text-black text-[10px] px-2 py-0.5 rounded-full">Action</span>
+                                    </div>
                                 </div>
                             </Link>
                         </div>
