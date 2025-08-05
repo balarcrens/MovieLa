@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import Header from './components/Header'
+import Header from './Components/Header'
 import Home from './Components/Pages/Home'
 import Footer from './Components/Footer'
 import TelegramFloat from './Components/TelegramFloat'
