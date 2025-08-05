@@ -1,33 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect } from "react";
 import { useState } from "react";
-
 const Home = () => {
     const [movies, setMovies] = useState([]);
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get("search");
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/movie/all")
+        axios.get(`http://localhost:3000/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
             .then((res) => {
-                const updatedMovies = res.data.movies.map(movie => {
-                    const bufferData = movie.poster_image?.data?.data;
-                    const contentType = movie.poster_image?.contentType || "image/jpeg";
-
-                    let posterUrl = "";
-                    if (bufferData) {
-                        const binary = new Uint8Array(bufferData).reduce((str, byte) => str + String.fromCharCode(byte), "");
-                        posterUrl = `data:${contentType};base64,${btoa(binary)}`;
-                    }
-
-                    return { ...movie, posterUrl };
-                });
-
-                setMovies(updatedMovies);
+                setMovies(res.data.movies);
             })
             .catch(err => {
                 console.error("Error fetching movies:", err.message);
             });
-    }, []);
+    }, [query]);
 
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-10 px-2 sm:px-4 text-white">

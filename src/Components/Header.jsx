@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown, SearchIcon } from "lucide-react";
-import logo from "/assets/logo.png";
-import { Link } from "react-router-dom";
+import logo from "/favicon.ico";
+import { Link, useNavigate } from "react-router-dom";
 
 const genres = ["Action", "Comedy", "Drama", "Horror", "Sci-Fi"];
 const movies = ["Latest", "Popular", "Top Rated", "Upcoming"];
@@ -16,25 +16,42 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [showGenres, setShowGenres] = useState(false);
     const [showMovies, setShowMovies] = useState(false);
+    const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        if (query.trim() === "") {
+            navigate("/");
+        } else {
+            navigate(`/?search=${encodeURIComponent(query.trim())}`);
+        }
+    }
 
     return (
         <>
             {/* Top Header: Logo + Search */}
             <header className="bg-white dark:bg-gray-900 shadow-md fixed w-full top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover" />
-                        <span className="text-2xl font-extrabold text-gray-800 dark:text-white">MovieLa</span>
-                    </div>
+                    <Link to="/">
+                        <div className="flex items-center gap-3 px-2">
+                            <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover" />
+                            <span className="text-2xl font-extrabold text-gray-800 dark:text-white">MovieLa</span>
+                        </div>
+                    </Link>
 
                     <div className="hidden md:flex w-1/3">
                         <div className="flex w-full backdrop-blur-lg bg-white/10 dark:bg-gray-700/20 border border-white/30 dark:border-gray-500/30 rounded-xl overflow-hidden shadow-md">
                             <input
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleSearch();
+                                }}
                                 type="text"
                                 placeholder="Search movies, genres..."
                                 className="w-full px-4 py-2 bg-transparent focus:outline-none"
                             />
-                            <button className="px-4 hover:text-blue-300">
+                            <button onClick={handleSearch} className="px-4 hover:text-blue-300">
                                 <SearchIcon size={18} />
                             </button>
                         </div>
@@ -52,8 +69,10 @@ export default function Header() {
                 <div className="hidden md:flex justify-center gap-8 py-3 border-t border-gray-200 dark:border-gray-800">
                     {/* Movies Dropdown */}
                     <div
-                        onMouseEnter={() => setShowMovies(true)}
-                        onClick={() => setShowMovies(false)}
+                        onClick={() => {
+                            setShowMovies(!showMovies);
+                            setShowGenres(false);
+                        }}
                         className="relative group cursor-pointer"
                     >
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400">
@@ -76,8 +95,10 @@ export default function Header() {
 
                     {/* Genres Dropdown */}
                     <div
-                        onMouseEnter={() => setShowGenres(true)}
-                        onClick={() => setShowGenres(false)}
+                        onClick={() => {
+                            setShowGenres(!showGenres);
+                            setShowMovies(false);
+                        }}
                         className="relative group cursor-pointer"
                     >
                         <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400">
