@@ -14,7 +14,6 @@ const Home = () => {
         axios.get(`${DB_URL}/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
             .then((res) => {
                 setMovies(res.data.movies);
-                console.log(res.data);
             })
             .catch(err => {
                 console.error("Error fetching movies:", err.message);
