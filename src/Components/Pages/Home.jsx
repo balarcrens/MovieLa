@@ -2,10 +2,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect } from "react";
 import { useState } from "react";
-import dotenv from 'dotenv';
 
-dotenv.config();
-const DB_URL = import.meta.env.DB_URL;
+const DB_URL = import.meta.env.VITE_DB_URL;
 
 const Home = () => {
     const [movies, setMovies] = useState([]);
@@ -16,6 +14,7 @@ const Home = () => {
         axios.get(`${DB_URL}/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
             .then((res) => {
                 setMovies(res.data.movies);
+                console.log(res.data);
             })
             .catch(err => {
                 console.error("Error fetching movies:", err.message);

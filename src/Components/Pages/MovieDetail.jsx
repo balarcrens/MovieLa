@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Download, Film } from 'lucide-react';
-import dotenv from 'dotenv';
 
-dotenv.config();
-const DB_URL = import.meta.env.DB_URL;
+const DB_URL = import.meta.env.VITE_DB_URL;
 
 export default function MovieDetail() {
     const { id } = useParams();
