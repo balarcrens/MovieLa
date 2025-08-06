@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Download, Film } from 'lucide-react';
+import Loader from "../Loader";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -10,12 +11,17 @@ export default function MovieDetail() {
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
         axios.get(`${DB_URL}/api/v1/movie/${id}`).then((res) => {
             setMovie(res.data.movie);
         });
     }, [id]);
 
-    if (!movie) return <div className="text-center p-8">Loading...</div>;
+    if (!movie) {
+        return (
+            <Loader />
+        );
+    }
 
     return (
         <div className="bg-black min-h-screen text-white px-2 sm:px-4 py-8">
@@ -28,11 +34,22 @@ export default function MovieDetail() {
                     Watch {movie.movie_name} Full Movie in Hindi Download Free on{" "}
                     <Link to="/" className="text-blue-500 font-bold underline">MovieLa</Link> !
                 </p>
-                <img
-                    src={movie.posterUrl}
-                    alt={movie.movie_name}
-                    className="mx-auto my-4 md:max-h-[500px] sm:h-[500px] object-cover"
-                />
+
+                <div className="relative group w-fit mx-auto my-4 max-h-[500px] sm:h-[500px]">
+                    {/* Backdrop on hover */}
+                    <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:scale-107 transition-all duration-500 bg-cover bg-center blur-sm brightness-50 rounded"
+                        style={{ backgroundImage: `url(${movie.posterUrl})` }}
+                    ></div>
+
+                    {/* Poster image */}
+                    <img
+                        src={movie.posterUrl}
+                        alt={movie.movie_name}
+                        className="relative z-10 rounded object-cover max-h-[500px] sm:h-[500px]"
+                    />
+                </div>
+
                 <Link
                     to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
                     target="_blank"

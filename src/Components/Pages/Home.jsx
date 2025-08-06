@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Loader from "../Loader";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -9,24 +9,29 @@ const Home = () => {
     const [movies, setMovies] = useState([]);
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search");
+    const [isloading, setisLoading] = useState(false);
 
     useEffect(() => {
+        setisLoading(true);
         axios.get(`${DB_URL}/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
             .then((res) => {
                 setMovies(res.data.movies);
+                setisLoading(false);
+                window.scrollTo({ top: 0, behavior: "smooth" });
             })
             .catch(err => {
                 console.error("Error fetching movies:", err.message);
+                setisLoading(false);
             });
     }, [query]);
 
-    return (
-        <div className="bg-[#0f0f0f] min-h-screen py-10 px-2 sm:px-4 text-white">
-            <div className="max-w-7xl mx-auto">
-                <h1 className="text-4xl font-bold text-yellow-400 text-center mb-10 tracking-wide">
-                    🎬 Popular Movies
-                </h1>
+    if (isloading) {
+        return <Loader />;
+    }
 
+    return (
+        <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
+            <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                     {movies.map((movie, index) => (
                         <div
