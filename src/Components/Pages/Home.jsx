@@ -1,14 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-undef */
 import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect } from "react";
 import { useState } from "react";
 import dotenv from 'dotenv';
 
+dotenv.config();
+const DB_URL = import.meta.env.DB_URL;
+
 const Home = () => {
-    dotenv.config();
-    const DB_URL = process.env.DB_URL;
     const [movies, setMovies] = useState([]);
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search");

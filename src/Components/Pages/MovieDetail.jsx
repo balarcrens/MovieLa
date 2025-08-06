@@ -1,14 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-undef */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Download, Film } from 'lucide-react';
 import dotenv from 'dotenv';
 
+dotenv.config();
+const DB_URL = import.meta.env.DB_URL;
+
 export default function MovieDetail() {
-    dotenv.config();
-    const DB_URL = process.env.DB_URL;
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
 
