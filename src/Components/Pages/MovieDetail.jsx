@@ -1,14 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Download, Film } from 'lucide-react';
+import dotenv from 'dotenv';
 
 export default function MovieDetail() {
+    dotenv.config();
+    const DB_URL = process.env.DB_URL;
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/movie/${id}`).then((res) => {
+        axios.get(`${DB_URL}/api/v1/movie/${id}`).then((res) => {
             setMovie(res.data.movie);
         });
     }, [id]);

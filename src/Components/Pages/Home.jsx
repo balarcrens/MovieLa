@@ -1,14 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect } from "react";
 import { useState } from "react";
+import dotenv from 'dotenv';
+
 const Home = () => {
+    dotenv.config();
+    const DB_URL = process.env.DB_URL;
     const [movies, setMovies] = useState([]);
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search");
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
+        axios.get(`${DB_URL}/api/v1/movie/getmovie${query ? `?search=${query}` : ''}`)
             .then((res) => {
                 setMovies(res.data.movies);
             })
