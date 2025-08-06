@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-
-
-#for disallow
-#disallow: /admin etc... 
-
-
-Sitemap: https://shreexpresscourier.netlify.app/sitemap.xml
