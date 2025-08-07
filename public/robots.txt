@@ -6,4 +6,4 @@ Allow: /
 #disallow: /admin etc... 
 
 
-Sitemap: https://shreexpresscourier.netlify.app/sitemap.xml
+Sitemap: https://movie-la.vercel.app/sitemap.xml

@@ -17,6 +17,8 @@ export default function MovieDetail() {
         });
     }, [id]);
 
+    console.log(movie);
+
     if (!movie) {
         return (
             <Loader />
@@ -62,14 +64,14 @@ export default function MovieDetail() {
 
             {/* Movie Info */}
             <div className="border-t border-gray-700 py-4 max-w-4xl mx-auto text-center">
-                <h1 className="text-2xl font-bold mb-2">{movie.movie_name} <span className="italic text-xl">(Full Movie)</span></h1>
+                <h1 className="text-2xl font-bold mb-2">{movie.movie_name} <span className="text-xl">(Full Movie)</span></h1>
                 <div className="text-[#A3A3A3]">
                     <p><span className="text-lg">IMDb Rating:</span> {movie.rating || "N/A"}/10</p>
                     <p><span className="text-lg">Genre:</span> {movie.categories?.join(", ") || "N/A"}</p>
                     <p><span className="text-lg">Stars:</span> {movie.actors || "N/A"}</p>
                     <p><span className="text-lg">Director:</span> {movie.director || "N/A"}</p>
                     <p><span className="text-lg">Language:</span> {movie.language || "Hindi (ORG-2.0)"}</p>
-                    <p><span className="text-lg">Quality:</span> {movie.quality || "HD 1080p | 720p | 480p"}</p>
+                    <p><span className="text-lg">Quality:</span> {movie.quality || "HD 720p"}</p>
                 </div>
             </div>
 
@@ -77,20 +79,37 @@ export default function MovieDetail() {
             <div className="border-t border-gray-700 pt-4 max-w-4xl mx-auto text-center">
                 {/* Description */}
                 <div className="flex flex-col my-5">
-                    <h1 className="text-xl sm:text-2xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Description - </span></h1>
-                    <div className="text-[#A3A3A3]">
+                    <h1 className="text-lg sm:text-xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Description - </span></h1>
+                    <div className="text-[#A3A3A3] text-sm">
                         DESCRIPTION : {movie.description}
                     </div>
                 </div>
 
                 {/* Story Line */}
                 <div className="flex flex-col my-5">
-                    <h1 className="text-xl sm:text-2xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Story Line - </span></h1>
-                    <div className="text-[#A3A3A3]">
+                    <h1 className="text-lg sm:text-xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Story Line - </span></h1>
+                    <div className="text-[#A3A3A3] text-sm">
                         STORY LINE : {movie.description}
                     </div>
                 </div>
             </div>
+
+            {movie.screenshots.map((img, index) => {
+                // Convert the object into a string
+                const str = Object.values(img).join("");
+
+                return (
+                    <img
+                        key={index}
+                        src={str}
+                        alt={`Screenshot ${index + 1}`}
+                        className="rounded-lg border border-gray-700 hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                    />
+                );
+            })}
+
+
 
             {/* Download Section */}
             <div className="mt-6 text-center">
@@ -111,11 +130,11 @@ export default function MovieDetail() {
 
             {/* Trailer */}
             <div className="mt-10 text-center">
-                <h2 className=" text-xl sm:text-2xl font-semibold mb-2 text-red-500">
-                    Download Son of Sardaar 2 Full Movie Hindi HD | Watch Online Full Trailer
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-red-500">
+                    Download {movie.movie_name} Full Movie Hindi HD | Watch Online Full Trailer
                 </h2>
                 <div className="w-full flex justify-center">
-                    <div className="w-full sm:w-[800px] h-[300px] sm:h-[500px]">
+                    <div className="w-full sm:w-[800px] aspect-video">
                         <iframe
                             className="w-full h-full rounded"
                             src={`https://www.youtube.com/embed/${movie.trailer_link}`}
