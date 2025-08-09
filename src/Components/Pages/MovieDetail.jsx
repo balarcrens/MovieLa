@@ -17,8 +17,6 @@ export default function MovieDetail() {
         });
     }, [id]);
 
-    console.log(movie);
-
     if (!movie) {
         return (
             <Loader />
@@ -76,7 +74,7 @@ export default function MovieDetail() {
             </div>
 
             {/* Describe Section */}
-            <div className="border-t border-gray-700 pt-4 max-w-4xl mx-auto text-center">
+            <div className="border-t border-gray-700 py-4 max-w-4xl mx-auto text-center">
                 {/* Description */}
                 <div className="flex flex-col my-5">
                     <h1 className="text-lg sm:text-xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Description - </span></h1>
@@ -94,22 +92,33 @@ export default function MovieDetail() {
                 </div>
             </div>
 
-            {movie.screenshots.map((img, index) => {
-                // Convert the object into a string
-                const str = Object.values(img).join("");
+            {
+                movie.screenshots ? (
+                    <>
+                        <h2 className="text-lg font-semibold text-center py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
+                            <span className="text-amber-600 text-xl sm:text-3xl">[ SCREENSHOTS ]</span>
+                        </h2>
+                        <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-4">
+                            {movie.screenshots.map((img, index) => {
+                                // Convert the object into a string
+                                const str = Object.values(img).join("");
 
-                return (
-                    <img
-                        key={index}
-                        src={str}
-                        alt={`Screenshot ${index + 1}`}
-                        className="rounded-lg border border-gray-700 hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                    />
-                );
-            })}
-
-
+                                return (
+                                    <div className="flex justify-center items-center">
+                                        <img
+                                            key={index}
+                                            src={str}
+                                            alt={`Screenshot ${index + 1}`}
+                                            className="rounded-sm transition-transform duration-300"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </>
+                ) : <></>
+            }
 
             {/* Download Section */}
             <div className="mt-6 text-center">
