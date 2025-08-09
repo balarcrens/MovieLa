@@ -98,7 +98,7 @@ export default function MovieDetail() {
                         <h2 className="text-lg font-semibold text-center py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
                             <span className="text-amber-600 text-xl sm:text-3xl">[ SCREENSHOTS ]</span>
                         </h2>
-                        <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-4">
+                        <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4">
                             {movie.screenshots.map((img, index) => {
                                 // Convert the object into a string
                                 const str = Object.values(img).join("");
