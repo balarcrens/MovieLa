@@ -4,6 +4,7 @@ import Home from './Components/Pages/Home'
 import Footer from './Components/Footer'
 import TelegramFloat from './Components/TelegramFloat'
 import MovieDetail from './Components/Pages/MovieDetail'
+import AddMovie from './Components/Pages/AddMovie'
 
 export default function App() {
     return (
@@ -12,6 +13,7 @@ export default function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/:id' element={<MovieDetail />} />
+                <Route path='/movie/addmovie' element={<AddMovie />} />
             </Routes>
             <TelegramFloat />
             <Footer />
