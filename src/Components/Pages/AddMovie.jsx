@@ -13,46 +13,56 @@ export default function AddMovie() {
         summary: "",
         duration: "",
         size: "",
-        categories: [],
-        posterUrl: "",
-        screenshots: [""]
+        categories: ""
     });
 
+    const [posterFile, setPosterFile] = useState(null);
+    const [screenshotsCount, setScreenshotsCount] = useState(1);
+    const [screenshotsFiles, setScreenshotsFiles] = useState([]);
     const [message, setMessage] = useState("");
+
+    // Previews
+    const [posterPreview, setPosterPreview] = useState(null);
+    const [screenshotsPreview, setScreenshotsPreview] = useState([]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleCategoryChange = (e) => {
-        setFormData({ ...formData, categories: e.target.value.split(",").map(c => c.trim()) });
-    };
+    const handleScreenshotChange = (index, file) => {
+        const updated = [...screenshotsFiles];
+        updated[index] = file;
+        setScreenshotsFiles(updated);
 
-    const handleScreenshotChange = (index, value) => {
-        const updated = [...formData.screenshots];
-        updated[index] = value;
-        setFormData({ ...formData, screenshots: updated });
-    };
-
-    const addScreenshotField = () => {
-        setFormData({ ...formData, screenshots: [...formData.screenshots, ""] });
-    };
-
-    const removeScreenshotField = (index) => {
-        const updated = formData.screenshots.filter((_, i) => i !== index);
-        setFormData({ ...formData, screenshots: updated });
+        // Preview update
+        const previews = [...screenshotsPreview];
+        previews[index] = file ? URL.createObjectURL(file) : null;
+        setScreenshotsPreview(previews);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const payload = {
-                ...formData,
-                screenshots: formData.screenshots.filter(s => s.trim() !== "")
-            };
+            const data = new FormData();
+            for (let key in formData) {
+                if (key === "categories") {
+                    data.append(key, formData[key].split(",").map(c => c.trim()));
+                } else {
+                    data.append(key, formData[key]);
+                }
+            }
 
-            await axios.post(`${DB_URL}/api/v1/movie/add`, payload);
+            if (posterFile) {
+                data.append("poster", posterFile);
+            }
+            screenshotsFiles.forEach(file => {
+                if (file) data.append("screenshots", file);
+            });
+
+            await axios.post(`${DB_URL}/api/v1/movie/add`, data, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+
             setMessage("✅ Movie added successfully!");
             setFormData({
                 movie_name: "",
@@ -63,10 +73,13 @@ export default function AddMovie() {
                 summary: "",
                 duration: "",
                 size: "",
-                categories: [],
-                posterUrl: "",
-                screenshots: [""]
+                categories: ""
             });
+            setPosterFile(null);
+            setScreenshotsFiles([]);
+            setScreenshotsCount(1);
+            setPosterPreview(null);
+            setScreenshotsPreview([]);
         } catch (error) {
             console.error(error);
             setMessage("❌ Failed to add movie");
@@ -74,76 +87,151 @@ export default function AddMovie() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto my-10 bg-[#1a1a1a] p-6 rounded-xl shadow-lg text-white">
-            <h1 className="text-2xl font-bold mb-4">Add Movie</h1>
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 p-10">
+            <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl shadow-2xl p-8 border border-gray-800">
+                <h1 className="text-4xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
+                    🎬 Add Movie
+                </h1>
 
-            {message && <p className="mb-4">{message}</p>}
+                {message && (
+                    <p className="mb-6 text-center font-semibold text-lg">
+                        {message}
+                    </p>
+                )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-                {["movie_name", "fileid", "description", "rating", "trailer_link", "summary", "duration", "size", "posterUrl"].map((field) => (
-                    <div key={field}>
-                        <label className="block mb-1 capitalize">{field.replace("_", " ")}</label>
-                        <input
-                            type="text"
-                            name={field}
-                            value={formData[field]}
-                            onChange={handleChange}
-                            className="w-full p-2 rounded bg-[#2a2a2a] border border-gray-600"
-                        />
-                    </div>
-                ))}
-
-                {/* Categories */}
-                <div>
-                    <label className="block mb-1">Categories</label>
-                    <input
-                        type="text"
-                        value={formData.categories.join(", ")}
-                        onChange={handleCategoryChange}
-                        className="w-full p-2 rounded bg-[#2a2a2a] border border-gray-600"
-                        placeholder="Action, Comedy, Sci-Fi"
-                    />
-                </div>
-
-                {/* Screenshots */}
-                <div>
-                    <label className="block mb-1">Screenshots</label>
-                    {formData.screenshots.map((screenshot, index) => (
-                        <div key={index} className="flex gap-2 mb-2">
+                <form
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                    encType="multipart/form-data"
+                >
+                    {[
+                        "movie_name",
+                        "fileid",
+                        "rating",
+                        "trailer_link",
+                        "duration",
+                        "size",
+                        "categories"
+                    ].map((field) => (
+                        <div key={field} className="flex flex-col">
+                            <label className="mb-1 capitalize text-sm tracking-wide text-gray-300">
+                                {field.replace("_", " ")}
+                            </label>
                             <input
                                 type="text"
-                                value={screenshot}
-                                onChange={(e) => handleScreenshotChange(index, e.target.value)}
-                                className="w-full p-2 rounded bg-[#2a2a2a] border border-gray-600"
-                                placeholder="Screenshot image URL"
+                                name={field}
+                                value={formData[field]}
+                                onChange={handleChange}
+                                className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                             />
-                            {formData.screenshots.length > 1 && (
-                                <button
-                                    type="button"
-                                    onClick={() => removeScreenshotField(index)}
-                                    className="bg-red-500 px-2 rounded text-white"
-                                >
-                                    ❌
-                                </button>
-                            )}
                         </div>
                     ))}
-                    <button
-                        type="button"
-                        onClick={addScreenshotField}
-                        className="bg-blue-500 px-3 py-1 rounded text-white mt-2"
-                    >
-                        ➕ Add Screenshot
-                    </button>
-                </div>
 
-                <button
-                    type="submit"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded"
-                >
-                    Add Movie
-                </button>
-            </form>
+                    {/* Description (textarea) */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="mb-1 text-sm tracking-wide text-gray-300">
+                            Description
+                        </label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            rows="3"
+                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
+                        ></textarea>
+                    </div>
+
+                    {/* Summary (textarea) */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="mb-1 text-sm tracking-wide text-gray-300">
+                            Summary
+                        </label>
+                        <textarea
+                            name="summary"
+                            value={formData.summary}
+                            onChange={handleChange}
+                            rows="3"
+                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
+                        ></textarea>
+                    </div>
+
+                    {/* Poster Upload + Preview */}
+                    <div className="flex flex-col">
+                        <label className="mb-1 text-sm tracking-wide text-gray-300">
+                            Poster
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                setPosterFile(e.target.files[0]);
+                                setPosterPreview(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : null);
+                            }}
+                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 text-gray-400"
+                        />
+                        {posterPreview && (
+                            <img
+                                src={posterPreview}
+                                alt="Poster Preview"
+                                className="mt-3 w-full h-60 object-cover rounded-lg border border-gray-700"
+                            />
+                        )}
+                    </div>
+
+                    {/* Screenshots Count */}
+                    <div className="flex flex-col">
+                        <label className="mb-1 text-sm tracking-wide text-gray-300">
+                            Number of Screenshots
+                        </label>
+                        <input
+                            type="number"
+                            min="1"
+                            value={screenshotsCount}
+                            onChange={(e) => {
+                                const count = parseInt(e.target.value, 10);
+                                setScreenshotsCount(count);
+                                setScreenshotsFiles(Array(count).fill(null));
+                                setScreenshotsPreview(Array(count).fill(null));
+                            }}
+                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 text-gray-400"
+                        />
+                    </div>
+
+                    {/* Screenshot Inputs + Preview */}
+                    <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array.from({ length: screenshotsCount }).map((_, index) => (
+                            <div key={index} className="flex flex-col">
+                                <label className="mb-1 text-sm tracking-wide text-gray-300">
+                                    Screenshot {index + 1}
+                                </label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleScreenshotChange(index, e.target.files[0])}
+                                    className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 text-gray-400"
+                                />
+                                {screenshotsPreview[index] && (
+                                    <img
+                                        src={screenshotsPreview[index]}
+                                        alt={`Screenshot ${index + 1}`}
+                                        className="mt-3 w-full h-40 object-cover rounded-lg border border-gray-700"
+                                    />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="md:col-span-2 flex justify-center mt-6">
+                        <button
+                            type="submit"
+                            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-10 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-400/50"
+                        >
+                            ➕ Add Movie
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
