@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const DB_URL = "https://moviela-server.onrender.com";
+const DB_URL = "http://localhost:3000";
 
 export default function AddMovie() {
     const [formData, setFormData] = useState({
@@ -173,7 +173,7 @@ export default function AddMovie() {
                             <img
                                 src={posterPreview}
                                 alt="Poster Preview"
-                                className="mt-3 w-full h-60 object-cover rounded-lg border border-gray-700"
+                                className="mt-3 w-40 h-60 object-cover rounded-lg border border-gray-700"
                             />
                         )}
                     </div>
