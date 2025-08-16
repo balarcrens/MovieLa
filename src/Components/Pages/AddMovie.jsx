@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const DB_URL = "http://localhost:3000";
+const DB_URL = "https://moviela-server.onrender.com";
 
 export default function AddMovie() {
     const [formData, setFormData] = useState({
