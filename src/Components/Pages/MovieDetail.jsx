@@ -11,16 +11,14 @@ export default function MovieDetail() {
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" })
+        window.scrollTo({ top: 0, behavior: "smooth" });
         axios.get(`${DB_URL}/api/v1/movie/${id}`).then((res) => {
             setMovie(res.data.movie);
         });
     }, [id]);
 
     if (!movie) {
-        return (
-            <Loader />
-        );
+        return <Loader />;
     }
 
     return (
@@ -62,7 +60,9 @@ export default function MovieDetail() {
 
             {/* Movie Info */}
             <div className="border-t border-gray-700 py-4 max-w-4xl mx-auto text-center">
-                <h1 className="text-2xl font-bold mb-2">{movie.movie_name} <span className="text-xl">(Full Movie)</span></h1>
+                <h1 className="text-2xl font-bold mb-2">
+                    {movie.movie_name} <span className="text-xl">(Full Movie)</span>
+                </h1>
                 <div className="text-[#A3A3A3]">
                     <p><span className="text-lg">IMDb Rating:</span> {movie.rating || "N/A"}/10</p>
                     <p><span className="text-lg">Genre:</span> {movie.categories?.join(", ") || "N/A"}</p>
@@ -77,7 +77,9 @@ export default function MovieDetail() {
             <div className="border-t border-gray-700 py-4 max-w-4xl mx-auto text-center">
                 {/* Description */}
                 <div className="flex flex-col my-5">
-                    <h1 className="text-lg sm:text-xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Description - </span></h1>
+                    <h1 className="text-lg sm:text-xl font-bold">
+                        Download {movie.movie_name} Full Movie <span className="text-red-500"> - Description - </span>
+                    </h1>
                     <div className="text-[#A3A3A3] text-sm">
                         DESCRIPTION : {movie.description}
                     </div>
@@ -85,40 +87,35 @@ export default function MovieDetail() {
 
                 {/* Story Line */}
                 <div className="flex flex-col my-5">
-                    <h1 className="text-lg sm:text-xl font-bold">Download {movie.movie_name} Full Movie <span className="text-red-500"> - Story Line - </span></h1>
+                    <h1 className="text-lg sm:text-xl font-bold">
+                        Download {movie.movie_name} Full Movie <span className="text-red-500"> - Story Line - </span>
+                    </h1>
                     <div className="text-[#A3A3A3] text-sm">
-                        STORY LINE : {movie.description}
+                        STORY LINE : {movie.summary}
                     </div>
                 </div>
             </div>
 
-            {
-                movie.screenshots ? (
-                    <>
-                        <h2 className="text-lg font-semibold text-center py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
-                            <span className="text-amber-600 text-xl sm:text-3xl">[ SCREENSHOTS ]</span>
-                        </h2>
-                        <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4">
-                            {movie.screenshots.map((img, index) => {
-                                // Convert the object into a string
-                                const str = Object.values(img).join("");
-
-                                return (
-                                    <div className="flex justify-center items-center">
-                                        <img
-                                            key={index}
-                                            src={str}
-                                            alt={`Screenshot ${index + 1}`}
-                                            className="rounded-sm transition-transform duration-300"
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </>
-                ) : <></>
-            }
+            {/* Screenshots */}
+            {movie.screenshots?.length > 0 && (
+                <>
+                    <h2 className="text-lg font-semibold text-center py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
+                        <span className="text-amber-600 text-xl sm:text-3xl">[ SCREENSHOTS ]</span>
+                    </h2>
+                    <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4">
+                        {movie.screenshots.map((url, index) => (
+                            <div key={index} className="flex justify-center items-center">
+                                <img
+                                    src={url}
+                                    alt={`Screenshot ${index + 1}`}
+                                    className="rounded-sm transition-transform duration-300"
+                                    loading="lazy"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
 
             {/* Download Section */}
             <div className="mt-6 text-center">
@@ -128,10 +125,12 @@ export default function MovieDetail() {
                         <span className="text-white">Download {movie.movie_name} Full Movie in Hindi | HD</span>
                     </h2>
                     <div className="text-blue-400 py-2 border-y-3 border-gray-700 font-bold text-2xl">
-                        <Link to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
+                        <Link
+                            to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
                             target="_blank"
-                            rel="noopener noreferrer" >
-                            {movie.name} 720p x264 [{movie.size}]
+                            rel="noopener noreferrer"
+                        >
+                            {movie.movie_name} 720p x264 [{movie.size}]
                         </Link>
                     </div>
                 </div>

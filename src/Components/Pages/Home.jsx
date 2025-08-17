@@ -65,8 +65,12 @@ const MovieCards = () => {
                                     {movie.description}
                                 </p>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-yellow-400 text-xs font-semibold">{movie.rating} ⭐</span>
-                                    <span className="bg-yellow-500 text-black text-[10px] px-2 py-0.5 rounded-full">Action</span>
+                                    <span className="text-yellow-400 text-xs font-semibold">{movie.rating === 0 ? 'N/A' : movie.rating} ⭐</span>
+                                    {
+                                        movie.categories.map((category, index) => {
+                                            return <span key={index} className="bg-yellow-500 text-black text-[10px] px-2 py-0.5 rounded-full">{category}</span>
+                                        })
+                                    }
                                 </div>
                             </div>
                         </Link>

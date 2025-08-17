@@ -39,8 +39,9 @@ export default function Header() {
                         </div>
                     </Link>
 
+                    {/* Search Bar */}
                     <div className="hidden md:flex w-1/3">
-                        <div className="flex w-full backdrop-blur-lg bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">
+                        <div className="flex w-full backdrop-blur-lg text-white bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
@@ -49,7 +50,7 @@ export default function Header() {
                                 }}
                                 type="text"
                                 placeholder="Search movies, genres..."
-                                className="w-full px-4 py-2 bg-transparent focus:outline-none"
+                                className="w-full px-4 py-2 text-white bg-transparent focus:outline-none"
                             />
                             <button onClick={handleSearch} className="px-4 hover:text-blue-300">
                                 <SearchIcon size={18} />

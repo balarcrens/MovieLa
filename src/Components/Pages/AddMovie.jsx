@@ -20,8 +20,19 @@ export default function AddMovie() {
     const [screenshotsCount, setScreenshotsCount] = useState(1);
     const [screenshotsFiles, setScreenshotsFiles] = useState([]);
     const [message, setMessage] = useState("");
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
-    // Previews
+    const categoryOptions = [
+        "Action",
+        "Drama",
+        "Comedy",
+        "Romance",
+        "Thriller",
+        "Horror",
+        "Sci-Fi",
+        "Animation",
+    ];
+
     const [posterPreview, setPosterPreview] = useState(null);
     const [screenshotsPreview, setScreenshotsPreview] = useState([]);
 
@@ -34,7 +45,6 @@ export default function AddMovie() {
         updated[index] = file;
         setScreenshotsFiles(updated);
 
-        // Preview update
         const previews = [...screenshotsPreview];
         previews[index] = file ? URL.createObjectURL(file) : null;
         setScreenshotsPreview(previews);
@@ -44,26 +54,29 @@ export default function AddMovie() {
         e.preventDefault();
         try {
             const data = new FormData();
+
             for (let key in formData) {
-                if (key === "categories") {
-                    data.append(key, formData[key].split(",").map(c => c.trim()));
-                } else {
+                if (key !== "categories") {
                     data.append(key, formData[key]);
                 }
             }
 
+            selectedCategories.forEach((cat) => data.append("categories", cat));
+
             if (posterFile) {
                 data.append("poster", posterFile);
             }
-            screenshotsFiles.forEach(file => {
+            screenshotsFiles.forEach((file) => {
                 if (file) data.append("screenshots", file);
             });
 
             await axios.post(`${DB_URL}/api/v1/movie/add`, data, {
-                headers: { "Content-Type": "multipart/form-data" }
+                headers: { "Content-Type": "multipart/form-data" },
             });
 
             setMessage("✅ Movie added successfully!");
+
+            // Reset form
             setFormData({
                 movie_name: "",
                 fileid: "",
@@ -73,13 +86,14 @@ export default function AddMovie() {
                 summary: "",
                 duration: "",
                 size: "",
-                categories: ""
+                categories: "",
             });
             setPosterFile(null);
             setScreenshotsFiles([]);
             setScreenshotsCount(1);
             setPosterPreview(null);
             setScreenshotsPreview([]);
+            setSelectedCategories([]);
         } catch (error) {
             console.error(error);
             setMessage("❌ Failed to add movie");
@@ -87,8 +101,8 @@ export default function AddMovie() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 p-10">
-            <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl shadow-2xl p-8 border border-gray-800">
+        <div className="min-h-screen bg-[#111] p-3 md:p-10">
+            <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl p-1 sm:p-8 border-gray-800">
                 <h1 className="text-4xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
                     🎬 Add Movie
                 </h1>
@@ -111,7 +125,6 @@ export default function AddMovie() {
                         "trailer_link",
                         "duration",
                         "size",
-                        "categories"
                     ].map((field) => (
                         <div key={field} className="flex flex-col">
                             <label className="mb-1 capitalize text-sm tracking-wide text-gray-300">
@@ -127,7 +140,37 @@ export default function AddMovie() {
                         </div>
                     ))}
 
-                    {/* Description (textarea) */}
+                    {/* Categories */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="mb-2 text-sm tracking-wide text-gray-300">
+                            Categories
+                        </label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            {categoryOptions.map((cat) => (
+                                <label
+                                    key={cat}
+                                    className="flex items-center gap-2 bg-[#1f1f1f] px-3 py-2 rounded-lg border border-gray-700 cursor-pointer hover:border-yellow-400 transition"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        value={cat}
+                                        checked={selectedCategories.includes(cat)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedCategories([...selectedCategories, cat]);
+                                            } else {
+                                                setSelectedCategories(selectedCategories.filter((c) => c !== cat));
+                                            }
+                                        }}
+                                        className="accent-yellow-500"
+                                    />
+                                    <span className="text-gray-300">{cat}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Description */}
                     <div className="flex flex-col md:col-span-2">
                         <label className="mb-1 text-sm tracking-wide text-gray-300">
                             Description
@@ -141,7 +184,7 @@ export default function AddMovie() {
                         ></textarea>
                     </div>
 
-                    {/* Summary (textarea) */}
+                    {/* Summary */}
                     <div className="flex flex-col md:col-span-2">
                         <label className="mb-1 text-sm tracking-wide text-gray-300">
                             Summary
