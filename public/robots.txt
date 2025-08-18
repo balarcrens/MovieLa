@@ -6,4 +6,4 @@ Allow: /
 #disallow: /admin etc... 
 
 
-Sitemap: https://movie-la.vercel.app/sitemap.xml
+Sitemap: https://moviela.vercel.app/sitemap.xml
