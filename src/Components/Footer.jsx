@@ -43,6 +43,8 @@ const Footer = () => {
                         <Link to="#" className="hover:text-white"><FaTelegram /></Link>
                     </div>
                     <p className="text-sm mt-4">Email: support@moviela.in</p>
+                    <p className="text-sm mt-4"> <Link to="/movie/admin/login"> Login </Link> </p>
+                    <p className="text-sm mt-4"> <Link to="/movie/admin/add"> Addmovie </Link> </p>
                 </div>
             </div>
 
