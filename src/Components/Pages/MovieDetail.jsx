@@ -64,7 +64,7 @@ export default function MovieDetail() {
                     {movie.movie_name} <span className="text-xl">(Full Movie)</span>
                 </h1>
                 <div className="text-[#A3A3A3]">
-                    <p><span className="text-lg">IMDb Rating:</span> {movie.rating || "N/A"}/10</p>
+                    <p><span className="text-lg">IMDb Rating:</span> <span className="text-yellow-400">{movie.rating || "N/A"}</span>/10</p>
                     <p><span className="text-lg">Genre:</span> {movie.categories?.join(", ") || "N/A"}</p>
                     <p><span className="text-lg">Stars:</span> {movie.actors || "N/A"}</p>
                     <p><span className="text-lg">Director:</span> {movie.director || "N/A"}</p>
@@ -139,14 +139,16 @@ export default function MovieDetail() {
             {/* Trailer */}
             <div className="mt-10 text-center">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-red-500">
-                    Download {movie.movie_name} Full Movie Hindi HD | Watch Online Full Trailer
+                    Download <span className="text-white">{movie.movie_name}</span> Full Movie Hindi HD | Watch Online Full Trailer
                 </h2>
                 <div className="w-full flex justify-center">
                     <div className="w-full sm:w-[800px] aspect-video">
                         <iframe
                             className="w-full h-full rounded"
-                            src={`https://www.youtube.com/embed/${movie.trailer_link}`}
+                            src={`https://www.youtube-nocookie.com/embed/${movie.trailer_link}`}
                             title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         ></iframe>
                     </div>

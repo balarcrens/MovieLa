@@ -1,9 +1,19 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const DB_URL = "https://moviela-server.onrender.com";
 
 export default function AddMovie() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem("auth-token")) {
+            //
+        } else {
+            navigate("/");
+        }
+    }, []);
+
     const [formData, setFormData] = useState({
         movie_name: "",
         fileid: "",
@@ -17,7 +27,7 @@ export default function AddMovie() {
     });
 
     const [posterFile, setPosterFile] = useState(null);
-    const [screenshotsCount, setScreenshotsCount] = useState(1);
+    const [screenshotsCount, setScreenshotsCount] = useState(6);
     const [screenshotsFiles, setScreenshotsFiles] = useState([]);
     const [message, setMessage] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -30,7 +40,7 @@ export default function AddMovie() {
         "Thriller",
         "Horror",
         "Sci-Fi",
-        "Animation",
+        "Adventure",
     ];
 
     const [posterPreview, setPosterPreview] = useState(null);
@@ -71,7 +81,7 @@ export default function AddMovie() {
             });
 
             await axios.post(`${DB_URL}/api/v1/movie/add`, data, {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: { "Content-Type": "multipart/form-data", "auth-token": localStorage.getItem("auth-token") },
             });
 
             setMessage("✅ Movie added successfully!");
@@ -103,12 +113,12 @@ export default function AddMovie() {
     return (
         <div className="min-h-screen bg-[#111] p-3 md:p-10">
             <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl p-1 sm:p-8 border-gray-800">
-                <h1 className="text-4xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
-                    🎬 Add Movie
+                <h1 className="text-2xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
+                    + Add New Movie
                 </h1>
 
                 {message && (
-                    <p className="mb-6 text-center font-semibold text-lg">
+                    <p className="mb-6 text-center text-white font-semibold text-lg">
                         {message}
                     </p>
                 )}
@@ -135,7 +145,7 @@ export default function AddMovie() {
                                 name={field}
                                 value={formData[field]}
                                 onChange={handleChange}
-                                className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
+                                className="p-3 rounded-lg bg-[#1f1f1f] text-white border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                             />
                         </div>
                     ))}
@@ -180,7 +190,7 @@ export default function AddMovie() {
                             value={formData.description}
                             onChange={handleChange}
                             rows="3"
-                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
+                            className="p-3 rounded-lg bg-[#1f1f1f] border text-white border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                         ></textarea>
                     </div>
 
@@ -194,7 +204,7 @@ export default function AddMovie() {
                             value={formData.summary}
                             onChange={handleChange}
                             rows="3"
-                            className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
+                            className="p-3 rounded-lg bg-[#1f1f1f] text-white border border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                         ></textarea>
                     </div>
 
@@ -268,7 +278,7 @@ export default function AddMovie() {
                     <div className="md:col-span-2 flex justify-center mt-6">
                         <button
                             type="submit"
-                            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-10 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-400/50"
+                            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-10 py-3 rounded-xl transition-all duration-300"
                         >
                             ➕ Add Movie
                         </button>

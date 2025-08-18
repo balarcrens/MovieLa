@@ -6,6 +6,7 @@ import TelegramFloat from './Components/TelegramFloat'
 import MovieDetail from './Components/Pages/MovieDetail'
 import AddMovie from './Components/Pages/AddMovie'
 import AdminLogin from './Components/Pages/AdminLogin'
+import AdminDashboard from './Components/Pages/AdminDashboard'
 
 export default function App() {
     return (
@@ -14,8 +15,9 @@ export default function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/:id' element={<MovieDetail />} />
-                <Route path='/movie/addmovie' element={<AddMovie />} />
+                <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
+                <Route path='/movie/admin/add' element={<AddMovie />} />
             </Routes>
             <TelegramFloat />
             <Footer />

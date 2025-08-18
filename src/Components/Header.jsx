@@ -3,12 +3,11 @@ import { Menu, X, ChevronDown, SearchIcon } from "lucide-react";
 import logo from "/favicon.ico";
 import { Link, useNavigate } from "react-router-dom";
 
-const genres = ["Action", "Comedy", "Drama", "Horror", "Sci-Fi"];
+const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Animation"];
 const movies = ["Latest", "Popular", "Top Rated", "Upcoming"];
-const extraLinks = [
+const Links = [
     { name: "Home", to: "/" },
     { name: "About", to: "/about" },
-    { name: "Blog", to: "/blog" },
     { name: "Contact", to: "/contact" },
 ];
 
@@ -110,7 +109,7 @@ export default function Header() {
                                 {genres.map((genre) => (
                                     <Link
                                         key={genre}
-                                        to={`#${genre.toLowerCase()}`}
+                                        to={`/genre/${genre.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
                                     >
                                         {genre}
@@ -121,7 +120,7 @@ export default function Header() {
                     </div>
 
                     {/* Extra Menu Items */}
-                    {extraLinks.map((link) => (
+                    {Links.map((link) => (
                         <Link
                             key={link.name}
                             to={link.to}
@@ -170,7 +169,7 @@ export default function Header() {
                         </Link>
                     ))}
 
-                    {extraLinks.map((link) => (
+                    {Links.map((link) => (
                         <Link
                             key={link.name}
                             to={link.to}

@@ -1,11 +1,22 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function AdminLogin({ setToken }) {
+export default function AdminLogin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("auth-token")) {
+            navigate("/");
+        } else {
+            navigate("/movie/admin/dashboard");
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -13,13 +24,19 @@ export default function AdminLogin({ setToken }) {
         setLoading(true);
 
         try {
-            const res = await axios.post("https://moviela-server.onrender.com/api/v1/auth/login", { username, password });
+            const res = await axios.post("https://moviela-server.onrender.com/api/v1/auth/login", {
+                username,
+                password
+            });
 
-            localStorage.setItem("adminToken", res.data.token);
-            setToken(res.data.token);
+            // save token in localStorage
+            localStorage.setItem("auth-token", res.data.token);
+
+            // redirect to add movie page
+            navigate("/movie/addmovie");
 
         } catch (err) {
-            console.error("Login error:", err);
+            console.error("Login error:", err.message);
             if (err.response) {
                 setError(err.response.data.message || "Invalid username or password");
             } else if (err.request) {

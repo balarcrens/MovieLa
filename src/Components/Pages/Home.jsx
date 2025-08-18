@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
+import { Download } from "lucide-react";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -54,11 +55,11 @@ const MovieCards = () => {
                                     loading="lazy"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
-                                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                {/* <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div> */}
                             </div>
 
                             <div className="p-4 text-sm space-y-2">
-                                <p className="font-semibold text-white leading-tight line-clamp-1">
+                                <p className="font-semibold text-white leading-tight line-clamp-2">
                                     {movie.movie_name}
                                 </p>
                                 <p className="text-gray-400 text-xs leading-snug line-clamp-2">
@@ -66,11 +67,7 @@ const MovieCards = () => {
                                 </p>
                                 <div className="flex justify-between items-center">
                                     <span className="text-yellow-400 text-xs font-semibold">{movie.rating === 0 ? 'N/A' : movie.rating} ⭐</span>
-                                    {
-                                        movie.categories.map((category, index) => {
-                                            return <span key={index} className="bg-yellow-500 text-black text-[10px] px-2 py-0.5 rounded-full">{category}</span>
-                                        })
-                                    }
+                                    <Download size={14} />
                                 </div>
                             </div>
                         </Link>

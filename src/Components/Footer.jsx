@@ -16,8 +16,8 @@ const Footer = () => {
                     <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
                     <ul className="space-y-2 text-sm">
                         <li><Link to="/" className="hover:text-white">Home</Link></li>
-                        <li><Link to="/movies" className="hover:text-white">Movies</Link></li>
-                        <li><Link to="/series" className="hover:text-white">Web Series</Link></li>
+                        <li><Link to="/aboutus" className="hover:text-white">About Us</Link></li>
+                        <li><Link to="/genres" className="hover:text-white">Genres</Link></li>
                         <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
                     </ul>
                 </div>
@@ -26,11 +26,10 @@ const Footer = () => {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Categories</h3>
                     <ul className="space-y-2 text-sm">
-                        <li>Bollywood</li>
-                        <li>Hollywood</li>
-                        <li>South Dubbed</li>
-                        <li>Dual Audio</li>
-                        <li>Hindi Web Series</li>
+                        <li><Link to="/bollywood" className="hover:text-white">Bollywood</Link></li>
+                        <li><Link to="/hollywood" className="hover:text-white">Hollywood</Link></li>
+                        <li><Link to="/south-dubbed" className="hover:text-white">South Dubbed</Link></li>
+                        <li><Link to="/web-series" className="hover:text-white">Web Series</Link></li>
                     </ul>
                 </div>
 
