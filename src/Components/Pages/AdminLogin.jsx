@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,13 +9,13 @@ export default function AdminLogin() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!localStorage.getItem("auth-token")) {
-            navigate("/");
-        } else {
-            navigate("/movie/admin/dashboard");
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!localStorage.getItem("auth-token")) {
+    //         navigate("/");
+    //     } else {
+    //         navigate("/movie/admin/dashboard");
+    //     }
+    // }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
