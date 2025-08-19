@@ -3,7 +3,7 @@ import { Menu, X, ChevronDown, SearchIcon } from "lucide-react";
 import logo from "/favicon.ico";
 import { Link, useNavigate } from "react-router-dom";
 
-const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Animation"];
+const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Adventure"];
 const movies = ["Latest", "Popular", "Top Rated", "Upcoming"];
 const Links = [
     { name: "Home", to: "/" },
@@ -109,7 +109,7 @@ export default function Header() {
                                 {genres.map((genre) => (
                                     <Link
                                         key={genre}
-                                        to={`/genre/${genre.toLowerCase()}`}
+                                        to={`/movie/category/${genre.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
                                     >
                                         {genre}
@@ -162,7 +162,7 @@ export default function Header() {
                     {genres.map((genre) => (
                         <Link
                             key={genre}
-                            to={`#${genre.toLowerCase()}`}
+                            to={`/movie/category/${genre.toLowerCase()}`}
                             className="text-gray-200 ml-5 hover:text-blue-400"
                         >
                             {genre}

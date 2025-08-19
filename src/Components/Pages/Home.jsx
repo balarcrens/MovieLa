@@ -66,7 +66,7 @@ const MovieCards = () => {
                                     {movie.description}
                                 </p>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-yellow-400 text-xs font-semibold">{movie.rating === 0 ? 'N/A' : movie.rating} ⭐</span>
+                                    <span className="text-yellow-400 text-xs font-semibold">{movie.rating === 0 ? 'N/A' : movie.rating} / 10 ⭐</span>
                                     <Download size={14} />
                                 </div>
                             </div>

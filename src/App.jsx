@@ -7,6 +7,7 @@ import MovieDetail from './Components/Pages/MovieDetail'
 import AddMovie from './Components/Pages/AddMovie'
 import AdminLogin from './Components/Pages/AdminLogin'
 import AdminDashboard from './Components/Pages/AdminDashboard'
+import CategoryMovies from './Components/Pages/CategoryMovies'
 
 export default function App() {
     return (
@@ -14,6 +15,7 @@ export default function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/movie/category/:category' element={<CategoryMovies />} />
                 <Route path='/movie/:id' element={<MovieDetail />} />
                 <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
