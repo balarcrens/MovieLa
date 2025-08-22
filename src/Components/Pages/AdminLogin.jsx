@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const DB_URL = 'import.meta.env.VITE_DB_URL';
+const DB_URL = import.meta.env.VITE_DB_URL;
 
 export default function AdminLogin() {
     const [username, setUsername] = useState("");
