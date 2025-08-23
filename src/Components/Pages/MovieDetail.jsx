@@ -49,7 +49,7 @@ export default function MovieDetail() {
                 </div>
 
                 <Link
-                    to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
+                    to={`https://t.me/movieladownloadbot?moviela=${movie.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-blue-400 font-bold text-2xl"
