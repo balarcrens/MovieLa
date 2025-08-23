@@ -49,7 +49,7 @@ export default function MovieDetail() {
                 </div>
 
                 <Link
-                    to={`https://t.me/movieladownloadbot?moviela=${movie.slug}`}
+                    to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-blue-400 font-bold text-2xl"
@@ -126,7 +126,7 @@ export default function MovieDetail() {
                     </h2>
                     <div className="text-blue-400 py-2 border-y-3 border-gray-700 font-bold text-2xl">
                         <Link
-                            to={`https://t.me/movieladownloadbot?moviela=${movie.slug}`}
+                            to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
