@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Download, Film } from 'lucide-react';
 import Loader from "../Loader";
+import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -154,6 +155,8 @@ export default function MovieDetail() {
                     </div>
                 </div>
             </div>
+
+            <AdBanner />
         </div>
     );
 }
