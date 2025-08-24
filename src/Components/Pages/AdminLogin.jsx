@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
 export default function AdminLogin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    // const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setError("");
         setLoading(true);
 
         try {
@@ -28,14 +28,16 @@ export default function AdminLogin() {
             // redirect to add movie page
             navigate("/movie/admin/add");
 
+            toast.success("Login successfully !");
+
         } catch (err) {
             console.error("Login error:", err.message);
             if (err.response) {
-                setError(err.response.data.message || "Invalid username or password");
+                toast.error(err.response.data.message || "Invalid username or password");
             } else if (err.request) {
-                setError("No response from server");
+                toast.error("No response from server");
             } else {
-                setError("Error: " + err.message);
+                toast.error("Error: " + err.message);
             }
         } finally {
             setLoading(false);
@@ -43,40 +45,39 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
-            <div className="relative w-96 p-8 rounded-2xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/20">
+        <div className="flex items-center min-h-screen justify-center bg-[#0f0f0f]">
+            <div className="relative w-96 p-8 rounded-2xl shadow-2xl backdrop-blur-md bg-[#0f0f0f]">
                 <h2 className="text-2xl font-bold text-center text-white mb-6">
                     Login
                 </h2>
 
-                {error && (
-                    <p className="text-red-400 text-sm mb-4 text-center">{error}</p>
-                )}
-
                 <form onSubmit={handleLogin} className="space-y-4">
+                    {/* UserName */}
                     <input
                         type="text"
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         autoComplete="username"
-                        className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="p-3 rounded-lg w-full bg-[#1f1f1f] border text-white border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                         required
                     />
+
+                    {/* Password */}
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
-                        className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="p-3 rounded-lg w-full bg-[#1f1f1f] border text-white border-gray-700 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
                         required
                     />
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 shadow-lg hover:shadow-blue-500/50 disabled:opacity-50"
+                        className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 shadow-sm hover:shadow-blue-500/50 disabled:opacity-50"
                     >
                         {loading ? "Logging in..." : "Login"}
                     </button>

@@ -16,9 +16,7 @@ const Footer = () => {
                     <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
                     <ul className="space-y-2 text-sm">
                         <li><Link to="/" className="hover:text-white">Home</Link></li>
-                        <li><Link to="/aboutus" className="hover:text-white">About Us</Link></li>
-                        <li><Link to="/genres" className="hover:text-white">Genres</Link></li>
-                        <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
+                        <li><Link to="/aboutus" className="hover:text-white">Movie Request</Link></li>
                     </ul>
                 </div>
 
@@ -26,10 +24,10 @@ const Footer = () => {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Categories</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><Link to="/bollywood" className="hover:text-white">Bollywood</Link></li>
-                        <li><Link to="/hollywood" className="hover:text-white">Hollywood</Link></li>
-                        <li><Link to="/south-dubbed" className="hover:text-white">South Dubbed</Link></li>
-                        <li><Link to="/web-series" className="hover:text-white">Web Series</Link></li>
+                        <li><Link to="/movie/category/action" className="hover:text-white">Action</Link></li>
+                        <li><Link to="/movie/category/horror" className="hover:text-white">Horror</Link></li>
+                        <li><Link to="/movie/category/comedy" className="hover:text-white">Comedy</Link></li>
+                        <li><Link to="/movie/category/romance" className="hover:text-white">Romance</Link></li>
                     </ul>
                 </div>
 
@@ -42,9 +40,9 @@ const Footer = () => {
                         <Link to="#" className="hover:text-white"><FaInstagram /></Link>
                         <Link to="#" className="hover:text-white"><FaTelegram /></Link>
                     </div>
-                    <p className="text-sm mt-4">Email: support@moviela.in</p>
-                    <p className="text-sm mt-4"> <Link to="/movie/admin/login"> Login </Link> </p>
-                    <p className="text-sm mt-4"> <Link to="/movie/admin/add"> Addmovie </Link> </p>
+                    <p className="text-sm mt-4">Email: balarcrens@gmail.com</p>
+                    <p className="text-sm mt-1.5"> <Link to="/movie/admin/login"> login </Link> </p>
+                    <p className="text-sm mt-1.5"> <Link to="/movie/admin/add"> movie </Link> </p>
                 </div>
             </div>
 

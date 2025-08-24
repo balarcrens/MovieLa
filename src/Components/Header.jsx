@@ -7,8 +7,7 @@ const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "S
 const movies = ["Latest", "Popular", "Top Rated", "Upcoming"];
 const Links = [
     { name: "Home", to: "/" },
-    { name: "About", to: "/about" },
-    { name: "Contact", to: "/contact" },
+    { name: "Movie Request", to: "/movierequest" },
 ];
 
 export default function Header() {
@@ -67,6 +66,16 @@ export default function Header() {
 
                 {/* Bottom Nav */}
                 <div className="hidden md:flex justify-center gap-8 py-3 border-t border-gray-800">
+                    {Links.map((link) => (
+                        <Link
+                            key={link.name}
+                            to={link.to}
+                            className="text-gray-300 font-medium hover:text-blue-400"
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+
                     {/* Movies Dropdown */}
                     <div
                         onClick={() => {
@@ -118,17 +127,6 @@ export default function Header() {
                             </div>
                         )}
                     </div>
-
-                    {/* Extra Menu Items */}
-                    {Links.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.to}
-                            className="text-gray-300 font-medium hover:text-blue-400"
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
                 </div>
             </header>
 
@@ -147,6 +145,16 @@ export default function Header() {
                     </button>
                 </div>
                 <nav className="flex flex-col px-6 py-4 gap-4">
+                    {Links.map((link) => (
+                        <Link
+                            key={link.name}
+                            to={link.to}
+                            className="mt-1 font-bold text-gray-200 hover:text-blue-400"
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+
                     <div className="font-bold text-gray-400">Movies</div>
                     {movies.map((item) => (
                         <Link
@@ -168,16 +176,6 @@ export default function Header() {
                             {genre}
                         </Link>
                     ))}
-
-                    {Links.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.to}
-                            className="mt-1 font-bold text-gray-200 hover:text-blue-400"
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
                 </nav>
             </div>
 
@@ -193,7 +191,7 @@ export default function Header() {
                         placeholder="Search movies, genres..."
                         className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                     />
-                    <button onClick={handleSearch} className="px-4 hover:text-blue-300">
+                    <button onClick={handleSearch} className="px-4 text-white hover:text-blue-300">
                         <SearchIcon size={18} />
                     </button>
                 </div>

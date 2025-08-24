@@ -2,13 +2,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const DB_URL = "https://moviela-server.onrender.com";
+import toast from "react-hot-toast";
+
+const DB_URL = import.meta.env.VITE_DB_URL;
 
 export default function AddMovie() {
     const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem("auth-token")) {
-            //
+            console.log(localStorage.getItem("auth-token"));
         } else {
             navigate("/");
         }
@@ -29,7 +31,6 @@ export default function AddMovie() {
     const [posterFile, setPosterFile] = useState(null);
     const [screenshotsCount, setScreenshotsCount] = useState(6);
     const [screenshotsFiles, setScreenshotsFiles] = useState([]);
-    const [message, setMessage] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     const categoryOptions = [
@@ -84,7 +85,7 @@ export default function AddMovie() {
                 headers: { "Content-Type": "multipart/form-data", "auth-token": localStorage.getItem("auth-token") },
             });
 
-            setMessage("✅ Movie added successfully!");
+            toast.success("Movie added successfully!");
 
             // Reset form
             setFormData({
@@ -106,7 +107,7 @@ export default function AddMovie() {
             setSelectedCategories([]);
         } catch (error) {
             console.error(error);
-            setMessage("❌ Failed to add movie");
+            toast.error("Failed to add movie");
         }
     };
 
@@ -116,12 +117,6 @@ export default function AddMovie() {
                 <h1 className="text-2xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
                     + Add New Movie
                 </h1>
-
-                {message && (
-                    <p className="mb-6 text-center text-white font-semibold text-lg">
-                        {message}
-                    </p>
-                )}
 
                 <form
                     onSubmit={handleSubmit}

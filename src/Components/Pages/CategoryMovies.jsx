@@ -29,6 +29,15 @@ export default function CategoryMovies() {
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
             <div className="max-w-7xl mx-auto">
+
+                <nav className="text-sm text-gray-400 mb-3">
+                    <Link to="/" className="text-gray-400">Home</Link>
+                    <span className="mx-2">/</span>
+                    <span className="text-white font-medium">
+                        {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}
+                    </span>
+                </nav>
+
                 <h2 className="text-xl font-bold mb-4">
                     🎬 <span className="text-yellow-500">
                         {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}

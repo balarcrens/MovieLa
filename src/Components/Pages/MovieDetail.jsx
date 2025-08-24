@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { Download, Film } from 'lucide-react';
+import { ChevronRight, Download, Film } from 'lucide-react';
 import Loader from "../Loader";
 import AdBanner from "../AdBanner";
 
@@ -24,6 +24,14 @@ export default function MovieDetail() {
 
     return (
         <div className="bg-black min-h-screen text-white px-2 sm:px-4 py-8">
+            <div className="max-w-4xl mx-auto mb-6 text-sm flex items-center space-x-2 text-gray-400">
+                <Link to="/" className="hover:text-white font-medium">
+                    Home
+                </Link>
+                <ChevronRight size={16} className="text-gray-500" />
+                <span className="text-white font-semibold">{movie.movie_name}</span>
+            </div>
+
             {/* Title and Poster */}
             <div className="text-center mb-6">
                 <p className="font-bold py-2 bg-[#141414] rounded max-w-4xl mx-auto italic text-2xl mb-2">

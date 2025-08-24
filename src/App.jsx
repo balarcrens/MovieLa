@@ -8,6 +8,8 @@ import AddMovie from './Components/Pages/AddMovie'
 import AdminLogin from './Components/Pages/AdminLogin'
 import AdminDashboard from './Components/Pages/AdminDashboard'
 import CategoryMovies from './Components/Pages/CategoryMovies'
+import MovieRequest from './Components/Pages/MovieRequest'
+import { Toaster } from 'react-hot-toast'
 
 export default function App() {
     return (
@@ -17,11 +19,13 @@ export default function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/category/:category' element={<CategoryMovies />} />
                 <Route path='/movie/:id' element={<MovieDetail />} />
+                <Route path='/movierequest' element={<MovieRequest />} />
                 <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
                 <Route path='/movie/admin/add' element={<AddMovie />} />
             </Routes>
             <TelegramFloat />
+            <Toaster position="top-right" reverseOrder={false} />
             <Footer />
         </>
     )
