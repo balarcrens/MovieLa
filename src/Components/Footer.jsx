@@ -41,8 +41,8 @@ const Footer = () => {
                         <Link to="#" className="hover:text-white"><FaTelegram /></Link>
                     </div>
                     <p className="text-sm mt-4">Email: balarcrens@gmail.com</p>
-                    <p className="text-sm mt-1.5"> <Link to="/movie/admin/login"> login </Link> </p>
-                    <p className="text-sm mt-1.5"> <Link to="/movie/admin/add"> movie </Link> </p>
+                    <p className="text-sm mt-1.5"> <Link to="/movie/admin/login"> {localStorage.getItem("auth-token") ? 'logout' : 'login'} </Link> </p>
+                    {localStorage.getItem("auth-token") ? <p className="text-sm mt-1.5"> <Link to="/movie/admin/add"> movie </Link> </p> : ''}
                 </div>
             </div>
 
