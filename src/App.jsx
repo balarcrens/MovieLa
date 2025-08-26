@@ -10,6 +10,7 @@ import AdminDashboard from './Components/Pages/AdminDashboard'
 import CategoryMovies from './Components/Pages/CategoryMovies'
 import MovieRequest from './Components/Pages/MovieRequest'
 import { Toaster } from 'react-hot-toast'
+import HowToDownload from './Components/Pages/HowToDownload'
 
 export default function App() {
     return (
@@ -18,7 +19,8 @@ export default function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/category/:category' element={<CategoryMovies />} />
-                <Route path='/movie/:id' element={<MovieDetail />} />
+                <Route path='/movie/:slug' element={<MovieDetail />} />
+                <Route path='/movie/how-to-download' element={<HowToDownload />} />
                 <Route path='/movierequest' element={<MovieRequest />} />
                 <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />

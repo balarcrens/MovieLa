@@ -8,15 +8,15 @@ import AdBanner from "../AdBanner";
 const DB_URL = import.meta.env.VITE_DB_URL;
 
 export default function MovieDetail() {
-    const { id } = useParams();
+    const { slug } = useParams();
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        axios.get(`${DB_URL}/api/v1/movie/${id}`).then((res) => {
+        axios.get(`${DB_URL}/api/v1/movie/${slug}`).then((res) => {
             setMovie(res.data.movie);
         });
-    }, [id]);
+    }, [slug]);
 
     if (!movie) {
         return <Loader />;
@@ -58,7 +58,7 @@ export default function MovieDetail() {
                 </div>
 
                 <Link
-                    to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
+                    to={`/movie/how-to-download`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-blue-400 font-bold text-2xl"

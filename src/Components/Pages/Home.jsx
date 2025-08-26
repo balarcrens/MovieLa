@@ -57,7 +57,7 @@ const MovieCards = () => {
                         key={index}
                         className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                     >
-                        <Link to={`/movie/${movie._id}`}>
+                        <Link to={`/movie/${movie.slug}`}>
                             {/* Poster */}
                             <div className="relative w-full aspect-[2/3] overflow-hidden">
                                 <img
