@@ -51,6 +51,11 @@ const MovieCards = () => {
 
     return (
         <div className="max-w-7xl mx-auto">
+            <nav className="text-sm text-gray-400 mb-4">
+                <Link to="/" className="hover:text-white">Home</Link> /
+                <span className="ml-1">Movies</span>
+            </nav>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                 {movies.map((movie, index) => (
                     <div

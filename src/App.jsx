@@ -11,6 +11,9 @@ import CategoryMovies from './Components/Pages/CategoryMovies'
 import MovieRequest from './Components/Pages/MovieRequest'
 import { Toaster } from 'react-hot-toast'
 import HowToDownload from './Components/Pages/HowToDownload'
+import FilterMovies from './Components/Pages/FilterMovies'
+import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
+import TermsConditions from './Components/Pages/TermsConditions'
 
 export default function App() {
     return (
@@ -19,9 +22,12 @@ export default function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/category/:category' element={<CategoryMovies />} />
+                <Route path='/movie/filter/:filter' element={<FilterMovies />} />
                 <Route path='/movie/:slug' element={<MovieDetail />} />
                 <Route path='/movie/how-to-download' element={<HowToDownload />} />
                 <Route path='/movierequest' element={<MovieRequest />} />
+                <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+                <Route path='/terms-conditions' element={<TermsConditions />} />
                 <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
                 <Route path='/movie/admin/add' element={<AddMovie />} />

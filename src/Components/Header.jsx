@@ -4,7 +4,8 @@ import logo from "/favicon.ico";
 import { Link, useNavigate } from "react-router-dom";
 
 const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Adventure"];
-const movies = ["Latest", "Popular", "Top Rated", "Upcoming"];
+const movies = ["Latest", "Popular", "rating"];
+const industries = ["Bollywood", "Hollywood", "Tollywood", "South", "Kollywood", "Other"];
 const Links = [
     { name: "Home", to: "/" },
     { name: "Movie Request", to: "/movierequest" },
@@ -14,6 +15,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [showGenres, setShowGenres] = useState(false);
     const [showMovies, setShowMovies] = useState(false);
+    const [showIndustries, setShowIndustries] = useState(false);
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
 
@@ -81,6 +83,7 @@ export default function Header() {
                         onClick={() => {
                             setShowMovies(!showMovies);
                             setShowGenres(false);
+                            setShowIndustries(false);
                         }}
                         className="relative group cursor-pointer"
                     >
@@ -92,10 +95,37 @@ export default function Header() {
                                 {movies.map((item) => (
                                     <Link
                                         key={item}
-                                        to={`#${item.toLowerCase()}`}
+                                        to={`/movie/filter/${item.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
                                     >
                                         {item}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Industry Dropdown */}
+                    <div
+                        onClick={() => {
+                            setShowIndustries(!showIndustries);
+                            setShowGenres(false);
+                            setShowMovies(false);
+                        }}
+                        className="relative group cursor-pointer"
+                    >
+                        <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
+                            Industry <ChevronDown size={16} />
+                        </div>
+                        {showIndustries && (
+                            <div className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40">
+                                {industries.map((industry) => (
+                                    <Link
+                                        key={industry}
+                                        to={`/movie/filter/${industry.toLowerCase()}`}
+                                        className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
+                                    >
+                                        {industry}
                                     </Link>
                                 ))}
                             </div>
@@ -107,6 +137,7 @@ export default function Header() {
                         onClick={() => {
                             setShowGenres(!showGenres);
                             setShowMovies(false);
+                            setShowIndustries(false);
                         }}
                         className="relative group cursor-pointer"
                     >
@@ -159,10 +190,21 @@ export default function Header() {
                     {movies.map((item) => (
                         <Link
                             key={item}
-                            to={`#${item.toLowerCase()}`}
+                            to={`/movie/filter/${item.toLowerCase()}`}
                             className="text-gray-200 ml-5 hover:text-blue-400"
                         >
                             {item}
+                        </Link>
+                    ))}
+                    
+                    <div className="font-bold text-gray-400">Industry</div>
+                    {industries.map((industry) => (
+                        <Link
+                            key={industry}
+                            to={`/movie/filter/${industry.toLowerCase()}`}
+                            className="text-gray-200 ml-5 hover:text-blue-400"
+                        >
+                            {industry}
                         </Link>
                     ))}
 
