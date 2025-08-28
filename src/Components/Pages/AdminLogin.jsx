@@ -8,7 +8,6 @@ const DB_URL = import.meta.env.VITE_DB_URL;
 export default function AdminLogin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
