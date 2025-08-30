@@ -82,14 +82,21 @@ export default function AddMovie() {
 
             selectedCategories.forEach((cat) => data.append("categories", cat));
 
-            // Actors and Keyword separate and store in array
-            formData.actors.split(",").map((a) => a.trim())
-                .filter((a) => a)
-                .forEach((actor) => data.append("actors", actor));
+            // Actors separate and store in array
+            if (formData.actors) {
+                formData.actors.split(",")
+                    .map(a => a.trim())
+                    .filter(a => a.length > 0)
+                    .forEach(actor => data.append("actors", actor));
+            }
 
-            formData.keywords.split(",").map((k) => k.trim())
-                .filter((k) => k)
-                .forEach((keyword) => data.append("keywords", keyword));
+            // Keywords separate and store in array
+            if (formData.keywords) {
+                formData.keywords.split(",")
+                    .map(k => k.trim())
+                    .filter(k => k.length > 0)
+                    .forEach(keyword => data.append("keywords", keyword));
+            }
 
             if (posterFile) {
                 data.append("poster", posterFile);
