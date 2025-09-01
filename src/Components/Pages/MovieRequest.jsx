@@ -49,12 +49,12 @@ const MovieRequest = () => {
             </div>
 
             {/* Form */}
-            <div className="rounded-2xl mx-auto p-2 sm:p-8 w-full max-w-4xl bg-[#0f0f0f]">
+            <div className="rounded-2xl mx-auto p-4 sm:p-8 w-full max-w-4xl bg-[#0f0f0f]">
                 <h2 className="text-2xl font-bold mb-6 text-center">
                     🎬 <span className="text-yellow-400">Request</span> a Movie
                 </h2>
                 <p className="text-gray-400 text-center mb-6">
-                    Submit requests for movie information, reviews, or official streaming links. <br /> This is for **information purposes only**.
+                    Submit requests for movie information, reviews, or official streaming links. This is for **information purposes only**.
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -64,7 +64,7 @@ const MovieRequest = () => {
                         <input
                             type="text"
                             {...register("movie_name", { required: "Movie name is required" })}
-                            className="w-full bg-zinc-900 border outline-0 border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400"
+                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400"
                         />
                         {errors.movie_name && <p className="text-red-500 text-sm">{errors.movie_name.message}</p>}
                     </div>
@@ -75,7 +75,7 @@ const MovieRequest = () => {
                         <input
                             type="text"
                             {...register("user_name", { required: "Name is required" })}
-                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400 outline-0"
+                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.user_name && <p className="text-red-500 text-sm">{errors.user_name.message}</p>}
                     </div>
@@ -86,7 +86,7 @@ const MovieRequest = () => {
                         <input
                             type="email"
                             {...register("user_email")}
-                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400 outline-0"
+                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
@@ -96,7 +96,7 @@ const MovieRequest = () => {
                         <input
                             type="url"
                             {...register("link")}
-                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400 outline-0"
+                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
@@ -106,7 +106,7 @@ const MovieRequest = () => {
                         <textarea
                             {...register("comment")}
                             rows="3"
-                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-yellow-400 outline-0"
+                            className="w-full bg-zinc-900 border border-gray-700 rounded-md px-3 py-2 text-white focus:ring-2 focus:ring-blue-500"
                         ></textarea>
                     </div>
 

@@ -26,31 +26,26 @@ const Home = () => {
 
 const MovieCards = () => {
     const [movies, setMovies] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search");
+    const [isloading, setisLoading] = useState(false);
 
     useEffect(() => {
-        setIsLoading(true);
-
+        setisLoading(true);
         axios
-            .get(`${DB_URL}/api/v1/movie/getmovie?page=${page}&limit=20${query ? `&search=${query}` : ""}`)
+            .get(`${DB_URL}/api/v1/movie/getmovie${query ? `?search=${query}` : ""}`)
             .then((res) => {
                 setMovies(res.data.movies);
-                setTotalPages(res.data.totalPages);
-                setIsLoading(false);
+                setisLoading(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
             })
             .catch((err) => {
                 console.error("Error fetching movies:", err.message);
-                setIsLoading(false);
+                setisLoading(false);
             });
-    }, [page, query]);
+    }, [query]);
 
-    if (isLoading) {
+    if (isloading) {
         return <Loader />;
     }
 
@@ -61,14 +56,14 @@ const MovieCards = () => {
                 <span className="ml-1">Movies</span>
             </nav>
 
-            {/* Movies Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                 {movies.map((movie, index) => (
                     <div
                         key={index}
                         className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                     >
-                        <Link to={`/movie/${movie.slug}`}>
+                        <Link to={`/movie/slug/${movie.slug}`}>
+                            {/* Poster */}
                             <div className="relative w-full aspect-[2/3] overflow-hidden">
                                 <img
                                     src={movie.posterUrl}
@@ -76,16 +71,22 @@ const MovieCards = () => {
                                     loading="lazy"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
+
+                                {/* Gradient overlay */}
                                 <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
+
                                 <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     {movie.categories?.map((category, i) => (
-                                        <span key={i} className="px-1.5 py-1 text-xs text-white bg-white/20 backdrop-blur-sm rounded-md">
+                                        <span key={i}
+                                            className="px-1.5 py-1 text-xs text-white bg-white/20 backdrop-blur-sm rounded-md"
+                                        >
                                             {category}
                                         </span>
                                     ))}
                                 </div>
                             </div>
 
+                            {/* Details */}
                             <div className="p-4 text-sm space-y-2">
                                 <p className="font-semibold text-white leading-tight line-clamp-2">
                                     {movie.movie_name}
@@ -104,32 +105,8 @@ const MovieCards = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Pagination Controls */}
-            <div className="flex justify-center items-center gap-4 mt-6">
-                <button
-                    disabled={page === 1}
-                    onClick={() => setPage(page - 1)}
-                    className="px-4 py-2 bg-gray-700 rounded-lg disabled:opacity-50 hover:bg-gray-600"
-                >
-                    Prev
-                </button>
-
-                <span className="text-gray-300">
-                    Page {page} of {totalPages}
-                </span>
-
-                <button
-                    disabled={page === totalPages}
-                    onClick={() => setPage(page + 1)}
-                    className="px-4 py-2 bg-gray-700 rounded-lg disabled:opacity-50 hover:bg-gray-600"
-                >
-                    Next
-                </button>
-            </div>
         </div>
     );
 };
-
 
 export default Home;

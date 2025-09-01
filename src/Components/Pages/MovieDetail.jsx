@@ -15,7 +15,7 @@ export default function MovieDetail() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        axios.get(`${DB_URL}/api/v1/movie/${slug}`).then((res) => {
+        axios.get(`${DB_URL}/api/v1/movie/slug/${slug}`).then((res) => {
             const data = res.data.movie;
             setMovie(data);
 
@@ -217,7 +217,7 @@ export default function MovieDetail() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         {related.map((m) => (
-                            <Link key={m.slug} to={`/movie/${m.slug}`} className="block group">
+                            <Link key={m.slug} to={`/movie/slug/${m.slug}`} className="block group">
                                 <div className="overflow-hidden rounded-lg shadow-md">
                                     <img
                                         src={m.posterUrl}

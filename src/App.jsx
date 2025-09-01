@@ -14,18 +14,18 @@ import HowToDownload from './Components/Pages/HowToDownload'
 import FilterMovies from './Components/Pages/FilterMovies'
 import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
-import ScrollToTop from './Components/ScrollToTop'
+import PushNotification from './Components/PushNotification'
 
 export default function App() {
     return (
         <>
             <Header />
-            <ScrollToTop />
+            <PushNotification />
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/category/:category' element={<CategoryMovies />} />
                 <Route path='/movie/filter/:filter' element={<FilterMovies />} />
-                <Route path='/movie/:slug' element={<MovieDetail />} />
+                <Route path='/movie/slug/:slug' element={<MovieDetail />} />
                 <Route path='/movie/how-to-download' element={<HowToDownload />} />
                 <Route path='/movierequest' element={<MovieRequest />} />
                 <Route path='/privacy-policy' element={<PrivacyPolicy />} />

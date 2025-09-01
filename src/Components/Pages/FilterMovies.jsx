@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../Loader";
@@ -11,6 +11,7 @@ export default function FilterMovies() {
     const { filter } = useParams();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -96,7 +97,7 @@ export default function FilterMovies() {
                                 key={index}
                                 className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                             >
-                                <Link to={`/movie/${movie.slug}`}>
+                                <Link onClick={() => navigate(`/movie/${movie.slug}`)}>
                                     <div className="relative w-full aspect-[2/3] overflow-hidden">
                                         <img
                                             src={movie.posterUrl}

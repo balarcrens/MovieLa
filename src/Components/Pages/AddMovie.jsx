@@ -25,15 +25,7 @@ export default function AddMovie() {
         summary: "",
         duration: "",
         size: "",
-        categories: "",
-        releaseDate: "",
-        industry: "",
-        director: "",
-        actors: "",
-        language: "",
-        keywords: "",
-        meta_description: "",
-        review: "",
+        categories: ""
     });
 
     const [posterFile, setPosterFile] = useState(null);
@@ -82,22 +74,6 @@ export default function AddMovie() {
 
             selectedCategories.forEach((cat) => data.append("categories", cat));
 
-            // Actors separate and store in array
-            if (formData.actors) {
-                formData.actors.split(",")
-                    .map(a => a.trim())
-                    .filter(a => a.length > 0)
-                    .forEach(actor => data.append("actors", actor));
-            }
-
-            // Keywords separate and store in array
-            if (formData.keywords) {
-                formData.keywords.split(",")
-                    .map(k => k.trim())
-                    .filter(k => k.length > 0)
-                    .forEach(keyword => data.append("keywords", keyword));
-            }
-
             if (posterFile) {
                 data.append("poster", posterFile);
             }
@@ -122,18 +98,10 @@ export default function AddMovie() {
                 duration: "",
                 size: "",
                 categories: "",
-                releaseDate: "",
-                industry: "",
-                actors: "",
-                director: "",
-                language: "",
-                keywords: "",
-                meta_description: "",
-                review: "",
             });
             setPosterFile(null);
             setScreenshotsFiles([]);
-            setScreenshotsCount(6);
+            setScreenshotsCount(1);
             setPosterPreview(null);
             setScreenshotsPreview([]);
             setSelectedCategories([]);
@@ -162,12 +130,6 @@ export default function AddMovie() {
                         "trailer_link",
                         "duration",
                         "size",
-                        "industry",
-                        "director",
-                        "language",
-                        "meta_description",
-                        "review",
-                        "releaseDate"
                     ].map((field) => (
                         <div key={field} className="flex flex-col">
                             <label className="mb-1 capitalize text-sm tracking-wide text-gray-300">
@@ -182,34 +144,6 @@ export default function AddMovie() {
                             />
                         </div>
                     ))}
-
-                    {/* Actors */}
-                    <div className="flex flex-col md:col-span-2">
-                        <label className="mb-1 text-sm tracking-wide text-gray-300">Actors (comma separated)</label>
-                        <input
-                            type="text"
-                            name="actors"
-                            value={formData.actors}
-                            onChange={handleChange}
-                            placeholder="Actor1, Actor2, Actor3"
-                            className="p-3 rounded-lg bg-[#1f1f1f] text-white border border-gray-700 
-                                focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
-                        />
-                    </div>
-
-                    {/* Keywords */}
-                    <div className="flex flex-col md:col-span-2">
-                        <label className="mb-1 text-sm tracking-wide text-gray-300">Keywords (comma separated)</label>
-                        <input
-                            type="text"
-                            name="keywords"
-                            value={formData.keywords}
-                            onChange={handleChange}
-                            placeholder="Action, Thriller, 2025, HD"
-                            className="p-3 rounded-lg bg-[#1f1f1f] text-white border border-gray-700 
-                                focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none"
-                        />
-                    </div>
 
                     {/* Categories */}
                     <div className="flex flex-col md:col-span-2">
