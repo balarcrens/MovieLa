@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ChevronRight, Download, Film } from 'lucide-react';
 import Loader from "../Loader";
-import AdBanner from "../AdBanner";
 import { Helmet } from "react-helmet"
 
 const DB_URL = import.meta.env.VITE_DB_URL;
@@ -241,10 +240,6 @@ export default function MovieDetail() {
                     <span className="text-white font-semibold">MovieLa</span> brings you the latest Bollywood, Hollywood, and South Indian movies.
                     Browse by category, rating, and enjoy high-quality streaming and downloads in 720p.
                 </p>
-            </div>
-
-            <div className="my-6">
-                <AdBanner />
             </div>
         </div>
     );

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 import Loader from "../Loader";
 import { Download } from "lucide-react";
-import AdBanner from '../AdBanner'
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -19,7 +18,6 @@ const Home = () => {
                 </p>
             </div>
             <MovieCards />
-            <AdBanner />
         </div>
     );
 };
