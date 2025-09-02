@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Adventure"];
 const movies = ["Latest", "Popular", "rating"];
-const industries = ["Bollywood", "Hollywood", "Tollywood", "South", "Kollywood", "Other"];
+const industries = ["Bollywood", "Hollywood", "Tollywood", "South", "Kollywood", "Gujarati", "Other"];
 const Links = [
     { name: "Home", to: "/" },
     { name: "Movie Request", to: "/movierequest" },
@@ -163,63 +163,95 @@ export default function Header() {
 
             {/* Mobile Sidebar */}
             <div
-                className={`fixed top-0 left-0 h-full w-3/4 bg-gray-800 z-50 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-                    } transition-transform duration-300 ease-in-out md:hidden shadow-lg`}
+                className={`fixed top-0 left-0 h-screen w-3/4 bg-gray-900 z-50 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+                    } transition-transform duration-300 ease-in-out md:hidden shadow-xl flex flex-col`}
             >
-                <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-4 pb-10 border-b border-gray-800">
                     <div className="flex items-center gap-3">
-                        <img src={logo} alt="Logo" className="h-8 w-8 rounded-full object-cover" />
-                        <span className="text-lg font-bold text-white">Moviela</span>
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="h-9 w-9 rounded-full object-cover shadow-md"
+                        />
+                        <span className="text-xl font-extrabold text-white tracking-wide">Moviela</span>
                     </div>
-                    <button onClick={() => setIsOpen(false)}>
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="p-2 rounded-full hover:bg-gray-700 transition"
+                    >
                         <X className="text-white" size={24} />
                     </button>
                 </div>
-                <nav className="flex flex-col px-6 py-4 gap-4">
-                    {Links.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.to}
-                            className="mt-1 font-bold text-gray-200 hover:text-blue-400"
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
 
-                    <div className="font-bold text-gray-400">Movies</div>
-                    {movies.map((item) => (
-                        <Link
-                            key={item}
-                            to={`/movie/filter/${item.toLowerCase()}`}
-                            className="text-gray-200 ml-5 hover:text-blue-400"
-                        >
-                            {item}
-                        </Link>
-                    ))}
-                    
-                    <div className="font-bold text-gray-400">Industry</div>
-                    {industries.map((industry) => (
-                        <Link
-                            key={industry}
-                            to={`/movie/filter/${industry.toLowerCase()}`}
-                            className="text-gray-200 ml-5 hover:text-blue-400"
-                        >
-                            {industry}
-                        </Link>
-                    ))}
+                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+                    {/* Main Links */}
+                    <div className="flex flex-col gap-3">
+                        {Links.map((link) => (
+                            <Link
+                                key={link.name}
+                                to={link.to}
+                                onClick={() => setIsOpen(false)}
+                                className="font-medium text-gray-200 hover:text-blue-400 transition"
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                    </div>
 
-                    <div className="mt-4 font-bold text-gray-400">Genres</div>
-                    {genres.map((genre) => (
-                        <Link
-                            key={genre}
-                            to={`/movie/category/${genre.toLowerCase()}`}
-                            className="text-gray-200 ml-5 hover:text-blue-400"
-                        >
-                            {genre}
-                        </Link>
-                    ))}
-                </nav>
+                    {/* Movies */}
+                    <div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Movies</h3>
+                        <div className="flex flex-col gap-2 ml-3">
+                            {movies.map((item) => (
+                                <Link
+                                    key={item}
+                                    to={`/movie/filter/${item.toLowerCase()}`}
+                                    onClick={() => setIsOpen(false)}
+                                    className="text-gray-300 hover:text-blue-400 transition"
+                                >
+                                    {item}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Industry */}
+                    <div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Industry</h3>
+                        <div className="flex flex-col gap-2 ml-3">
+                            {industries.map((industry) => (
+                                <Link
+                                    key={industry}
+                                    to={`/movie/filter/${industry.toLowerCase()}`}
+                                    onClick={() => setIsOpen(false)}
+                                    className="text-gray-300 hover:text-blue-400 transition"
+                                >
+                                    {industry}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Genres */}
+                    <div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Genres</h3>
+                        <div className="flex flex-col gap-2 ml-3">
+                            {genres.map((genre) => (
+                                <Link
+                                    key={genre}
+                                    to={`/movie/category/${genre.toLowerCase()}`}
+                                    onClick={() => setIsOpen(false)}
+                                    className="text-gray-300 hover:text-blue-400 transition"
+                                >
+                                    {genre}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div className="md:hidden flex justify-end max-w-7xl mx-auto mt-15 bg-[#0f0f0f] px-1.5 sm:px-4 py-4">
                 <div className="flex w-50% backdrop-blur-lg bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">

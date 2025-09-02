@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../Loader";
@@ -10,7 +10,6 @@ export default function CategoryMovies() {
     const { category } = useParams();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -54,7 +53,7 @@ export default function CategoryMovies() {
                                 key={index}
                                 className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                             >
-                                <Link onClick={() => navigate(`/movie/${movie.slug}`)}>
+                                <Link to={`/movie/${movie.slug}`}>
                                     <div className="relative w-full aspect-[2/3] overflow-hidden">
                                         <img
                                             src={movie.posterUrl}
@@ -62,6 +61,14 @@ export default function CategoryMovies() {
                                             loading="lazy"
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
+                                        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                        <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            {movie.categories?.map((category, i) => (
+                                                <span key={i} className="px-1.5 py-1 text-xs text-white bg-white/20 backdrop-blur-sm rounded-md">
+                                                    {category}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <div className="p-4 text-sm space-y-2">
@@ -73,7 +80,7 @@ export default function CategoryMovies() {
                                         </p>
                                         <div className="flex justify-between items-center">
                                             <span className="text-yellow-400 text-xs font-semibold">
-                                                {movie.rating === 0 ? "N/A" : movie.rating} ⭐
+                                                {movie.rating === 0 ? "N/A" : movie.rating} / 10 ⭐
                                             </span>
                                             <Download size={14} />
                                         </div>

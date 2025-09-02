@@ -79,7 +79,6 @@ export default function MovieDetail() {
                 {/* How to Downlaod link */}
                 <Link
                     to={`/movie/how-to-download`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="block text-blue-400 font-bold text-2xl"
                 >
