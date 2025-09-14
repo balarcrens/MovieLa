@@ -92,11 +92,21 @@ export default function AddMovie() {
             selectedCategories.forEach((cat) => data.append("categories", cat));
 
             if (formData.actors) {
-                formData.actors.split(",").map(a => a.trim()).filter(Boolean).forEach(actor => data.append("actors", actor));
+                let actors = formData.actors.split(",").map(a => a.trim());
+                actors.forEach(actor => {
+                    if (actor) {
+                        data.append("actors", actor);
+                    }
+                });
             }
 
             if (formData.keywords) {
-                formData.keywords.split(",").map(k => k.trim()).filter(Boolean).forEach(keyword => data.append("keywords", keyword));
+                let keywords = formData.keywords.split(",").map(k => k.trim());
+                keywords.forEach(keyword => {
+                    if (keyword) {
+                        data.append("keywords", keyword);
+                    }
+                });
             }
 
             if (posterFile) {
