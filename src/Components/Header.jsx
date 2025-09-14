@@ -184,7 +184,7 @@ export default function Header() {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6 h-full">
                     {/* Main Links */}
                     <div className="flex flex-col gap-3">
                         {Links.map((link) => (
@@ -201,57 +201,63 @@ export default function Header() {
 
                     {/* Movies */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Movies</h3>
-                        <div className="flex flex-col gap-2 ml-3">
-                            {movies.map((item) => (
-                                <Link
-                                    key={item}
-                                    to={`/movie/filter/${item.toLowerCase()}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-gray-300 hover:text-blue-400 transition"
-                                >
-                                    {item}
-                                </Link>
-                            ))}
-                        </div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowMovies(!showMovies)} >
+                            Movies {showMovies ? "▲" : "▼"}
+                        </h3>
+                        {showMovies && (
+                            <div className="flex flex-col gap-2 ml-3">
+                                {movies.map((item) => (
+                                    <Link key={item} to={`/movie/filter/${item.toLowerCase()}`} onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-blue-400 transition">
+                                        {item}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Industry */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Industry</h3>
-                        <div className="flex flex-col gap-2 ml-3">
-                            {industries.map((industry) => (
-                                <Link
-                                    key={industry}
-                                    to={`/movie/filter/${industry.toLowerCase()}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-gray-300 hover:text-blue-400 transition"
-                                >
-                                    {industry}
-                                </Link>
-                            ))}
-                        </div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowIndustries(!showIndustries)}>
+                            Industry {showIndustries ? "▲" : "▼"}
+                        </h3>
+                        {showIndustries && (
+                            <div className="flex flex-col gap-2 ml-3">
+                                {industries.map((industry) => (
+                                    <Link
+                                        key={industry}
+                                        to={`/movie/filter/${industry.toLowerCase()}`}
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-gray-300 hover:text-blue-400 transition"
+                                    >
+                                        {industry}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Genres */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2">Genres</h3>
-                        <div className="flex flex-col gap-2 ml-3">
-                            {genres.map((genre) => (
-                                <Link
-                                    key={genre}
-                                    to={`/movie/category/${genre.toLowerCase()}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-gray-300 hover:text-blue-400 transition"
-                                >
-                                    {genre}
-                                </Link>
-                            ))}
-                        </div>
+                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowGenres(!showGenres)}>
+                            Genres {showGenres ? "▲" : "▼"}
+                        </h3>
+                        {showGenres && (
+                            <div className="flex flex-col gap-2 ml-3">
+                                {genres.map((genre) => (
+                                    <Link
+                                        key={genre}
+                                        to={`/movie/category/${genre.toLowerCase()}`}
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-gray-300 hover:text-blue-400 transition"
+                                    >
+                                        {genre}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-
 
             <div className="md:hidden flex justify-end max-w-7xl mx-auto mt-15 bg-[#0f0f0f] px-1.5 sm:px-4 py-4">
                 <div className="flex w-50% backdrop-blur-lg bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">

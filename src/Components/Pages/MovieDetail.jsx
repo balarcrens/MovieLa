@@ -149,17 +149,40 @@ export default function MovieDetail() {
                 <div className="space-y-2 max-w-4xl mx-auto">
                     <h2 className="text-lg font-semibold py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
                         <span className="text-amber-600 text-xl sm:text-3xl">[ DOWNLOAD LINKS ]</span>
-                        <span className="text-white">Download {movie.movie_name} Full Movie in Hindi | HD</span>
                     </h2>
-                    <div className="text-blue-400 py-2 border-y-3 border-gray-700 font-bold text-2xl">
-                        <Link
-                            to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {movie.movie_name} 720p x264 [{movie.size}]
-                        </Link>
-                    </div>
+
+                    {movie.type === "Movie" ? (
+                        // For Movies - single download link
+                        <div className="text-blue-400 py-2 border-y-3 border-gray-700 font-bold text-2xl">
+                            <Link
+                                to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {movie.movie_name} 720p x264 [{movie.size}]
+                            </Link>
+                        </div>
+                    ) : movie.type === "WebSeries" && movie.episodes?.length > 0 ? (
+                        // For WebSeries - list episodes
+                        <div className="space-y-3">
+                            {movie.episodes.map((ep, index) => (
+                                <div
+                                    key={index}
+                                    className="text-blue-400 py-2 border-y-3 border-gray-700 font-semibold text-lg"
+                                >
+                                    <Link
+                                        to={`https://t.me/movieladownloadbot?start=${movie.slug}_ep${ep.episode_number}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Episode {ep.episode_number}: {ep.title || "Untitled"} [{ep.size || "N/A"}]
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-gray-400">❌ No download links available.</p>
+                    )}
                 </div>
             </div>
 
