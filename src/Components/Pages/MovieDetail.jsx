@@ -168,10 +168,10 @@ export default function MovieDetail() {
                             {movie.episodes.map((ep, index) => (
                                 <div
                                     key={index}
-                                    className="text-blue-400 py-2 border-y-3 border-gray-700 font-semibold text-lg"
+                                    className="text-blue-400 text-center py-2 border-y-3 border-gray-700 font-semibold text-lg"
                                 >
                                     <Link
-                                        to={`https://t.me/movieladownloadbot?start=${movie.slug}_ep${ep.episode_number}`}
+                                        to={`https://t.me/movieladownloadbot?start=episode_${movie.slug}_${ep.episode_number}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

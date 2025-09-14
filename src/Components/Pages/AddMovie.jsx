@@ -86,6 +86,7 @@ export default function AddMovie() {
                 if (key !== "categories") {
                     data.append(key, formData[key]);
                 }
+                if (formData.type === "WebSeries" && key === "fileid") continue;
             }
 
             selectedCategories.forEach((cat) => data.append("categories", cat));
@@ -172,10 +173,30 @@ export default function AddMovie() {
                         </select>
                     </div>
 
+                    {formData.type === "Movie" && (
+                        <>
+                            {["fileid", "duration", "size", "releaseDate"].map((field) => (
+                                <div key={field} className="flex flex-col">
+                                    <label className="mb-1 capitalize text-sm tracking-wide text-gray-300">
+                                        {field.replace("_", " ")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name={field}
+                                        value={formData[field]}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-[#1f1f1f] text-white border border-gray-700"
+                                    />
+                                </div>
+                            ))}
+                        </>
+                    )}
+
                     {/* Basic fields */}
                     {[
-                        "movie_name", "fileid", "rating", "trailer_link", "duration",
-                        "size", "industry", "director", "language", "meta_description", "review", "releaseDate"
+                        "movie_name", "rating", "trailer_link",
+                        "industry", "director", "language",
+                        "meta_description", "review"
                     ].map((field) => (
                         <div key={field} className="flex flex-col">
                             <label className="mb-1 capitalize text-sm tracking-wide text-gray-300">
@@ -245,7 +266,7 @@ export default function AddMovie() {
                         <div className="md:col-span-2">
                             <h2 className="text-yellow-400 font-bold text-lg mb-3">Episodes</h2>
                             {episodes.map((ep, index) => (
-                                <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-3 mb-4 bg-[#1f1f1f] p-3 rounded-lg border border-gray-700">
+                                <div key={index} className="grid grid-cols-1 md:grid-cols-7 gap-3 mb-4 bg-[#1f1f1f] p-3 rounded-lg border border-gray-700">
                                     {["episode_number", "title", "duration", "size", "fileid", "releaseDate"].map((field) => (
                                         <input
                                             key={field}
