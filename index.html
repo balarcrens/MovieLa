@@ -42,6 +42,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.ico" />
 
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Preload Font for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -55,13 +58,20 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
+      "@type": "Movie",
       "name": "Moviela",
-      "url": "https://moviela.vercel.app",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://moviela.vercel.app/?search={search_term_string}",
-        "query-input": "required name=search_term_string"
+      "url": "https://moviela.vercel.app/",
+      "datePublished": "2010-07-16",
+      "genre": ["Action", "Sci-Fi"],
+      "actor": [
+        { "@type": "Person", "name": "Yash" },
+        { "@type": "Person", "name": "Allu arjun" }
+      ],
+      "director": { "@type": "Person", "name": "ss rajamouli" },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "8.8",
+        "ratingCount": "2000000"
       }
     }
   </script>

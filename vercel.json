@@ -1,6 +1,18 @@
 {
     "rewrites": [
         {
+            "source": "/industry",
+            "destination": "/movie/filter/bollywood"
+        },
+        {
+            "source": "/genre",
+            "destination": "/movie/category/action"
+        },
+        {
+            "source": "/movies",
+            "destination": "/movie/filter/latest"
+        },
+        {
             "source": "/(.*)",
             "destination": "/"
         }

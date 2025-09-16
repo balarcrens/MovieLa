@@ -70,6 +70,7 @@ export default function MovieDetail() {
 
                     {/* Poster image */}
                     <img src={movie.posterUrl}
+                        loading="lazy"
                         alt={`${movie.movie_name} Poster`}
                         className="relative z-10 rounded object-cover max-h-[500px] sm:h-[500px]"
                     />
