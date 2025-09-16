@@ -32,8 +32,8 @@ export default function Header() {
             {/* Top Header: Logo + Search */}
             <header className="bg-gray-900 shadow-md fixed w-full top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <Link to="/">
-                        <div className="flex items-center gap-3 px-2">
+                    <Link to="/" data-discover="true" aria-label="Home">
+                        <div className="flex items-center gap-3 px-2" aria-hidden="true">
                             <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover" />
                             <span className="text-2xl font-extrabold text-white">MovieLa</span>
                         </div>
@@ -52,7 +52,7 @@ export default function Header() {
                                 placeholder="Search movies, genres..."
                                 className="w-full px-4 py-2 text-white bg-transparent focus:outline-none"
                             />
-                            <button onClick={handleSearch} className="px-4 hover:text-blue-300">
+                            <button onClick={handleSearch} className="px-4 hover:text-blue-300" aria-label="Search">
                                 <SearchIcon size={18} />
                             </button>
                         </div>
@@ -72,6 +72,7 @@ export default function Header() {
                         <Link
                             key={link.name}
                             to={link.to}
+                            data-discover="true" aria-label={link.name}
                             className="text-gray-300 font-medium hover:text-blue-400"
                         >
                             {link.name}
@@ -86,17 +87,26 @@ export default function Header() {
                             setShowIndustries(false);
                         }}
                         className="relative group cursor-pointer"
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded={showMovies}
+                        aria-label="Movies Menu"
                     >
                         <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Movies <ChevronDown size={16} />
+                            Movies <ChevronDown size={16} aria-hidden="true" />
                         </div>
                         {showMovies && (
-                            <div className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40">
+                            <div
+                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
+                                role="menu"
+                                aria-label="Movies submenu"
+                            >
                                 {movies.map((item) => (
                                     <Link
                                         key={item}
                                         to={`/movie/filter/${item.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
+                                        role="menuitem"
                                     >
                                         {item}
                                     </Link>
@@ -113,17 +123,26 @@ export default function Header() {
                             setShowMovies(false);
                         }}
                         className="relative group cursor-pointer"
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded={showIndustries}
+                        aria-label="Industry Menu"
                     >
                         <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Industry <ChevronDown size={16} />
+                            Industry <ChevronDown size={16} aria-hidden="true" />
                         </div>
                         {showIndustries && (
-                            <div className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40">
+                            <div
+                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
+                                role="menu"
+                                aria-label="Industry submenu"
+                            >
                                 {industries.map((industry) => (
                                     <Link
                                         key={industry}
                                         to={`/movie/filter/${industry.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
+                                        role="menuitem"
                                     >
                                         {industry}
                                     </Link>
@@ -134,23 +153,23 @@ export default function Header() {
 
                     {/* Genres Dropdown */}
                     <div
-                        onClick={() => {
-                            setShowGenres(!showGenres);
-                            setShowMovies(false);
-                            setShowIndustries(false);
-                        }}
-                        className="relative group cursor-pointer"
-                    >
+                        onClick={() => { setShowGenres(!showGenres); setShowMovies(false); setShowIndustries(false); }}
+                        className="relative group cursor-pointer" role="button" aria-haspopup="true" aria-expanded={showGenres} aria-label="Genres Menu">
                         <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Genres <ChevronDown size={16} />
+                            Genres <ChevronDown size={16} aria-hidden="true" />
                         </div>
                         {showGenres && (
-                            <div className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40">
+                            <div
+                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
+                                role="menu"
+                                aria-label="Genres submenu"
+                            >
                                 {genres.map((genre) => (
                                     <Link
                                         key={genre}
                                         to={`/movie/category/${genre.toLowerCase()}`}
                                         className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
+                                        role="menuitem"
                                     >
                                         {genre}
                                     </Link>
@@ -192,6 +211,7 @@ export default function Header() {
                                 key={link.name}
                                 to={link.to}
                                 onClick={() => setIsOpen(false)}
+                                data-discover="true" aria-label={link.name}
                                 className="font-medium text-gray-200 hover:text-blue-400 transition"
                             >
                                 {link.name}
@@ -271,7 +291,7 @@ export default function Header() {
                         placeholder="Search movies, genres..."
                         className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                     />
-                    <button onClick={handleSearch} className="px-4 text-white hover:text-blue-300">
+                    <button onClick={handleSearch} className="px-4 text-white hover:text-blue-300" aria-label="Search">
                         <SearchIcon size={18} />
                     </button>
                 </div>
