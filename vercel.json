@@ -1,15 +1,15 @@
 {
     "rewrites": [
         {
-            "source": "/industry",
+            "source": "/movie/filter/bollywood",
             "destination": "/movie/filter/bollywood"
         },
         {
-            "source": "/genre",
+            "source": "/movie/category/action",
             "destination": "/movie/category/action"
         },
         {
-            "source": "/movies",
+            "source": "/movie/filter/latest",
             "destination": "/movie/filter/latest"
         },
         {

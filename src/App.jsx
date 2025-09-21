@@ -14,10 +14,12 @@ import HowToDownload from './Components/Pages/HowToDownload'
 import FilterMovies from './Components/Pages/FilterMovies'
 import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
+import ScrollToTop from './Components/ScrollToTop'
 
 export default function App() {
     return (
         <>
+            <ScrollToTop />
             <Header />
             <Routes>
                 <Route path='/' element={<Home />} />

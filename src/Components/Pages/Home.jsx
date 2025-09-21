@@ -9,14 +9,6 @@ const DB_URL = import.meta.env.VITE_DB_URL;
 const Home = () => {
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
-            <div className="max-w-7xl mx-auto text-center mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">
-                    Find Your Next <span className="text-yellow-400">Favourite Movie</span>
-                </h1>
-                <p className="text-gray-400 mt-2">
-                    Search, browse, and download the latest movies & web series instantly.
-                </p>
-            </div>
             <MovieCards />
         </div>
     );
