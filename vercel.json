@@ -1,20 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/movie/filter/bollywood",
-            "destination": "/movie/filter/bollywood"
-        },
-        {
-            "source": "/movie/category/action",
-            "destination": "/movie/category/action"
-        },
-        {
-            "source": "/movie/filter/latest",
-            "destination": "/movie/filter/latest"
-        },
-        {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/index.html"
         }
     ]
 }
