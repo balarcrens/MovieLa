@@ -1,20 +1,20 @@
 {
-    "routes": [
+    "rewrites": [
         {
-            "src": "/(favicon\\.ico|manifest\\.json|logo.*\\.png|robots\\.txt)",
-            "dest": "/$1"
+            "source": "/(favicon\\.ico|manifest\\.json|logo.*\\.png|robots\\.txt)",
+            "destination": "/$1"
         },
         {
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
+            "source": "/static/(.*)",
+            "destination": "/static/$1"
         },
         {
-            "src": "/assets/(.*)",
-            "dest": "/assets/$1"
+            "source": "/assets/(.*)",
+            "destination": "/assets/$1"
         },
         {
-            "src": "/.*",
-            "dest": "/index.html"
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
     ]
 }
