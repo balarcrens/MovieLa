@@ -1,18 +1,6 @@
 {
     "rewrites": [
         {
-            "source": "/(favicon\\.ico|manifest\\.json|logo.*\\.png|robots\\.txt)",
-            "destination": "/$1"
-        },
-        {
-            "source": "/static/(.*)",
-            "destination": "/static/$1"
-        },
-        {
-            "source": "/assets/(.*)",
-            "destination": "/assets/$1"
-        },
-        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
