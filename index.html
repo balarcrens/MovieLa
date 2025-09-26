@@ -54,26 +54,32 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
-  <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Movie",
-      "name": "Moviela",
-      "url": "https://moviela.vercel.app/",
-      "datePublished": "2010-07-16",
-      "genre": ["Action", "Sci-Fi"],
-      "actor": [
-        { "@type": "Person", "name": "Yash" },
-        { "@type": "Person", "name": "Allu arjun" }
-      ],
-      "director": { "@type": "Person", "name": "ss rajamouli" },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "8.8",
-        "ratingCount": "2000000"
-      }
+  {
+    "@context": "https://schema.org",
+    "@type": "Movie",
+    "name": "Moviela",
+    "url": "https://moviela.vercel.app/",
+    "datePublished": "2010-07-16",
+    "genre": ["Action", "Sci-Fi"],
+    "actor": [
+      { "@type": "Person", "name": "Yash" },
+      { "@type": "Person", "name": "Allu Arjun" }
+    ],
+    "director": {
+      "@type": "Person",
+      "name": "S. S. Rajamouli"
+    },
+    "image": "https://moviela.vercel.app/logo-192.png", 
+    "description": "Moviela is an action-packed sci-fi adventure film featuring Yash and Allu Arjun, directed by S. S. Rajamouli.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "8.8",
+      "bestRating": "10",
+      "worstRating": "1",
+      "ratingCount": "2000000"
     }
+  }
   </script>
 
   <!-- Google Search console -->
