@@ -5,54 +5,47 @@ export default function InstallButton() {
     const [isInstalled, setIsInstalled] = useState(false);
 
     useEffect(() => {
-        // Handler for beforeinstallprompt
-        const handleBeforeInstallPrompt = (e) => {
-            // Prevent Chrome's automatic banner
+        // Save install prompt event
+        window.addEventListener("beforeinstallprompt", (e) => {
             e.preventDefault();
-            setDeferredPrompt(e); // Save event to show manually
-        };
+            setDeferredPrompt(e);
+        });
 
-        // Handler for appinstalled
-        const handleAppInstalled = () => {
+        // Detect app installation
+        window.addEventListener("appinstalled", () => {
             setIsInstalled(true);
             setDeferredPrompt(null);
             console.log("App installed!");
-        };
-
-        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-        window.addEventListener("appinstalled", handleAppInstalled);
-
-        // Cleanup
-        return () => {
-            window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-            window.removeEventListener("appinstalled", handleAppInstalled);
-        };
+        });
     }, []);
 
     const handleInstallClick = async () => {
         if (!deferredPrompt) return;
-
-        // Show the install prompt
         deferredPrompt.prompt();
-
-        // Wait for user response
-        const choice = await deferredPrompt.userChoice;
-        console.log("User choice:", choice.outcome);
-
-        // Clear the saved prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User choice: ${outcome}`);
         setDeferredPrompt(null);
     };
 
-    // Don't show button if app is already installed or prompt not available
+    // Do not show button if app is already installed or not installable
     if (!deferredPrompt || isInstalled) return null;
 
     return (
-        <div className="fixed bottom-20 right-4 z-50">
+        <div className="fixed bottom-4 right-4 z-50">
             <button
                 onClick={handleInstallClick}
                 className="flex items-center space-x-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-blue-500 hover:scale-105 transition-transform text-white font-semibold rounded-full shadow-lg"
             >
-                <span>Install App</span>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v4h16v-4M12 4v12m0 0l-4-4m4 4l4-4" />
+                </svg>
+                <span>Download App</span>
             </button>
         </div>
     );
