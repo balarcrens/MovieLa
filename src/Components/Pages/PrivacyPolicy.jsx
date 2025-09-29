@@ -1,3 +1,5 @@
+import AdBanner from "../AdBanner";
+
 export default function PrivacyPolicy() {
     return (
         <div className="bg-[#0f0f0f]">
@@ -58,6 +60,8 @@ export default function PrivacyPolicy() {
                     <span className="block mt-2 font-semibold">support@moviela.com</span>
                 </p>
             </div>
+
+            <AdBanner />
         </div>
     );
 }

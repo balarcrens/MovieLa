@@ -1,3 +1,5 @@
+import AdBanner from "../AdBanner";
+
 export default function TermsConditions() {
     return (
         <div className="bg-[#0f0f0f]">
@@ -57,6 +59,8 @@ export default function TermsConditions() {
                     <span className="block mt-2 font-semibold">support@moviela.com</span>
                 </p>
             </div>
+
+            <AdBanner />
         </div>
     );
 }

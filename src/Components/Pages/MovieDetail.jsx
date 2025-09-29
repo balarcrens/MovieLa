@@ -4,6 +4,7 @@ import axios from "axios";
 import { ChevronRight, Download, Film } from 'lucide-react';
 import Loader from "../Loader";
 import { Helmet } from "react-helmet"
+import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -265,6 +266,8 @@ export default function MovieDetail() {
                     Browse by category, rating, and enjoy high-quality streaming and downloads in 720p.
                 </p>
             </div>
+
+            <AdBanner />
         </div>
     );
 }

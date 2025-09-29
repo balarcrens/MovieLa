@@ -4,6 +4,7 @@ import axios from "axios";
 import Loader from "../Loader";
 import { Download } from "lucide-react";
 import { Helmet } from "react-helmet";
+import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -134,6 +135,8 @@ export default function FilterMovies() {
                     </div>
                 )}
             </div>
+
+            <AdBanner />
         </div>
     );
 }
