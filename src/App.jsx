@@ -16,6 +16,7 @@ import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
 import ScrollToTop from './Components/ScrollToTop'
 import InstallButton from './Components/InstallButton'
+import UserRequests from './Components/Pages/UserRequests'
 
 export default function App() {
     return (
@@ -32,9 +33,10 @@ export default function App() {
                 <Route path='/movierequest' element={<MovieRequest />} />
                 <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                 <Route path='/terms-conditions' element={<TermsConditions />} />
-                <Route path='/movie/admin/dashboard' element={<AdminDashboard />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
+                <Route path='/movie/admin' element={<AdminDashboard />} />
                 <Route path='/movie/admin/add' element={<AddMovie />} />
+                <Route path='/movie/admin/requests' element={<UserRequests />} />
             </Routes>
             <TelegramFloat />
             <Toaster position="top-right" reverseOrder={false} />

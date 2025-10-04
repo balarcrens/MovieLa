@@ -15,8 +15,11 @@ const MovieRequest = () => {
         formState: { errors },
     } = useForm();
 
+
+
     const onSubmit = async (data) => {
         try {
+            console.log(data);
             const res = await axios.post(`${DB_URL}/api/v1/requests`, data);
             if (res) {
                 toast.success("Your movie request has been submitted!");

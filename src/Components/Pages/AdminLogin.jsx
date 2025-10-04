@@ -25,7 +25,7 @@ export default function AdminLogin() {
             localStorage.setItem("auth-token", res.data.token);
 
             // redirect to add movie page
-            navigate("/movie/admin/add");
+            navigate("/movie/admin");
 
             toast.success("Login successfully !");
 

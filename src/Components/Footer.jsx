@@ -91,13 +91,13 @@ const Footer = () => {
                     </p>
 
                     {localStorage.getItem("auth-token") && (
-                        <p className="text-sm mt-1.5">
+                        <p className="text-sm mt-1.5 flex">
                             <Link
-                                to="/movie/admin/add"
+                                to="/movie/admin"
                                 aria-label="Add Movie"
                                 className="hover:text-white"
                             >
-                                movie
+                                Dashboard
                             </Link>
                         </p>
                     )}

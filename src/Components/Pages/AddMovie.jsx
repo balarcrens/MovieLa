@@ -166,8 +166,8 @@ export default function AddMovie() {
     };
 
     return (
-        <div className="min-h-screen bg-[#111] p-3 md:p-10">
-            <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl p-1 sm:p-8 border-gray-800">
+        <div className="min-h-screen bg-[#111] p-3 md:p-6">
+            <div className="max-w-6xl mx-auto bg-[#111] rounded-2xl p-1 border-gray-800">
                 <h1 className="text-2xl font-bold text-center mb-8 text-yellow-400 tracking-wide">
                     + Add New {formData.type}
                 </h1>
