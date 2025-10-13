@@ -22,13 +22,13 @@
         {
             "src": "/assets/mobile-screenshot.jpg",
             "type": "image/jpg",
-            "sizes": "1080x1920",
+            "sizes": "720x1567",
             "form_factor": "narrow"
         },
         {
             "src": "/assets/desktop-screenshot.png",
             "type": "image/png",
-            "sizes": "1920x1080",
+            "sizes": "1907x919",
             "form_factor": "wide"
         }
     ]
