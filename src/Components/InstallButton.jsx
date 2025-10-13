@@ -6,7 +6,7 @@ export default function InstallButton() {
 
     useEffect(() => {
         const beforeInstallHandler = (e) => {
-            e.preventDefault();
+            console.log("Install prompt event captured");
             setDeferredPrompt(e);
         };
 
