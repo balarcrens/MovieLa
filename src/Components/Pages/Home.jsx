@@ -1,7 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from "react";
-// import Loader from "../Loader";
 import { SkeletonCard } from "../Skeleton";
 import { Download } from "lucide-react";
 import AdBanner from "../AdBanner";

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Loader from "../Loader";
+import { SkeletonCard } from "../Skeleton";
 import { Download } from "lucide-react";
 import { Helmet } from "react-helmet";
 import AdBanner from "../AdBanner";
@@ -33,7 +33,17 @@ export default function FilterMovies() {
             .catch(() => setLoading(false));
     }, [filter]);
 
-    if (loading) return <Loader />;
+    if (loading) {
+        return (
+            <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
+                <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+                    {Array.from({ length: 20 }).map((_, i) => (
+                        <SkeletonCard key={i} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">

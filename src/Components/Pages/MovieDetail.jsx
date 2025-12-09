@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ChevronRight, Download, Film } from 'lucide-react';
-import Loader from "../Loader";
+import MovieDetailSkeleton from "../MovieDetailSkeleton";
 import { Helmet } from "react-helmet"
 import AdBanner from "../AdBanner";
 
@@ -33,7 +33,7 @@ export default function MovieDetail() {
     }, [slug]);
 
     if (!movie) {
-        return <Loader />;
+        return <MovieDetailSkeleton />;
     }
 
     return (
