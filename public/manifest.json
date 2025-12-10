@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#111827",
     "theme_color": "#111827",
-    "description": "Moviela - Download latest movies in HD, 720p, 1080p, and 4K quality. Fast and secure direct links via Telegram Cloud.",
+    "description": "Moviela is a movie discovery platform where you can explore movies, trailers and Telegram links easily.",
     "icons": [
         {
             "src": "/assets/logo-192.png",

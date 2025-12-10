@@ -2,101 +2,94 @@
 <html lang="en">
 
 <head>
-  <!-- Basic Meta Tags -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="Moviela - Download latest movies in HD, 720p, 1080p, and 4K quality. Fast and secure direct links via Telegram Cloud." />
-  <meta name="keywords"
-    content="Moviela, movie download, HD movies, 720p, 1080p, 4K, Bollywood, Hollywood, South movies, Telegram download" />
-  <meta name="author" content="Moviela Team" />
-  <meta name="robots" content="index, follow" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- App Info -->
-  <meta name="application-name" content="Moviela Movie Download" />
-  <meta name="theme-color" content="#111827" />
-  <meta name="mobile-web-app-capable" content="yes" />
+    <title>Moviela – Movie Discovery Platform | Bollywood, Hollywood & South</title>
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://moviela.vercel.app/" />
+    <meta name="description"
+        content="Moviela is your ultimate platform for discovering Bollywood, Hollywood and South Indian movies. View posters, trailers and Telegram links easily.">
 
-  <!-- Open Graph for Social Sharing -->
-  <meta property="og:title" content="Moviela - Download HD Movies Fast & Free" />
-  <meta property="og:description"
-    content="Stream and download the latest movies in HD, 720p, 1080p, and 4K quality via Telegram direct links." />
-  <meta property="og:image" content="https://moviela.vercel.app/preview.jpg" />
-  <meta property="og:url" content="https://moviela.vercel.app/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Moviela" />
+    <meta name="keywords"
+        content="Moviela, Moviela movie, Moviela website, movie hub, movie information, Bollywood movies, Hollywood movies, South Indian movies, Telegram movie links">
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Moviela - Download HD Movies Fast & Free" />
-  <meta name="twitter:description"
-    content="Stream and download latest HD, 720p, 1080p, and 4K movies directly from Telegram Cloud." />
-  <meta name="twitter:image" content="https://moviela.vercel.app/preview.jpg" />
-  <meta name="twitter:site" content="@Moviela" />
-  <meta http-equiv="Content-Security-Policy"
-    content="frame-src 'self' https://www.youtube-nocookie.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://www.google.com;">
+    <meta name="author" content="Moviela">
+    <meta name="robots" content="index, follow">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.ico" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://moviela.vercel.app/" />
 
-  <!-- Web App Manifest -->
-  <link rel="manifest" href="/manifest.json">
+    <!-- THEME -->
+    <meta name="theme-color" content="#111827">
 
-  <!-- Preload Font for Performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap" rel="stylesheet" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Moviela">
 
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Moviela – Discover Movies Instantly">
+    <meta property="og:description"
+        content="Discover Bollywood, Hollywood & South movies with details, posters & Telegram links only on Moviela.">
+    <meta property="og:image" content="https://moviela.vercel.app/moviela.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Moviela - Movie Discovery Platform">
+    <meta property="og:url" content="https://moviela.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Moviela">
 
-  <script type="application/ld+json">
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Moviela – Movie Discovery Platform">
+    <meta name="twitter:description" content="Browse Bollywood, Hollywood & South movies easily via Moviela.">
+    <meta name="twitter:image" content="https://moviela.vercel.app/moviela.png">
+    <meta name="twitter:image:alt" content="Moviela Movie Hub Preview">
+
+    <!-- FAVICON -->
+    <link rel="icon" href="/favicon.ico">
+
+    <!-- MANIFEST -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap" rel="stylesheet">
+
+    <!-- STRUCTURED DATA -->
+    <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Movie",
+    "@type": "WebSite",
     "name": "Moviela",
     "url": "https://moviela.vercel.app/",
-    "datePublished": "2010-07-16",
-    "genre": ["Action", "Sci-Fi"],
-    "actor": [
-      { "@type": "Person", "name": "Yash" },
-      { "@type": "Person", "name": "Allu Arjun" }
-    ],
-    "director": {
-      "@type": "Person",
-      "name": "S. S. Rajamouli"
+    "description": "Moviela is a movie discovery platform for finding Bollywood, Hollywood & South Indian movies.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Moviela",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://moviela.vercel.app/logo-192.png"
+      }
     },
-    "image": "https://moviela.vercel.app/logo-192.png", 
-    "description": "Moviela is an action-packed sci-fi adventure film featuring Yash and Allu Arjun, directed by S. S. Rajamouli.",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "8.8",
-      "bestRating": "10",
-      "worstRating": "1",
-      "ratingCount": "2000000"
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://moviela.vercel.app/search?query={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
 
-  <!-- Google Search console -->
-  <meta name="google-site-verification" content="t9pzP0GXj476u1sX0nbYPBOzg6DBHjaIdiVMJHtBa_w" />
+    <!-- GOOGLE VERIFICATION -->
+    <meta name="google-site-verification" content="t9pzP0GXj476u1sX0nbYPBOzg6DBHjaIdiVMJHtBa_w">
 
-  <!-- Adsense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2791325015173516"
-    crossorigin="anonymous"></script>
-
-  <!-- Title -->
-  <title>Moviela - Download HD Movies | 720p, 1080p via Telegram</title>
+    <!-- ADSENSE -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2791325015173516"
+        crossorigin="anonymous"></script>
 </head>
 
-
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>
