@@ -29,9 +29,9 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/sitemap.xml" aria-label="Site Map" className="hover:text-white" >
+                            <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                                 SiteMap
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                 </div>
