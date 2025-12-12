@@ -240,7 +240,7 @@ export default function MovieDetail() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         {related.map((m) => (
-                            <Link key={m.slug} to={`/movie/slug/${m.slug}`} className="block group">
+                            <Link key={m.slug} to={`/movie/${m.slug}`} className="block group">
                                 <div className="overflow-hidden rounded-lg shadow-md">
                                     <img
                                         src={m.posterUrl}
