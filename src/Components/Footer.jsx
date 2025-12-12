@@ -29,7 +29,7 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/sitemap" aria-label="Site Map" className="hover:text-white" >
+                            <Link to="/sitemap.xml" aria-label="Site Map" className="hover:text-white" >
                                 SiteMap
                             </Link>
                         </li>
