@@ -4,15 +4,37 @@ import { useEffect, useState } from "react";
 import { SkeletonCard } from "../Skeleton";
 import { Download } from "lucide-react";
 import AdBanner from "../AdBanner";
+import { Helmet } from "react-helmet";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
 const Home = () => {
+    const [topPoster, setTopPoster] = useState("");
+
+    useEffect(() => {
+        axios
+            .get(`${DB_URL}/api/v1/movie/getmovie?page=1&limit=1`)
+            .then((res) => {
+                if (res.data.movies?.length > 0) {
+                    setTopPoster(res.data.movies[0].posterUrl);
+                }
+            })
+            .catch((err) => console.log("Preload poster error:", err.message));
+    }, []);
+
     return (
-        <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
-            <MovieCards />
-            <AdBanner />
-        </div>
+        <>
+            <Helmet>
+                {topPoster && (
+                    <link rel="preload" as="image" href={topPoster} />
+                )}
+            </Helmet>
+
+            <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
+                <MovieCards />
+                <AdBanner />
+            </div>
+        </>
     );
 };
 
@@ -26,6 +48,15 @@ const MovieCards = () => {
     const query = searchParams.get("search");
 
     useEffect(() => {
+        const cacheKey = `movies_page_${page}_${query || "all"}`;
+        const cached = sessionStorage.getItem(cacheKey);
+
+        if (cached) {
+            setMovies(JSON.parse(cached));
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(true);
 
         axios
@@ -34,6 +65,9 @@ const MovieCards = () => {
                 setMovies(res.data.movies);
                 setTotalPages(res.data.totalPages);
                 setIsLoading(false);
+
+                sessionStorage.setItem(cacheKey, JSON.stringify(res.data.movies));
+
                 window.scrollTo({ top: 0, behavior: "smooth" });
             })
             .catch((err) => {
@@ -49,7 +83,6 @@ const MovieCards = () => {
                 <span className="ml-1">Movies</span>
             </nav>
 
-            {/* Movies Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                 {isLoading
                     ? Array.from({ length: 20 }).map((_, i) => <SkeletonCard key={i} />)
@@ -64,7 +97,8 @@ const MovieCards = () => {
                                         src={movie.posterUrl}
                                         alt={movie.movie_name}
                                         loading="lazy"
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300 blur-sm"
+                                        onLoad={(e) => e.target.classList.remove("blur-sm")}
                                     />
                                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
                                     <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -95,7 +129,7 @@ const MovieCards = () => {
                     ))}
             </div>
 
-            {/* Pagination Controls */}
+            {/* Pagination */}
             <div className="flex justify-center items-center gap-4 mt-6">
                 <button
                     disabled={page === 1}
@@ -105,9 +139,7 @@ const MovieCards = () => {
                     Prev
                 </button>
 
-                <span className="text-gray-300">
-                    Page {page} of {totalPages}
-                </span>
+                <span className="text-gray-300">Page {page} of {totalPages}</span>
 
                 <button
                     disabled={page === totalPages}
@@ -120,6 +152,5 @@ const MovieCards = () => {
         </div>
     );
 };
-
 
 export default Home;
