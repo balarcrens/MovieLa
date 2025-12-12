@@ -28,6 +28,11 @@ const Footer = () => {
                                 Terms & Conditions
                             </Link>
                         </li>
+                        <li>
+                            <Link to="/sitemap" aria-label="Site Map" className="hover:text-white" >
+                                SiteMap
+                            </Link>
+                        </li>
                     </ul>
                 </div>
 
