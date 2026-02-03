@@ -5,6 +5,14 @@
             "destination": "/sitemap.xml"
         },
         {
+            "source": "/manifest.json",
+            "destination": "/manifest.json"
+        },
+        {
+            "source": "/assets/(.*)",
+            "destination": "/assets/$1"
+        },
+        {
             "source": "/(.*)",
             "destination": "/"
         }
