@@ -11,7 +11,7 @@ const Home = () => {
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
             <MovieCards />
-            <AdBanner />
+            {/* <AdBanner /> */}
         </div>
     );
 };
