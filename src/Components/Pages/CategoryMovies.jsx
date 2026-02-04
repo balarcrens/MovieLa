@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SkeletonCard } from "../Skeleton";
 import { Download } from "lucide-react";
-import AdBanner from "../AdBanner";
+// import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -103,7 +103,7 @@ export default function CategoryMovies() {
                 )}
             </div>
 
-            <AdBanner />
+            {/* <AdBanner /> */}
         </div>
     );
 }

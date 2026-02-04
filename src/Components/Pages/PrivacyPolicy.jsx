@@ -1,4 +1,4 @@
-import AdBanner from "../AdBanner";
+// import AdBanner from "../AdBanner";
 
 export default function PrivacyPolicy() {
     return (
@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
                 </p>
             </div>
 
-            <AdBanner />
+            {/* <AdBanner /> */}
         </div>
     );
 }

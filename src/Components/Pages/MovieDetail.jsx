@@ -4,7 +4,7 @@ import axios from "axios";
 import { ChevronRight, Download, Film } from 'lucide-react';
 import MovieDetailSkeleton from "../MovieDetailSkeleton";
 import { Helmet } from "react-helmet"
-import AdBanner from "../AdBanner";
+// import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -267,7 +267,7 @@ export default function MovieDetail() {
                 </p>
             </div>
 
-            <AdBanner />
+            {/* <AdBanner /> */}
         </div>
     );
 }

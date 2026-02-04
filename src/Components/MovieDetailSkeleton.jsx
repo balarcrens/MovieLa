@@ -2,7 +2,7 @@ import Skeleton from "./UI/skeleton";
 
 export default function MovieDetailSkeleton() {
     return (
-        <>
+        <div className="bg-black min-h-screen text-white px-2 sm:px-4 py-8">
             {/* Breadcrumb */}
             <div className="max-w-4xl mx-auto mb-6">
                 <Skeleton className="h-4 w-48" />
@@ -59,7 +59,6 @@ export default function MovieDetailSkeleton() {
                     ))}
                 </div>
             </div>
-
-        </>
+        </div>
     );
 }

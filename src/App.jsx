@@ -15,7 +15,7 @@ import FilterMovies from './Components/Pages/FilterMovies'
 import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
 import ScrollToTop from './Components/ScrollToTop'
-import InstallButton from './Components/InstallButton'
+// import InstallButton from './Components/InstallButton'
 import UserRequests from './Components/Pages/UserRequests'
 
 export default function App() {

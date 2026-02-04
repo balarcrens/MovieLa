@@ -1,4 +1,4 @@
-import AdBanner from "../AdBanner";
+// import AdBanner from "../AdBanner";
 
 export default function TermsConditions() {
     return (
@@ -60,7 +60,7 @@ export default function TermsConditions() {
                 </p>
             </div>
 
-            <AdBanner />
+            {/* <AdBanner /> */}
         </div>
     );
 }
