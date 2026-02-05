@@ -4,6 +4,7 @@ import axios from "axios";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { useState } from "react";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
@@ -14,21 +15,24 @@ const MovieRequest = () => {
         reset,
         formState: { errors },
     } = useForm();
-
+    const [loading, setLoading] = useState(false);
 
 
     const onSubmit = async (data) => {
         try {
-            console.log(data);
+            setLoading(true);
             const res = await axios.post(`${DB_URL}/api/v1/requests`, data);
             if (res) {
-                toast.success("Your movie request has been submitted!");
+                setLoading(false);
+                toast.success("Request Submitted!");
                 reset();
             } else {
+                setLoading(false);
                 toast.error("Failed to submit request.");
             }
         } catch (err) {
             console.error(err);
+            setLoading(false);
             toast.error("Something went wrong!");
         }
     };
@@ -117,9 +121,10 @@ const MovieRequest = () => {
                     <div className="md:col-span-2">
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                            disabled={loading}
                         >
-                            Submit Request
+                            {loading ? "Submitting..." : "Submit Request"}
                         </button>
                     </div>
                 </form>

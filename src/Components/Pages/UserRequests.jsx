@@ -55,7 +55,7 @@ export default function UserRequests() {
                         {requests.map((req, index) => (
                             <div
                                 key={req._id}
-                                className="bg-[#1a1a1a] border border-gray-700 rounded-xl p-4 space-y-2"
+                                className="bg-[#1a1a1a] border flex flex-col border-gray-700 rounded-xl p-4 space-y-2"
                             >
                                 <p className="text-sm text-gray-400">
                                     #{index + 1} • {new Date(req.createdAt).toLocaleDateString()}
@@ -67,12 +67,7 @@ export default function UserRequests() {
                                 <p><span className="text-gray-400">Comment:</span> {req.comment || "—"}</p>
 
                                 {req.link && (
-                                    <a
-                                        href={req.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-400 text-sm break-all"
-                                    >
+                                    <a href={req.link} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-sm break-all">
                                         {req.link}
                                     </a>
                                 )}

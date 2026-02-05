@@ -4,7 +4,7 @@ import Home from './Components/Pages/Home'
 import Footer from './Components/Footer'
 import TelegramFloat from './Components/TelegramFloat'
 import MovieDetail from './Components/Pages/MovieDetail'
-import AddMovie from './Components/Pages/AddMovie'
+import MovieForm from './Components/Pages/MovieForm'
 import AdminLogin from './Components/Pages/AdminLogin'
 import AdminDashboard from './Components/Pages/AdminDashboard'
 import CategoryMovies from './Components/Pages/CategoryMovies'
@@ -15,7 +15,7 @@ import FilterMovies from './Components/Pages/FilterMovies'
 import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
 import ScrollToTop from './Components/ScrollToTop'
-// import InstallButton from './Components/InstallButton'
+import './App.css'
 import UserRequests from './Components/Pages/UserRequests'
 
 export default function App() {
@@ -35,7 +35,8 @@ export default function App() {
                 <Route path='/terms-conditions' element={<TermsConditions />} />
                 <Route path='/movie/admin/login' element={<AdminLogin />} />
                 <Route path='/movie/admin' element={<AdminDashboard />} />
-                <Route path='/movie/admin/add' element={<AddMovie />} />
+                <Route path="/admin/movie/add" element={<MovieForm />} />
+                <Route path="/admin/movie/edit/:id" element={<MovieForm />} />
                 <Route path='/movie/admin/requests' element={<UserRequests />} />
             </Routes>
             <TelegramFloat />

@@ -2,62 +2,144 @@
 
 export default function TermsConditions() {
     return (
-        <div className="bg-[#0f0f0f]">
-            <div className="max-w-4xl mx-auto px-6 py-10 text-gray-200">
-                <h1 className="text-3xl font-bold mb-6 text-yellow-400">Terms & Conditions</h1>
-                <p className="mb-4">
-                    Welcome to <span className="font-semibold">Moviela</span>. By accessing or using our website, you agree to be bound by
-                    these Terms & Conditions. Please read them carefully before using our services.
+        <div className="bg-[#0b0b0b] min-h-screen">
+            <div className="max-w-4xl mx-auto px-5 sm:px-6 py-10 text-gray-300">
+
+                {/* Page Header */}
+                <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400">
+                    Terms & Conditions
+                </h1>
+                <p className="text-sm text-gray-400 mb-8">
+                    Last updated: {new Date().getFullYear()}
                 </p>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Use of Our Website</h2>
-                <p className="mb-4">
-                    Moviela provides movie information and download links via Telegram. You agree to use our website for lawful purposes only and not
-                    for any activity that may harm the site, its users, or third parties.
-                </p>
+                <div className="space-y-8 leading-relaxed">
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Intellectual Property Rights</h2>
-                <p className="mb-4">
-                    All content available on Moviela, including text, graphics, logos, and design, is owned by or licensed to us.
-                    Unauthorized use, reproduction, or redistribution of our content is prohibited.
-                </p>
+                    <section>
+                        <p>
+                            Welcome to <span className="font-semibold text-gray-100">Moviela</span>.
+                            By accessing or using this website, you agree to comply with
+                            and be bound by these Terms & Conditions. If you do not agree
+                            with any part of these terms, please discontinue use of our
+                            website.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Third-Party Links</h2>
-                <p className="mb-4">
-                    Our website may contain links to third-party websites (such as Telegram or advertisers). We are not responsible
-                    for the content, privacy policies, or practices of any third-party websites.
-                </p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Use of the Website
+                        </h2>
+                        <p>
+                            Moviela provides movie-related information, metadata, and
+                            references sourced from publicly available platforms. You
+                            agree to use this website only for lawful purposes and in a
+                            manner that does not infringe the rights of others or restrict
+                            their use of the website.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Limitation of Liability</h2>
-                <p className="mb-4">
-                    Moviela shall not be held liable for any damages or issues arising from the use of our website, including technical errors,
-                    downtime, or third-party content. Users access and use our site at their own risk.
-                </p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Content & Intellectual Property
+                        </h2>
+                        <p>
+                            All original content on Moviela, including website design,
+                            layout, branding, and text, is owned by or licensed to us.
+                            Unauthorized copying, reproduction, or redistribution of our
+                            proprietary content is prohibited.
+                        </p>
+                        <p className="mt-2">
+                            Media content such as posters, images, or references belongs
+                            to their respective copyright owners. Moviela does not claim
+                            ownership of any third-party media.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Google AdSense & Advertising</h2>
-                <p className="mb-4">
-                    Moviela uses Google AdSense to display advertisements. By using our site, you acknowledge that third-party vendors,
-                    including Google, may use cookies to serve ads based on your prior visits.
-                    You may opt out of personalized advertising through Google Ads Settings.
-                </p>
+                    <section className="border border-yellow-500/20 bg-yellow-500/5 rounded-lg p-4">
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            External Links & Third-Party Platforms
+                        </h2>
+                        <p>
+                            Moviela may include links or references to third-party
+                            platforms and services. We do not host, control, or manage
+                            external websites and are not responsible for their content,
+                            availability, or practices.
+                        </p>
+                        <p className="mt-2">
+                            Users interact with third-party platforms at their own
+                            discretion and risk.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Changes to Terms</h2>
-                <p className="mb-4">
-                    We reserve the right to update or modify these Terms & Conditions at any time without prior notice.
-                    Continued use of our website after changes are posted means you accept the new terms.
-                </p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Disclaimer of Liability
+                        </h2>
+                        <p>
+                            Moviela is provided on an “as-is” and “as-available” basis.
+                            We make no warranties regarding accuracy, reliability, or
+                            availability of the website.
+                        </p>
+                        <p className="mt-2">
+                            We shall not be liable for any direct, indirect, incidental,
+                            or consequential damages arising from the use of this website,
+                            including issues related to third-party services, content, or
+                            external links.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Governing Law</h2>
-                <p className="mb-4">
-                    These Terms & Conditions are governed by and construed in accordance with applicable laws.
-                    Any disputes shall be subject to the jurisdiction of the relevant courts.
-                </p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Advertising & Google AdSense
+                        </h2>
+                        <p>
+                            Moviela displays advertisements through third-party advertising
+                            networks such as Google AdSense. These services may use cookies
+                            and similar technologies to display relevant ads.
+                        </p>
+                        <p className="mt-2">
+                            Users can manage ad personalization through Google Ads
+                            Settings.
+                        </p>
+                    </section>
 
-                <h2 className="text-xl text-yellow-400 font-semibold mt-6 mb-2">Contact Us</h2>
-                <p>
-                    If you have questions about these Terms & Conditions, please contact us at:
-                    <span className="block mt-2 font-semibold">support@moviela.com</span>
-                </p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Modifications to Terms
+                        </h2>
+                        <p>
+                            We reserve the right to update or modify these Terms &
+                            Conditions at any time. Changes will be effective immediately
+                            upon posting. Continued use of the website constitutes
+                            acceptance of the updated terms.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Governing Law
+                        </h2>
+                        <p>
+                            These Terms & Conditions shall be governed and interpreted in
+                            accordance with applicable laws. Any disputes shall be subject
+                            to the jurisdiction of the appropriate courts.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold text-yellow-400 mb-2">
+                            Contact Information
+                        </h2>
+                        <p>
+                            If you have any questions regarding these Terms & Conditions,
+                            please contact us at:
+                        </p>
+                        <p className="mt-1 font-semibold text-gray-100">
+                            support@moviela.com
+                        </p>
+                    </section>
+
+                </div>
             </div>
 
             {/* <AdBanner /> */}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { ChevronRight, Download, Film } from 'lucide-react';
+import { ChevronRight, Download, Film, Pencil } from 'lucide-react';
 import MovieDetailSkeleton from "../MovieDetailSkeleton";
 import { Helmet } from "react-helmet"
 // import AdBanner from "../AdBanner";
@@ -12,6 +12,7 @@ export default function MovieDetail() {
     const { slug } = useParams();
     const [movie, setMovie] = useState(null);
     const [related, setRelated] = useState([]);
+    const isAdmin = Boolean(localStorage.getItem("auth-token"));
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -92,6 +93,21 @@ export default function MovieDetail() {
                 <h1 className="text-3xl font-bold mb-4 text-center">
                     {movie.movie_name} <span className="text-xl">(Full Movie Details)</span>
                 </h1>
+
+                {isAdmin && (
+                    <Link to={`/admin/movie/edit/${movie._id}`}
+                        className="fixed bottom-4 right-6 z-50 group flex items-center gap-2 px-5 py-2 rounded-lg bg-yellow-500 text-black font-semibold shadow-lg shadow-yellow-500/30 hover:bg-yellow-400 hover:shadow-yellow-400/40 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-all duration-200"
+                    >
+                        <Pencil
+                            size={16}
+                            className="text-black/80 group-hover:text-black group-hover:rotate-6 transition-all duration-200"
+                        />
+                        <span>Edit</span>
+                        <span className="absolute -top-8 right-0 text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            Edit movie
+                        </span>
+                    </Link>
+                )}
 
                 <div className="grid sm:grid-cols-2 gap-4 text-[#A3A3A3] text-sm p-4 rounded-lg shadow">
                     <p><span className="font-semibold text-white">IMDb Rating:</span> ⭐ {movie.rating || "N/A"}/10</p>
