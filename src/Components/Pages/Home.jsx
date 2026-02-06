@@ -64,6 +64,7 @@ const MovieCards = () => {
                                         src={movie.posterUrl}
                                         alt={movie.movie_name}
                                         loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>

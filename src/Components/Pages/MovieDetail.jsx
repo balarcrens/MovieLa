@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { ChevronRight, Download, Film, Pencil } from 'lucide-react';
+import { ChevronRight, Download, Film, Pencil, Plus, Trash2 } from 'lucide-react';
 import MovieDetailSkeleton from "../MovieDetailSkeleton";
 import { Helmet } from "react-helmet"
+import toast from "react-hot-toast";
+import { useRef } from "react";
+import Swal from "sweetalert2";
 // import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
@@ -73,6 +76,7 @@ export default function MovieDetail() {
                     {/* Poster image */}
                     <img src={movie.posterUrl}
                         loading="lazy"
+                        decoding="async"
                         alt={`${movie.movie_name} Poster`}
                         className="relative z-10 rounded object-cover max-h-[500px] sm:h-[500px]"
                     />
@@ -94,20 +98,7 @@ export default function MovieDetail() {
                     {movie.movie_name} <span className="text-xl">(Full Movie Details)</span>
                 </h1>
 
-                {isAdmin && (
-                    <Link to={`/admin/movie/edit/${movie._id}`}
-                        className="fixed bottom-4 right-6 z-50 group flex items-center gap-2 px-5 py-2 rounded-lg bg-yellow-500 text-black font-semibold shadow-lg shadow-yellow-500/30 hover:bg-yellow-400 hover:shadow-yellow-400/40 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-all duration-200"
-                    >
-                        <Pencil
-                            size={16}
-                            className="text-black/80 group-hover:text-black group-hover:rotate-6 transition-all duration-200"
-                        />
-                        <span>Edit</span>
-                        <span className="absolute -top-8 right-0 text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                            Edit movie
-                        </span>
-                    </Link>
-                )}
+                {isAdmin && <AdminMovieFAB movie={movie} />}
 
                 <div className="grid sm:grid-cols-2 gap-4 text-[#A3A3A3] text-sm p-4 rounded-lg shadow">
                     <p><span className="font-semibold text-white">IMDb Rating:</span> ⭐ {movie.rating || "N/A"}/10</p>
@@ -155,6 +146,7 @@ export default function MovieDetail() {
                                     alt={`${movie.movie_name} Screenshot ${index + 1}`}
                                     className="rounded-sm transition-transform duration-300"
                                     loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                         ))}
@@ -217,6 +209,7 @@ export default function MovieDetail() {
                                 src={`https://www.youtube-nocookie.com/embed/${movie.trailer_link}`}
                                 title="YouTube video player"
                                 frameBorder="0"
+                                loading="lazy"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             ></iframe>
@@ -261,6 +254,8 @@ export default function MovieDetail() {
                                     <img
                                         src={m.posterUrl}
                                         alt={m.movie_name}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-75 object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                 </div>
@@ -284,6 +279,102 @@ export default function MovieDetail() {
             </div>
 
             {/* <AdBanner /> */}
+        </div>
+    );
+}
+
+function AdminMovieFAB({ movie }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const close = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", close);
+        return () => document.removeEventListener("mousedown", close);
+    }, []);
+
+    const handleDelete = async () => {
+        const result = await Swal.fire({
+            title: "Delete this movie?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#374151",
+            background: "#000",
+            color: "#fff",
+            focusCancel: true,
+        });
+
+        if (!result.isConfirmed) return;
+
+        const loadingToast = toast.loading("Deleting movie...");
+
+        try {
+            await axios.delete(`${DB_URL}/api/v1/movie/delete/${movie._id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("auth-token")}`,
+                },
+            });
+
+            toast.success("Movie deleted successfully", {
+                id: loadingToast,
+            });
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1200);
+        } catch (err) {
+            console.error(err);
+
+            toast.error("Failed to delete movie", {
+                id: loadingToast,
+            });
+        }
+    };
+
+    return (
+        <div ref={ref} className="fixed bottom-4 right-6 z-50 flex flex-col items-end">
+            {/* Dropdown */}
+            {open && (
+                <div className="mb-3 w-44 rounded-xl bg-black border border-white/10 shadow-xl overflow-hidden">
+                    <Link
+                        to={`/admin/movie/edit/${movie._id}`}
+                        onClick={() => setOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-white/10"
+                    >
+                        <Pencil size={16} />
+                        Edit Movie
+                    </Link>
+
+                    <button
+                        onClick={handleDelete}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-red-500/10"
+                    >
+                        <Trash2 size={16} />
+                        Delete Movie
+                    </button>
+                </div>
+            )}
+
+            {/* FAB */}
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center justify-center w-12 h-12 rounded-full
+                bg-yellow-500 text-black shadow-lg shadow-yellow-500/30
+                hover:bg-yellow-400 active:scale-95 transition"
+            >
+                <Plus
+                    size={24}
+                    className={`transition-transform ${open ? "rotate-45" : ""}`}
+                />
+            </button>
         </div>
     );
 }

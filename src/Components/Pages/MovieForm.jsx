@@ -555,7 +555,7 @@ export default function MovieForm() {
                                         setPosterFile(e.target.files[0]);
                                         setPosterPreview(e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : null);
                                     }} className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 text-gray-400" />
-                                    {posterPreview && <img src={posterPreview} alt="Poster" className="mt-3 w-40 h-60 object-cover rounded-lg border border-gray-700" />}
+                                    {posterPreview && <img src={posterPreview} alt="Poster" loading="lazy" decoding="async" className="mt-3 w-40 h-60 object-cover rounded-lg border border-gray-700" />}
                                 </div>
 
                                 {/* Screenshots Count */}
@@ -575,7 +575,7 @@ export default function MovieForm() {
                                         <div key={index} className="flex flex-col">
                                             <label className="mb-1 text-sm tracking-wide text-gray-300">Screenshot {index + 1}</label>
                                             <input type="file" accept="image/*" onChange={(e) => handleScreenshotChange(index, e.target.files[0])} className="p-3 rounded-lg bg-[#1f1f1f] border border-gray-700 text-gray-400" />
-                                            {screenshotsPreview[index] && <img src={screenshotsPreview[index]} alt={`Screenshot ${index + 1}`} className="mt-3 w-full h-40 object-cover rounded-lg border border-gray-700" />}
+                                            {screenshotsPreview[index] && <img src={screenshotsPreview[index]} alt={`Screenshot ${index + 1}`} className="mt-3 w-full h-40 object-cover rounded-lg border border-gray-700" loading="lazy" decoding="async" />}
                                         </div>
                                     ))}
                                 </div>

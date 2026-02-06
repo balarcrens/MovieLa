@@ -6,31 +6,31 @@ export default function HowToDownload() {
             step: 1,
             title: "Browse Movies",
             desc: "Explore the latest releases or search by category on Moviela.",
-            img: "https://res.cloudinary.com/djkyswpve/image/upload/v1756195437/step-1_sksjbg.jpg",
+            img: "https://ik.imagekit.io/crens07/How%20to%20Download/step-1_how_to_download.jpg",
         },
         {
             step: 2,
             title: "Open Movie Detail",
             desc: "Click on a movie card to see details like poster, description, and ratings.",
-            img: "https://res.cloudinary.com/djkyswpve/image/upload/v1756195437/step-2_hm4e0u.jpg",
+            img: "https://ik.imagekit.io/crens07/How%20to%20Download/step-2_how_to_download.jpg",
         },
         {
             step: 3,
             title: "Check Available Sources",
             desc: "See links to legal streaming platforms or official trailers. Moviela only provides information, not pirated content.",
-            img: "https://res.cloudinary.com/djkyswpve/image/upload/v1756195437/step-3_lhyfd0.jpg",
+            img: "https://ik.imagekit.io/crens07/How%20to%20Download/step-3_how_to_download.jpg",
         },
         {
             step: 4,
             title: "Read Reviews & Ratings",
             desc: "Check user reviews and ratings to decide which movie to watch next.",
-            img: "https://res.cloudinary.com/djkyswpve/image/upload/v1756195437/step-4_j0xfpb.jpg",
+            img: "https://ik.imagekit.io/crens07/How%20to%20Download/step-4_how_to_download.jpg",
         },
         {
             step: 5,
             title: "Enjoy Responsibly",
             desc: "Use official platforms to watch movies legally and safely.",
-            img: "https://res.cloudinary.com/djkyswpve/image/upload/v1756195437/step-5_qen2y1.jpg",
+            img: "https://ik.imagekit.io/crens07/How%20to%20Download/step-5_how_to_download.jpg",
         },
     ];
 
@@ -69,8 +69,10 @@ export default function HowToDownload() {
                             <div className="mt-4">
                                 <img
                                     src={s.img}
-                                    alt={`Step ${s.step}`}
-                                    className="rounded-lg border border-gray-700"
+                                    alt={`How to download movies on Moviela – Step ${s.step}`}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="rounded-lg border border-gray-700 w-full max-w-3xl"
                                 />
                             </div>
                         </div>
