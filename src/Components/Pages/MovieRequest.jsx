@@ -41,9 +41,41 @@ const MovieRequest = () => {
         <div className="bg-[#0f0f0f] text-white px-2 sm:px-4 py-8">
             {/* Helmet for SEO */}
             <Helmet>
-                <title>Request a Movie | Moviela</title>
-                <meta name="description" content="Submit a movie request on Moviela to get information, reviews, or official streaming links." />
+                {/* Title */}
+                <title>Request a Movie – Ask for Any Film | Moviela</title>
+
+                {/* Description */}
+                <meta
+                    name="description"
+                    content="Request any movie on Moviela and get updates, details, reviews, and official viewing information. Submit your movie request easily."
+                />
+
+                {/* Robots */}
                 <meta name="robots" content="index, follow" />
+
+                {/* Canonical */}
+                <link
+                    rel="canonical"
+                    href="https://moviela.vercel.app/request-movie"
+                />
+
+                {/* Open Graph */}
+                <meta
+                    property="og:title"
+                    content="Request a Movie | Moviela"
+                />
+                <meta
+                    property="og:description"
+                    content="Request your favorite movie on Moviela and receive updates, reviews, and official viewing details."
+                />
+                <meta
+                    property="og:url"
+                    content="https://moviela.vercel.app/request-movie"
+                />
+                <meta property="og:type" content="website" />
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
             </Helmet>
 
             {/* Breadcrumb */}

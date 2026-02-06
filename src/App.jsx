@@ -23,7 +23,6 @@ export default function App() {
         <>
             <ScrollToTop />
             <Header />
-            {/* <InstallButton /> */}
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/movie/category/:category' element={<CategoryMovies />} />

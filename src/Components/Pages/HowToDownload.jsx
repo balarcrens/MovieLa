@@ -38,9 +38,31 @@ export default function HowToDownload() {
         <div className="bg-black min-h-screen text-white py-12 px-2 sm:px-6">
             {/* Helmet for SEO / AdSense */}
             <Helmet>
-                <title>How to Download Movies | Moviela</title>
-                <meta name="description" content="Learn how to explore and watch movies legally on Moviela. Follow simple steps to browse, read reviews, and enjoy films safely." />
+                <title>How to Download Movies Safely | Moviela</title>
+
+                <meta
+                    name="description"
+                    content="Learn how to browse movies on Moviela, read details, watch trailers, and access official streaming or download sources safely and legally."
+                />
+
                 <meta name="robots" content="index, follow" />
+
+                <link
+                    rel="canonical"
+                    href="https://moviela.vercel.app/how-to-download"
+                />
+
+                {/* Open Graph */}
+                <meta property="og:title" content="How to Download Movies Safely | Moviela" />
+                <meta
+                    property="og:description"
+                    content="Step-by-step guide to exploring movies on Moviela, checking reviews, trailers, and finding legal streaming or download platforms."
+                />
+                <meta
+                    property="og:url"
+                    content="https://moviela.vercel.app/how-to-download"
+                />
+                <meta property="og:type" content="article" />
             </Helmet>
 
             {/* Hero */}

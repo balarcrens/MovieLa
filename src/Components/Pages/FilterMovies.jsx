@@ -48,9 +48,38 @@ export default function FilterMovies() {
     return (
         <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
             <Helmet>
-                <title>{`${filter.charAt(0).toUpperCase() + filter.slice(1)} Movies - Watch & Download Free HD`}</title>
-                <meta name="description" content={`Enjoy the best collection of ${filter} movies. Stream or download HD movies online for free, only on Moviela.`} />
-                <meta name="keywords" content={`${filter} movies, download ${filter} movies, watch ${filter} films, free ${filter} HD movies`} />
+                {/* Title */}
+                <title>
+                    {`${filter.charAt(0).toUpperCase() + filter.slice(1)} Movies Download & Watch Online in HD | Moviela`}
+                </title>
+
+                {/* Description */}
+                <meta name="description"
+                    content={`Browse and watch the latest ${filter} movies in HD quality. Explore top-rated ${filter} films, cast details, storylines and download options on Moviela.`}
+                />
+
+                {/* Robots */}
+                <meta name="robots" content="index, follow" />
+
+                {/* Canonical */}
+                <link rel="canonical"
+                    href={`https://moviela.vercel.app/movie/filter/${filter}`}
+                />
+
+                {/* Open Graph */}
+                <meta property="og:title"
+                    content={`${filter.charAt(0).toUpperCase() + filter.slice(1)} Movies | Moviela`}
+                />
+                <meta property="og:description"
+                    content={`Watch and download the best ${filter} movies online in HD quality on Moviela.`}
+                />
+                <meta property="og:url"
+                    content={`https://moviela.vercel.app/movie/filter/${filter}`}
+                />
+                <meta property="og:type" content="website" />
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
             </Helmet>
 
             <div className="max-w-7xl mx-auto">
@@ -76,7 +105,11 @@ export default function FilterMovies() {
                     // No Movie Found
                     <div className="text-center py-10">
                         <p className="text-gray-400 mb-4 text-lg">
-                            😔 Sorry! No <span className="text-yellow-400 font-semibold">{filter}</span> movies found.
+                            😔 Sorry! No{" "}
+                            <span className="text-yellow-400 font-semibold">
+                                {filter}
+                            </span>{" "}
+                            movies found.
                         </p>
 
                         {/* Call-to-action links */}
@@ -96,8 +129,9 @@ export default function FilterMovies() {
                         </div>
 
                         <p className="mt-6 text-sm text-gray-300 max-w-lg mx-auto">
-                            Explore trending, latest, and top-rated movies across Bollywood, Hollywood, Tollywood, and more.
-                            Stay entertained with the best HD movie downloads and streaming experience.
+                            Discover trending, latest, and top-rated movies across Bollywood,
+                            Hollywood, Tollywood, and more. Explore movie details, watch trailers,
+                            and find official streaming platforms — all in one place.
                         </p>
                     </div>
                 ) : (

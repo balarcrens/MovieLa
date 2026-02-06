@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { ChevronRight, Download, Film, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+    ChevronRight,
+    Download,
+    Pencil,
+    Plus,
+    Trash2
+} from "lucide-react";
 import MovieDetailSkeleton from "../MovieDetailSkeleton";
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
-import { useRef } from "react";
 import Swal from "sweetalert2";
 // import AdBanner from "../AdBanner";
 
@@ -19,186 +24,239 @@ export default function MovieDetail() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
+
         axios.get(`${DB_URL}/api/v1/movie/slug/${slug}`).then((res) => {
             const data = res.data.movie;
             setMovie(data);
 
-            if (data.categories && data.categories.length > 0) {
+            if (data?.categories?.length > 0) {
                 axios
                     .get(`${DB_URL}/api/v1/movie/category/${data.categories[0]}`)
                     .then((res2) => {
-                        const filtered = res2.data.movies
-                            .filter((m) => m.slug !== data.slug) // remove same movie
-                            .slice(0, 5); // take only 5
-                        setRelated(filtered);
+                        setRelated(
+                            res2.data.movies
+                                .filter((m) => m.slug !== data.slug)
+                                .slice(0, 5)
+                        );
                     });
             }
         });
     }, [slug]);
 
-    if (!movie) {
-        return <MovieDetailSkeleton />;
-    }
+    if (!movie) return <MovieDetailSkeleton />;    
 
     return (
-        <div className="bg-black min-h-screen text-white px-2 sm:px-4 py-8">
+        <div className="bg-black min-h-screen text-white px-3 sm:px-5 py-8">
+            {/* ================= SEO ================= */}
             <Helmet>
-                <title>{movie.movie_name} - Download HD Movie | Enjoy</title>
-                <meta name="description" content={movie.description} />
-                <meta name="keywords" content={movie.keywords?.join(", ")} />
+                <title>{movie.movie_name} | Movie Details & Trailer | Moviela</title>
+                <meta
+                    name="description"
+                    content={
+                        movie.summary ||
+                        `Explore details, cast, trailer, and related movies of ${movie.movie_name} on Moviela.`
+                    }
+                />
+                <meta name="robots" content="index, follow" />
+                <link
+                    rel="canonical"
+                    href={`https://moviela.vercel.app/movie/${movie.slug}`}
+                />
+
+                <meta property="og:title" content={movie.movie_name} />
+                <meta property="og:description" content={movie.summary} />
+                <meta property="og:type" content="video.movie" />
+                <meta
+                    property="og:url"
+                    content={`https://moviela.vercel.app/movie/${movie.slug}`}
+                />
+                {movie.posterUrl && (
+                    <meta property="og:image" content={movie.posterUrl} />
+                )}
             </Helmet>
 
-            <div className="max-w-4xl mx-auto mb-6 text-sm flex items-center space-x-2 text-gray-400">
-                <Link to="/" className="hover:text-white font-medium">
-                    Home
-                </Link>
-                <ChevronRight size={16} className="text-gray-500" />
-                <span className="text-white font-semibold">{movie.movie_name}</span>
+            {/* ================= BREADCRUMB ================= */}
+            <div className="max-w-5xl mx-auto mb-5 flex items-center text-sm text-gray-400 gap-2">
+                <Link to="/" className="hover:text-white">Home</Link>
+                <ChevronRight size={14} />
+                <span className="text-white font-medium">{movie.movie_name}</span>
             </div>
 
-            {/* Title and Poster */}
-            <div className="text-center mb-6">
-                <p className="font-bold py-2 bg-[#141414] rounded max-w-4xl mx-auto italic text-2xl mb-2">
-                    <Film className="inline-block mb-1.5" /> Download {movie.movie_name} ({movie.releaseDate || "2025"}) Hindi [{movie.quality || "HD"}]
-                </p>
-                <p className="text-blue-400 italic text-xl sm:text-2xl font-semibold">
-                    Watch {movie.movie_name} Full Movie in Hindi Download Free on{" "}
-                    <Link to="/" className="text-blue-500 font-bold underline">MovieLa</Link> !
-                </p>
-
-                <div className="relative group w-fit mx-auto my-4 max-h-[500px] sm:h-[500px]">
-                    {/* Backdrop on hover */}
-                    <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:scale-107 transition-all duration-500 bg-cover bg-center blur-sm brightness-50 rounded"
-                        style={{ backgroundImage: `url(${movie.posterUrl})` }}
-                    ></div>
-
-                    {/* Poster image */}
-                    <img src={movie.posterUrl}
+            {/* ================= HERO SECTION ================= */}
+            <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 mb-12">
+                {/* Poster */}
+                <div className="flex justify-center">
+                    <img
+                        src={movie.posterUrl}
+                        alt={movie.movie_name}
+                        className="rounded-xl shadow-lg max-h-[460px] object-cover"
                         loading="lazy"
-                        decoding="async"
-                        alt={`${movie.movie_name} Poster`}
-                        className="relative z-10 rounded object-cover max-h-[500px] sm:h-[500px]"
                     />
                 </div>
 
-                {/* How to Downlaod link */}
-                <Link
-                    to={`/movie/how-to-download`}
-                    rel="noopener noreferrer"
-                    className="block text-blue-400 font-bold text-2xl"
-                >
-                    [ How To Download <Download className="inline-block mb-1.5" /> ]
-                </Link>
-            </div>
+                {/* Info */}
+                <div className="md:col-span-2 space-y-4">
+                    <h1 className="text-3xl sm:text-4xl font-bold">
+                        {movie.movie_name}
+                    </h1>
 
-            {/* Movie Info Section */}
-            <div className="border-t border-gray-700 py-6 max-w-4xl mx-auto">
-                <h1 className="text-3xl font-bold mb-4 text-center">
-                    {movie.movie_name} <span className="text-xl">(Full Movie Details)</span>
-                </h1>
+                    <div className="flex flex-wrap gap-3 text-sm text-gray-400">
+                        <span>⭐ {movie.rating || "N/A"} IMDb</span>
+                        <span>• {movie.releaseDate}</span>
+                        <span>• {movie.duration}</span>
+                        <span>• {movie.language}</span>
+                    </div>
 
-                {isAdmin && <AdminMovieFAB movie={movie} />}
+                    <p className="text-gray-300 leading-relaxed">
+                        {movie.summary || "Storyline will be updated soon."}
+                    </p>
 
-                <div className="grid sm:grid-cols-2 gap-4 text-[#A3A3A3] text-sm p-4 rounded-lg shadow">
-                    <p><span className="font-semibold text-white">IMDb Rating:</span> ⭐ {movie.rating || "N/A"}/10</p>
-                    <p><span className="font-semibold text-white">Genre:</span> {movie.categories?.join(", ") || "N/A"}</p>
-                    <p><span className="font-semibold text-white">Stars:</span> {movie.actors?.join(", ") || "N/A"}</p>
-                    <p><span className="font-semibold text-white">Director:</span> {movie.director || "N/A"}</p>
-                    <p><span className="font-semibold text-white">Release Date:</span> {movie.releaseDate || "N/A"}</p>
-                    <p><span className="font-semibold text-white">Duration:</span> {movie.duration || "N/A"}</p>
-                    <p><span className="font-semibold text-white">Language:</span> {movie.language || "Hindi (ORG-2.0)"}</p>
-                    <p><span className="font-semibold text-white">Quality:</span> {movie.quality || "HD 720p"}</p>
-                    <p><span className="font-semibold text-white">File Size:</span> {movie.size || "N/A"}</p>
+                    <div className="flex flex-wrap gap-4 pt-2">
+                        <Link
+                            to="/movie/how-to-download"
+                            className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition"
+                        >
+                            How to Download
+                        </Link>
+
+                        {movie.trailer_link && (
+                            <a
+                                href="#trailer"
+                                className="border border-white/20 px-5 py-2 rounded-lg hover:bg-white/10 transition"
+                            >
+                                Watch Trailer
+                            </a>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            {/* Describe Section */}
-            <div className="border-t border-gray-700 py-4 max-w-4xl mx-auto text-center">
-                {/* Description */}
-                <div className="border-t border-gray-700 py-6 max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-center mb-3">📖 Movie Description</h2>
-                    <p className="text-[#A3A3A3] leading-relaxed text-sm">
-                        {movie.description || "No description available. Stay tuned for updates!"}
+            {isAdmin && <AdminMovieFAB movie={movie} />}
+
+            {/* ================= DETAILS ================= */}
+            <div className="max-w-5xl mx-auto grid sm:grid-cols-2 gap-4 mb-10">
+                {[
+                    ["Genre", movie.categories?.join(", ")],
+                    ["Director", movie.director],
+                    ["Stars", movie.actors?.join(", ")],
+                    ["Quality", movie.quality],
+                    ["File Size", movie.size],
+                    ["Language", movie.language],
+                ].map(([label, value]) => (
+                    <div
+                        key={label}
+                        className="bg-[#141414] border border-white/5 rounded-lg p-4"
+                    >
+                        <p className="text-gray-400 text-sm">{label}</p>
+                        <p className="font-medium">{value || "N/A"}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* ================= DESCRIPTION ================= */}
+            <section className="max-w-4xl mx-auto space-y-8 mb-12">
+                <div>
+                    <h2 className="text-2xl font-semibold mb-2">📖 Description</h2>
+                    <p className="text-gray-300 leading-relaxed">
+                        {movie.description || "Description not available."}
                     </p>
                 </div>
 
-                {/* Story Line */}
-                <div className="border-t border-gray-700 py-6 max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-center mb-3">🎬 Storyline</h2>
-                    <p className="text-[#A3A3A3] leading-relaxed text-sm">
-                        {movie.summary || "No storyline has been provided for this movie yet."}
+                <div>
+                    <h2 className="text-2xl font-semibold mb-2">🎬 Storyline</h2>
+                    <p className="text-gray-300 leading-relaxed">
+                        {movie.summary || "Storyline not available."}
                     </p>
                 </div>
-            </div>
+            </section>
 
-            {/* Screenshots */}
+            {/* ================= SCREENSHOTS ================= */}
             {movie.screenshots?.length > 0 && (
-                <>
-                    <h2 className="text-lg font-semibold text-center py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
-                        <span className="text-amber-600 text-xl sm:text-3xl">[ SCREENSHOTS ]</span>
+                <div className="max-w-5xl mx-auto mb-12">
+                    <h2 className="text-2xl font-bold text-center mb-5 text-amber-500">
+                        Screenshots
                     </h2>
-                    <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4">
-                        {movie.screenshots.map((url, index) => (
-                            <div key={index} className="flex justify-center items-center">
-                                <img
-                                    src={url}
-                                    alt={`${movie.movie_name} Screenshot ${index + 1}`}
-                                    className="rounded-sm transition-transform duration-300"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        {movie.screenshots.map((img, i) => (
+                            <img
+                                key={i}
+                                src={img}
+                                alt={`Screenshot ${i + 1}`}
+                                className="rounded-lg"
+                                loading="lazy"
+                            />
                         ))}
                     </div>
-                </>
+                </div>
             )}
 
-            {/* Download Section */}
-            <div className="mt-6 text-center">
-                <div className="space-y-2 max-w-4xl mx-auto">
-                    <h2 className="text-lg font-semibold py-2 border-t-3 flex flex-col border-gray-700 text-white mb-2">
-                        <span className="text-amber-600 text-xl sm:text-3xl">[ DOWNLOAD LINKS ]</span>
-                    </h2>
+            {/* ================= DOWNLOAD ================= */}
+            <div className="max-w-4xl mx-auto my-10 px-3">
+                <div className="border border-gray-700 bg-black rounded-md overflow-hidden">
 
-                    {movie.type === "Movie" ? (
-                        // For Movies - single download link
-                        <div className="text-blue-400 py-2 border-y-3 border-gray-700 font-bold text-2xl">
-                            <Link
-                                to={`https://t.me/movieladownloadbot?start=${movie.slug}`}
+                    {/* Header */}
+                    <div className="bg-[#141414] border-b border-gray-700 py-3 text-center">
+                        <h2 className="text-xl sm:text-2xl font-bold text-amber-500 tracking-wide">
+                            ⬇ DOWNLOAD LINKS
+                        </h2>
+                    </div>
+
+                    {/* Movie Download */}
+                    {movie.type === "Movie" && (
+                        <div className="py-6 text-center">
+                            <p className="text-gray-400 text-sm mb-2">
+                                Click below to download the full movie
+                            </p>
+
+                            <a
+                                href={`https://t.me/movieladownloadbot?start=${movie.slug}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className="inline-block
+                    text-blue-400 text-lg sm:text-xl font-semibold
+                    hover:text-blue-300 underline underline-offset-4
+                    transition"
                             >
-                                {movie.movie_name} 720p x264 [{movie.size}]
-                            </Link>
+                                {movie.movie_name} [{movie.quality || "HD"} – {movie.size || "720p"}]
+                            </a>
                         </div>
-                    ) : movie.type === "WebSeries" && movie.episodes?.length > 0 ? (
-                        // For WebSeries - list episodes
-                        <div className="space-y-3">
-                            {movie.episodes.map((ep, index) => (
+                    )}
+
+                    {/* Web Series Episodes */}
+                    {movie.type === "WebSeries" && movie.episodes?.length > 0 && (
+                        <div className="divide-y divide-gray-700">
+                            {movie.episodes.map((ep) => (
                                 <div
-                                    key={index}
-                                    className="text-blue-400 text-center py-2 border-y-3 border-gray-700 font-semibold text-lg"
+                                    key={ep.episode_number}
+                                    className="py-3 px-4 text-center hover:bg-[#111] transition"
                                 >
-                                    <Link
-                                        to={`https://t.me/movieladownloadbot?start=episode_${movie.slug}_${ep.episode_number}`}
+                                    <a
+                                        href={`https://t.me/movieladownloadbot?start=episode_${movie.slug}_${ep.episode_number}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        className="text-blue-400 text-base sm:text-lg font-medium hover:text-blue-300"
                                     >
-                                        Episode {ep.episode_number}: {ep.title || "Untitled"} [{ep.size || "N/A"}]
-                                    </Link>
+                                        Episode {ep.episode_number}
+                                        {ep.title && ` – ${ep.title}`}
+                                        {ep.size && ` [${ep.size}]`}
+                                    </a>
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <p className="text-gray-400">❌ No download links available.</p>
+                    )}
+
+                    {/* No Links */}
+                    {!movie.type && (
+                        <p className="text-center text-gray-400 py-4">
+                            ❌ No download links available.
+                        </p>
                     )}
                 </div>
             </div>
 
-            {/* Trailer */}
+            {/* ================= TRAILER ================= */}
             {movie.trailer_link ?
-                (<div className="mt-10 text-center">
+                (<div className="my-10 text-center">
                     <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-red-500">
                         Download <span className="text-white">{movie.movie_name}</span> Full Movie Hindi HD | Watch Online Full Trailer
                     </h2>
@@ -220,50 +278,23 @@ export default function MovieDetail() {
                 )
             }
 
-            {/* Review Section */}
-            {movie.review && (
-                <div className="border-t text-center border-gray-700 py-6 max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-center mb-3">⭐ Review</h2>
-                    <p className="text-[#A3A3A3] leading-relaxed text-sm">{movie.review}</p>
-                </div>
-            )}
-
-            {/* Keywords / Tags Section */}
-            {movie.keywords?.length > 0 && (
-                <div className="border-t border-gray-700 py-6 max-w-4xl mx-auto text-center">
-                    <h2 className="text-xl font-bold mb-2">🏷️ Tags & Keywords</h2>
-                    <div className="flex flex-wrap gap-2 justify-center">
-                        {movie.keywords.map((keyword, i) => (
-                            <span key={i} className="bg-gray-800 text-gray-300 px-3 py-1 text-sm rounded-full">
-                                {keyword}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            )}
-
+            {/* ================= RELATED ================= */}
             {related.length > 0 && (
-                <div className="border-t border-gray-700 py-8 max-w-5xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-4 text-center text-amber-500">
-                        🎥 You May Also Like
+                <div className="max-w-5xl mx-auto mb-12">
+                    <h2 className="text-2xl font-bold text-center mb-6 text-amber-500">
+                        You May Also Like
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         {related.map((m) => (
-                            <Link key={m.slug} to={`/movie/${m.slug}`} className="block group">
-                                <div className="overflow-hidden rounded-lg shadow-md">
-                                    <img
-                                        src={m.posterUrl}
-                                        alt={m.movie_name}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="w-full h-75 object-cover group-hover:scale-105 transition-transform duration-300"
-                                    />
-                                </div>
-                                <p className="mt-2 group-hover:text-white text-gray-400">
+                            <Link key={m.slug} to={`/movie/${m.slug}`}>
+                                <img
+                                    src={m.posterUrl}
+                                    alt={m.movie_name}
+                                    className="rounded-lg hover:scale-105 transition"
+                                />
+                                <p className="text-sm mt-2 text-gray-400">
                                     {m.movie_name}
-                                </p>
-                                <p className="mt-2 text-sm leading-snug line-clamp-2 group-hover:text-white/70 text-gray-400">
-                                    {m.description}
+                                    {m.description && ` - ${m.description.substring(0, 50)}...`}
                                 </p>
                             </Link>
                         ))}
@@ -271,11 +302,10 @@ export default function MovieDetail() {
                 </div>
             )}
 
-            <div className="max-w-4xl mx-auto text-center mt-8 text-gray-400 text-sm leading-relaxed">
-                <p>
-                    <span className="text-white font-semibold">MovieLa</span> brings you the latest Bollywood, Hollywood, and South Indian movies.
-                    Browse by category, rating, and enjoy high-quality streaming and downloads in 720p.
-                </p>
+            {/* ================= FOOTER NOTE ================= */}
+            <div className="text-center text-gray-500 text-sm max-w-4xl mx-auto">
+                Moviela is a movie discovery platform providing information, trailers,
+                and references to third-party sources.
             </div>
 
             {/* <AdBanner /> */}
@@ -283,97 +313,71 @@ export default function MovieDetail() {
     );
 }
 
+/* ================= ADMIN FAB ================= */
+
 function AdminMovieFAB({ movie }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
     useEffect(() => {
         const close = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setOpen(false);
-            }
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
         };
         document.addEventListener("mousedown", close);
         return () => document.removeEventListener("mousedown", close);
     }, []);
 
     const handleDelete = async () => {
-        const result = await Swal.fire({
+        const confirm = await Swal.fire({
             title: "Delete this movie?",
-            text: "This action cannot be undone!",
+            text: "This action cannot be undone",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete",
-            cancelButtonText: "Cancel",
             confirmButtonColor: "#ef4444",
-            cancelButtonColor: "#374151",
             background: "#000",
             color: "#fff",
-            focusCancel: true,
         });
 
-        if (!result.isConfirmed) return;
+        if (!confirm.isConfirmed) return;
 
-        const loadingToast = toast.loading("Deleting movie...");
-
+        const toastId = toast.loading("Deleting movie...");
         try {
             await axios.delete(`${DB_URL}/api/v1/movie/delete/${movie._id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("auth-token")}`,
                 },
             });
-
-            toast.success("Movie deleted successfully", {
-                id: loadingToast,
-            });
-
-            setTimeout(() => {
-                window.location.href = "/";
-            }, 1200);
-        } catch (err) {
-            console.error(err);
-
-            toast.error("Failed to delete movie", {
-                id: loadingToast,
-            });
+            toast.success("Movie deleted", { id: toastId });
+            window.location.href = "/";
+        } catch {
+            toast.error("Delete failed", { id: toastId });
         }
     };
 
     return (
-        <div ref={ref} className="fixed bottom-4 right-6 z-50 flex flex-col items-end">
-            {/* Dropdown */}
+        <div ref={ref} className="fixed bottom-5 right-6 z-50">
             {open && (
-                <div className="mb-3 w-44 rounded-xl bg-black border border-white/10 shadow-xl overflow-hidden">
+                <div className="mb-3 bg-black border border-white/10 rounded-xl overflow-hidden">
                     <Link
                         to={`/admin/movie/edit/${movie._id}`}
-                        onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-white/10"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-white/10"
                     >
-                        <Pencil size={16} />
-                        Edit Movie
+                        <Pencil size={16} /> Edit
                     </Link>
-
                     <button
                         onClick={handleDelete}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-red-500/10"
+                        className="flex w-full items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10"
                     >
-                        <Trash2 size={16} />
-                        Delete Movie
+                        <Trash2 size={16} /> Delete
                     </button>
                 </div>
             )}
 
-            {/* FAB */}
             <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center justify-center w-12 h-12 rounded-full
-                bg-yellow-500 text-black shadow-lg shadow-yellow-500/30
-                hover:bg-yellow-400 active:scale-95 transition"
+                className="w-12 h-12 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-lg"
             >
-                <Plus
-                    size={24}
-                    className={`transition-transform ${open ? "rotate-45" : ""}`}
-                />
+                <Plus className={open ? "rotate-45 transition" : "transition"} />
             </button>
         </div>
     );

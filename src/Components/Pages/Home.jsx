@@ -3,16 +3,43 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 import { SkeletonCard } from "../Skeleton";
 import { Download } from "lucide-react";
+import { Helmet } from "react-helmet";
 // import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
 
 const Home = () => {
     return (
-        <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
-            <MovieCards />
-            {/* <AdBanner /> */}
-        </div>
+        <>
+            <Helmet>
+                {/* Primary SEO */}
+                <title>Moviela – Download & Watch Latest Movies in HD</title>
+                <meta
+                    name="description"
+                    content="Moviela lets you explore, watch and download the latest Bollywood, Hollywood and regional movies in HD quality. Browse by category, rating and release year."
+                />
+
+                {/* Robots */}
+                <meta name="robots" content="index, follow" />
+
+                {/* Canonical */}
+                <link rel="canonical" href="https://moviela.vercel.app/" />
+
+                {/* Open Graph */}
+                <meta property="og:title" content="Moviela – Latest Movies Download & Watch Online" />
+                <meta property="og:description" content="Browse the latest movies, top rated films and popular categories on Moviela." />
+                <meta property="og:url" content="https://moviela.vercel.app/" />
+                <meta property="og:type" content="website" />
+
+                {/* Optional: Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+            </Helmet>
+
+            <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
+                <MovieCards />
+                {/* <AdBanner /> */}
+            </div>
+        </>
     );
 };
 
