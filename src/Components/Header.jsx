@@ -1,112 +1,166 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown, SearchIcon } from "lucide-react";
-import logo from "/favicon.ico";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "/favicon.ico";
 
-const genres = ["Action", "Drama", "Comedy", "Romance", "Thriller", "Horror", "Sci-Fi", "Adventure"];
-const movies = ["Latest", "Popular", "rating"];
-const industries = ["Bollywood", "Hollywood", "Tollywood", "South", "Kollywood", "Gujarati", "Other"];
-const Links = [
+const genres = [
+    "Action",
+    "Drama",
+    "Comedy",
+    "Romance",
+    "Thriller",
+    "Horror",
+    "Sci-Fi",
+    "Adventure",
+];
+
+const movies = ["Latest", "Popular", "Rating"];
+
+const industries = [
+    "Bollywood",
+    "Hollywood",
+    "Tollywood",
+    "South",
+    "Kollywood",
+    "Gujarati",
+    "Other",
+];
+
+const links = [
     { name: "Home", to: "/" },
     { name: "Movie Request", to: "/movierequest" },
 ];
 
 export default function Header() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [showGenres, setShowGenres] = useState(false);
-    const [showMovies, setShowMovies] = useState(false);
-    const [showIndustries, setShowIndustries] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [activeMenu, setActiveMenu] = useState(null); // movies | genres | industries
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
+    const headerRef = useRef(null);
 
     const handleSearch = () => {
-        if (query.trim() === "") {
-            navigate("/");
-        } else {
-            navigate(`/?search=${encodeURIComponent(query.trim())}`);
-        }
-    }
+        if (!query.trim()) return;
+        navigate(`/?search=${encodeURIComponent(query.trim())}`);
+        setSidebarOpen(false);
+    };
+
+    // Close dropdowns on outside click
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (headerRef.current && !headerRef.current.contains(e.target)) {
+                setActiveMenu(null);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Close on ESC
+    useEffect(() => {
+        const esc = (e) => {
+            if (e.key === "Escape") {
+                setActiveMenu(null);
+                setSidebarOpen(false);
+            }
+        };
+        document.addEventListener("keydown", esc);
+        return () => document.removeEventListener("keydown", esc);
+    }, []);
+
+    // Reset dropdowns when sidebar closes
+    useEffect(() => {
+        if (!sidebarOpen) setActiveMenu(null);
+    }, [sidebarOpen]);
+
+    const toggleMenu = (menu) => {
+        setActiveMenu(activeMenu === menu ? null : menu);
+    };
 
     return (
         <>
-            {/* Top Header: Logo + Search */}
-            <header className="bg-gray-900 shadow-md fixed w-full top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <Link to="/" data-discover="true" aria-label="Home">
-                        <div className="flex items-center gap-3 px-2" aria-hidden="true">
-                            <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover" />
-                            <span className="text-2xl font-extrabold text-white">MovieLa</span>
-                        </div>
+            {/* HEADER */}
+            <header
+                ref={headerRef}
+                className="fixed top-0 w-full z-50 bg-gray-900 border-b border-gray-800"
+            >
+                {/* TOP BAR */}
+                <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+                    {/* LOGO */}
+                    <Link to="/" className="flex items-center gap-3">
+                        <img
+                            src={logo}
+                            alt="MovieLa Logo"
+                            className="h-9 w-9 rounded-full"
+                        />
+                        <span className="text-xl font-extrabold text-white">
+                            MovieLa
+                        </span>
                     </Link>
 
-                    {/* Search Bar */}
+                    {/* SEARCH (DESKTOP) */}
                     <div className="hidden md:flex w-1/3">
-                        <div className="flex w-full backdrop-blur-lg text-white bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">
+                        <div className="flex w-full bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden backdrop-blur">
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") handleSearch();
-                                }}
-                                type="text"
+                                onKeyDown={(e) =>
+                                    e.key === "Enter" && handleSearch()
+                                }
                                 placeholder="Search movies, genres..."
-                                className="w-full px-4 py-2 text-white bg-transparent focus:outline-none"
+                                className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                             />
-                            <button onClick={handleSearch} className="px-4 hover:text-blue-300" aria-label="Search">
+                            <button
+                                onClick={handleSearch}
+                                className="px-4 text-gray-300 hover:text-blue-400"
+                            >
                                 <SearchIcon size={18} />
                             </button>
                         </div>
                     </div>
 
+                    {/* MOBILE MENU BUTTON */}
                     <button
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => setSidebarOpen(true)}
                         className="md:hidden text-white"
                     >
-                        {isOpen ? <X size={28} /> : <Menu size={28} />}
+                        <Menu size={26} />
                     </button>
                 </div>
 
-                {/* Bottom Nav */}
-                <div className="hidden md:flex justify-center gap-8 py-3 border-t border-gray-800">
-                    {Links.map((link) => (
+                {/* DESKTOP NAV */}
+                <nav className="hidden md:flex justify-center gap-8 py-3 text-gray-300">
+                    {links.map((link) => (
                         <Link
                             key={link.name}
                             to={link.to}
-                            data-discover="true" aria-label={link.name}
-                            className="text-gray-300 font-medium hover:text-blue-400"
+                            className="hover:text-blue-400 font-medium"
                         >
                             {link.name}
                         </Link>
                     ))}
 
-                    {/* Movies Dropdown */}
-                    <div
-                        onClick={() => {
-                            setShowMovies(!showMovies);
-                            setShowGenres(false);
-                            setShowIndustries(false);
-                        }}
-                        className="relative group cursor-pointer"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded={showMovies}
-                        aria-label="Movies Menu"
-                    >
-                        <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Movies <ChevronDown size={16} aria-hidden="true" />
-                        </div>
-                        {showMovies && (
-                            <div
-                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
-                                role="menu"
-                                aria-label="Movies submenu"
-                            >
+                    {/* MOVIES */}
+                    <div className="relative">
+                        <button
+                            onClick={() => toggleMenu("movies")}
+                            className="flex items-center gap-1 hover:text-blue-400 font-medium"
+                        >
+                            Movies
+                            <ChevronDown
+                                size={16}
+                                className={`transition ${activeMenu === "movies" ? "rotate-180" : ""
+                                    }`}
+                            />
+                        </button>
+
+                        {activeMenu === "movies" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
                                 {movies.map((item) => (
                                     <Link
                                         key={item}
                                         to={`/movie/filter/${item.toLowerCase()}`}
-                                        className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
-                                        role="menuitem"
+                                        onClick={() => setActiveMenu(null)}
+                                        className="block px-4 py-2 hover:bg-gray-700"
                                     >
                                         {item}
                                     </Link>
@@ -115,190 +169,252 @@ export default function Header() {
                         )}
                     </div>
 
-                    {/* Industry Dropdown */}
-                    <div
-                        onClick={() => {
-                            setShowIndustries(!showIndustries);
-                            setShowGenres(false);
-                            setShowMovies(false);
-                        }}
-                        className="relative group cursor-pointer"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded={showIndustries}
-                        aria-label="Industry Menu"
-                    >
-                        <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Industry <ChevronDown size={16} aria-hidden="true" />
-                        </div>
-                        {showIndustries && (
-                            <div
-                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
-                                role="menu"
-                                aria-label="Industry submenu"
-                            >
-                                {industries.map((industry) => (
+                    {/* INDUSTRY */}
+                    <div className="relative">
+                        <button
+                            onClick={() => toggleMenu("industries")}
+                            className="flex items-center gap-1 hover:text-blue-400 font-medium"
+                        >
+                            Industry
+                            <ChevronDown
+                                size={16}
+                                className={`transition ${activeMenu === "industries" ? "rotate-180" : ""
+                                    }`}
+                            />
+                        </button>
+
+                        {activeMenu === "industries" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
+                                {industries.map((item) => (
                                     <Link
-                                        key={industry}
-                                        to={`/movie/filter/${industry.toLowerCase()}`}
-                                        className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
-                                        role="menuitem"
+                                        key={item}
+                                        to={`/movie/filter/${item.toLowerCase()}`}
+                                        onClick={() => setActiveMenu(null)}
+                                        className="block px-4 py-2 hover:bg-gray-700"
                                     >
-                                        {industry}
+                                        {item}
                                     </Link>
                                 ))}
                             </div>
                         )}
                     </div>
 
-                    {/* Genres Dropdown */}
-                    <div
-                        onClick={() => { setShowGenres(!showGenres); setShowMovies(false); setShowIndustries(false); }}
-                        className="relative group cursor-pointer" role="button" aria-haspopup="true" aria-expanded={showGenres} aria-label="Genres Menu">
-                        <div className="flex items-center gap-1 text-gray-300 font-medium hover:text-blue-400">
-                            Genres <ChevronDown size={16} aria-hidden="true" />
-                        </div>
-                        {showGenres && (
-                            <div
-                                className="absolute top-8 left-0 bg-gray-800 shadow-lg rounded-lg py-2 w-40"
-                                role="menu"
-                                aria-label="Genres submenu"
-                            >
-                                {genres.map((genre) => (
+                    {/* GENRES */}
+                    <div className="relative">
+                        <button
+                            onClick={() => toggleMenu("genres")}
+                            className="flex items-center gap-1 hover:text-blue-400 font-medium"
+                        >
+                            Genres
+                            <ChevronDown
+                                size={16}
+                                className={`transition ${activeMenu === "genres" ? "rotate-180" : ""
+                                    }`}
+                            />
+                        </button>
+
+                        {activeMenu === "genres" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
+                                {genres.map((category) => (
                                     <Link
-                                        key={genre}
-                                        to={`/movie/category/${genre.toLowerCase()}`}
-                                        className="block px-4 py-2 hover:bg-gray-700 text-gray-200"
-                                        role="menuitem"
+                                        key={category}
+                                        to={`/movie/category/${category.toLowerCase()}`}
+                                        onClick={() => setActiveMenu(null)}
+                                        className="block px-4 py-2 hover:bg-gray-700"
                                     >
-                                        {genre}
+                                        {category}
                                     </Link>
                                 ))}
                             </div>
                         )}
                     </div>
-                </div>
+                </nav>
             </header>
 
-            {/* Mobile Sidebar */}
+            {/* MOBILE SIDEBAR */}
             <div
-                className={`fixed top-0 left-0 h-screen w-3/4 bg-gray-900 z-50 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-                    } transition-transform duration-300 ease-in-out md:hidden shadow-xl flex flex-col`}
+                className={`fixed inset-0 z-50 bg-black/60 transition-opacity ${sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
             >
-                {/* Header */}
-                <div className="flex items-center justify-between px-4 py-4 pb-10 border-b border-gray-800">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src={logo}
-                            alt="Logo"
-                            className="h-9 w-9 rounded-full object-cover shadow-md"
-                        />
-                        <span className="text-xl font-extrabold text-white tracking-wide">Moviela</span>
+                <aside
+                    className={`fixed left-0 top-0 h-full w-3/4 bg-gray-900 transform transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                        }`}
+                >
+                    {/* SIDEBAR HEADER */}
+                    <div className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={logo}
+                                alt="Logo"
+                                className="h-8 w-8 rounded-full"
+                            />
+                            <span className="text-lg font-bold text-white">
+                                MovieLa
+                            </span>
+                        </div>
+                        <button onClick={() => setSidebarOpen(false)}>
+                            <X className="text-white" size={24} />
+                        </button>
                     </div>
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="p-2 rounded-full hover:bg-gray-700 transition"
-                    >
-                        <X className="text-white" size={24} />
-                    </button>
-                </div>
 
-                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6 h-full">
-                    {/* Main Links */}
-                    <div className="flex flex-col gap-3">
-                        {Links.map((link) => (
+                    {/* MOBILE SEARCH */}
+                    <div className="px-4 py-4">
+                        <div className="flex bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden">
+                            <input
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) =>
+                                    e.key === "Enter" && handleSearch()
+                                }
+                                placeholder="Search movies..."
+                                className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
+                            />
+                            <button
+                                onClick={handleSearch}
+                                className="px-4 text-white"
+                            >
+                                <SearchIcon size={18} />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* MOBILE NAV */}
+                    <div className="px-6 py-4 space-y-6 overflow-y-auto">
+                        {links.map((link) => (
                             <Link
                                 key={link.name}
                                 to={link.to}
-                                onClick={() => setIsOpen(false)}
-                                data-discover="true" aria-label={link.name}
-                                className="font-medium text-gray-200 hover:text-blue-400 transition"
+                                onClick={() => setSidebarOpen(false)}
+                                className="block text-gray-200 font-medium"
                             >
                                 {link.name}
                             </Link>
                         ))}
-                    </div>
 
-                    {/* Movies */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowMovies(!showMovies)} >
-                            Movies {showMovies ? "▲" : "▼"}
-                        </h3>
-                        {showMovies && (
-                            <div className="flex flex-col gap-2 ml-3">
-                                {movies.map((item) => (
-                                    <Link key={item} to={`/movie/filter/${item.toLowerCase()}`} onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-blue-400 transition">
-                                        {item}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                        {/* MOVIES */}
+                        <div>
+                            <button
+                                onClick={() =>
+                                    setActiveMenu(
+                                        activeMenu === "movies"
+                                            ? null
+                                            : "movies"
+                                    )
+                                }
+                                className="w-full flex justify-between text-gray-300 font-semibold"
+                            >
+                                Movies
+                                <ChevronDown
+                                    className={`transition ${activeMenu === "movies"
+                                        ? "rotate-180"
+                                        : ""
+                                        }`}
+                                />
+                            </button>
+                            {activeMenu === "movies" && (
+                                <div className="mt-2 ml-3 space-y-2">
+                                    {movies.map((item) => (
+                                        <Link
+                                            key={item}
+                                            to={`/movie/filter/${item.toLowerCase()}`}
+                                            onClick={() =>
+                                                setSidebarOpen(false)
+                                            }
+                                            className="block text-gray-400"
+                                        >
+                                            {item}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
-                    {/* Industry */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowIndustries(!showIndustries)}>
-                            Industry {showIndustries ? "▲" : "▼"}
-                        </h3>
-                        {showIndustries && (
-                            <div className="flex flex-col gap-2 ml-3">
-                                {industries.map((industry) => (
-                                    <Link
-                                        key={industry}
-                                        to={`/movie/filter/${industry.toLowerCase()}`}
-                                        onClick={() => setIsOpen(false)}
-                                        className="text-gray-300 hover:text-blue-400 transition"
-                                    >
-                                        {industry}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                        {/* INDUSTRY */}
+                        <div>
+                            <button
+                                onClick={() =>
+                                    setActiveMenu(
+                                        activeMenu === "industries"
+                                            ? null
+                                            : "industries"
+                                    )
+                                }
+                                className="w-full flex justify-between text-gray-300 font-semibold"
+                            >
+                                Industry
+                                <ChevronDown
+                                    className={`transition ${activeMenu === "industries"
+                                        ? "rotate-180"
+                                        : ""
+                                        }`}
+                                />
+                            </button>
+                            {activeMenu === "industries" && (
+                                <div className="mt-2 ml-3 space-y-2">
+                                    {industries.map((filter) => (
+                                        <Link
+                                            key={filter}
+                                            to={`/movie/filter/${filter.toLowerCase()}`}
+                                            onClick={() =>
+                                                setSidebarOpen(false)
+                                            }
+                                            className="block text-gray-400"
+                                        >
+                                            {filter}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
-                    {/* Genres */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase text-gray-400 mb-2 cursor-pointer" onClick={() => setShowGenres(!showGenres)}>
-                            Genres {showGenres ? "▲" : "▼"}
-                        </h3>
-                        {showGenres && (
-                            <div className="flex flex-col gap-2 ml-3">
-                                {genres.map((genre) => (
-                                    <Link
-                                        key={genre}
-                                        to={`/movie/category/${genre.toLowerCase()}`}
-                                        onClick={() => setIsOpen(false)}
-                                        className="text-gray-300 hover:text-blue-400 transition"
-                                    >
-                                        {genre}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
+                        {/* GENRES */}
+                        <div>
+                            <button
+                                onClick={() =>
+                                    setActiveMenu(
+                                        activeMenu === "genres"
+                                            ? null
+                                            : "genres"
+                                    )
+                                }
+                                className="w-full flex justify-between text-gray-300 font-semibold"
+                            >
+                                Genres
+                                <ChevronDown
+                                    className={`transition ${activeMenu === "genres"
+                                        ? "rotate-180"
+                                        : ""
+                                        }`}
+                                />
+                            </button>
+                            {activeMenu === "genres" && (
+                                <div className="mt-2 ml-3 space-y-2">
+                                    {genres.map((category) => (
+                                        <Link
+                                            key={category}
+                                            to={`/movie/category/${category.toLowerCase()}`}
+                                            state={{
+                                                from: "category",
+                                                label: category,
+                                                path: `/movie/category/${category.toLowerCase()}`
+                                            }}
+                                            onClick={() =>
+                                                setSidebarOpen(false)
+                                            }
+                                            className="block text-gray-400"
+                                        >
+                                            {category}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
+                </aside>
             </div>
 
-            <div className="md:hidden flex justify-end max-w-7xl mx-auto mt-15 bg-[#0f0f0f] px-1.5 sm:px-4 py-4">
-                <div className="flex w-50% backdrop-blur-lg bg-gray-700/20 border border-gray-500/30 rounded-xl overflow-hidden shadow-md">
-                    <input
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") handleSearch();
-                        }}
-                        type="text"
-                        placeholder="Search movies, genres..."
-                        className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
-                    />
-                    <button onClick={handleSearch} className="px-4 text-white hover:text-blue-300" aria-label="Search">
-                        <SearchIcon size={18} />
-                    </button>
-                </div>
-            </div>
-
-            {/* Spacer */}
-            <div className="md:h-28"></div>
+            {/* HEADER SPACER */}
+            <div className="h-13 md:h-26"></div>
         </>
     );
 }

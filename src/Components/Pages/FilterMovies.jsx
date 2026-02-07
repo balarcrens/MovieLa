@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SkeletonCard } from "../Skeleton";
-import { Download } from "lucide-react";
+import { ChevronRight, Download } from "lucide-react";
 import { Helmet } from "react-helmet";
 // import AdBanner from "../AdBanner";
 
@@ -85,13 +85,13 @@ export default function FilterMovies() {
             <div className="max-w-7xl mx-auto">
 
                 {/* Breadcrumb */}
-                <nav className="text-sm text-gray-400 mb-3">
-                    <Link to="/" className="text-gray-400">Home</Link>
-                    <span className="mx-2">/</span>
+                <div className="mx-auto mb-3 flex items-center text-sm text-gray-400 gap-2">
+                    <Link to="/" className="hover:text-white">Home</Link>
+                    <ChevronRight size={14} />
                     <span className="text-white font-medium">
                         {filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase()}
                     </span>
-                </nav>
+                </div>
 
                 {/* Title */}
                 <h2 className="text-xl font-bold mb-4">
@@ -141,7 +141,11 @@ export default function FilterMovies() {
                                 key={index}
                                 className="relative bg-[#1a1a1a] rounded-2xl group overflow-hidden border border-[#2a2a2a] hover:border-yellow-500 shadow-md hover:shadow-yellow-500/30 transition-all duration-300"
                             >
-                                <Link to={`/movie/${movie.slug}`}>
+                                <Link to={`/movie/${movie.slug}`} state={{
+                                    from: "filter",
+                                    label: filter.toLowerCase(),
+                                    path: `/movie/filter/${filter.toLowerCase()}`
+                                }}>
                                     <div className="relative w-full aspect-[2/3] overflow-hidden">
                                         <img
                                             src={movie.posterUrl}

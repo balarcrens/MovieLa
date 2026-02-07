@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import {
     ChevronRight,
@@ -21,6 +21,13 @@ export default function MovieDetail() {
     const [movie, setMovie] = useState(null);
     const [related, setRelated] = useState([]);
     const isAdmin = Boolean(localStorage.getItem("auth-token"));
+    const location = useLocation();
+    const state = location.state;
+
+    const formatLabel = (text) =>
+        text
+            ?.replace(/-/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase());
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -78,6 +85,19 @@ export default function MovieDetail() {
             {/* ================= BREADCRUMB ================= */}
             <div className="max-w-5xl mx-auto mb-5 flex items-center text-sm text-gray-400 gap-2">
                 <Link to="/" className="hover:text-white">Home</Link>
+                <ChevronRight size={14} />
+                {state?.label && state?.path ? (
+                    <Link
+                        to={state.path}
+                        className="hover:text-white font-medium"
+                    >
+                        {formatLabel(state.label)}
+                    </Link>
+                ) : (
+                    <span className="hover:text-white font-medium">
+                        Movies
+                    </span>
+                )}
                 <ChevronRight size={14} />
                 <span className="text-white font-medium">{movie.movie_name}</span>
             </div>
@@ -320,8 +340,6 @@ export default function MovieDetail() {
     );
 }
 
-/* ================= ADMIN FAB ================= */
-
 function AdminMovieFAB({ movie }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
@@ -364,7 +382,7 @@ function AdminMovieFAB({ movie }) {
     return (
         <div ref={ref} className="fixed bottom-5 right-6 z-50">
             {open && (
-                <div className="mb-3 bg-black border border-white/10 rounded-xl overflow-hidden">
+                <div className="absolute right-0 bottom-full mb-3 bg-black border border-white/10 rounded-xl overflow-hidden shadow-xl">
                     <Link
                         to={`/admin/movie/edit/${movie._id}`}
                         className="flex items-center gap-3 px-4 py-3 hover:bg-white/10"
@@ -384,7 +402,10 @@ function AdminMovieFAB({ movie }) {
                 onClick={() => setOpen(!open)}
                 className="w-12 h-12 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-lg"
             >
-                <Plus className={open ? "rotate-45 transition" : "transition"} />
+                <Plus
+                    className={`transition-transform duration-200 ${open ? "rotate-45" : ""
+                        }`}
+                />
             </button>
         </div>
     );

@@ -2,7 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { SkeletonCard } from "../Skeleton";
-import { Download } from "lucide-react";
+import { ChevronRight, Download } from "lucide-react";
 import { Helmet } from "react-helmet";
 // import AdBanner from "../AdBanner";
 
@@ -71,10 +71,11 @@ const MovieCards = () => {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <nav className="text-sm text-gray-400 mb-4">
-                <Link to="/" className="hover:text-white">Home</Link> /
-                <span className="ml-1">Movies</span>
-            </nav>
+            <div className="mx-auto mb-3 flex items-center text-sm text-gray-400 gap-2">
+                <p className="hover:text-white">Home</p>
+                <ChevronRight size={14} />
+                <p className="hover:text-white">Movies</p>
+            </div>
 
             {/* Movies Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
