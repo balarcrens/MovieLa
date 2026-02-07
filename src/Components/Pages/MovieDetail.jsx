@@ -43,7 +43,7 @@ export default function MovieDetail() {
         });
     }, [slug]);
 
-    if (!movie) return <MovieDetailSkeleton />;    
+    if (!movie) return <MovieDetailSkeleton />;
 
     return (
         <div className="bg-black min-h-screen text-white px-3 sm:px-5 py-8">
@@ -247,9 +247,16 @@ export default function MovieDetail() {
 
                     {/* No Links */}
                     {!movie.type && (
-                        <p className="text-center text-gray-400 py-4">
-                            ❌ No download links available.
-                        </p>
+                        <div className="max-w-md mx-auto mt-6 p-6 rounded-2xl border border-gray-700 bg-gray-900/60 backdrop-blur text-center shadow-lg">
+                            <h3 className="text-lg font-semibold text-white">
+                                No Download Links Yet
+                            </h3>
+
+                            <p className="text-sm text-gray-400 mt-2">
+                                This movie is currently unavailable for download.
+                                Please check back later.
+                            </p>
+                        </div>
                     )}
                 </div>
             </div>

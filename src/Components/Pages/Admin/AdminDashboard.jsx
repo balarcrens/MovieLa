@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import MovieForm from "./MovieForm";
+import AdminFiles from "./AdminFiles";
 import UserRequests from "./UserRequests";
 import {
     FaPlus,
     FaHome,
     FaClipboardList,
-    FaSignOutAlt
+    FaSignOutAlt,
+    FaFolderOpen
 } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +30,7 @@ export default function AdminDashboard() {
     const menuItems = [
         { name: "Dashboard", icon: <FaHome />, key: "dashboard" },
         { name: "Add Movie", icon: <FaPlus />, key: "add-movie" },
+        { name: "Files", icon: <FaFolderOpen />, key: "files" },
         { name: "User Requests", icon: <FaClipboardList />, key: "userrequests" },
     ];
 
@@ -84,6 +87,10 @@ export default function AdminDashboard() {
                 setActiveTab("add-movie");
             }
 
+            if (e.key.toLowerCase() === "f") {
+                setActiveTab("files");
+            }
+
             // R → User Requests
             if (e.key.toLowerCase() === "r") {
                 setActiveTab("userrequests");
@@ -135,11 +142,13 @@ export default function AdminDashboard() {
                                 {/* Hint */}
                                 {(item.key === "dashboard" ||
                                     item.key === "add-movie" ||
+                                    item.key === "files" ||
                                     item.key === "userrequests") && (
                                         <kbd className="ml-1 px-1.5 py-0.5 text-xs font-medium border rounded opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 border-white/30 text-white"
                                         >
                                             {item.key === "dashboard" && "D"}
                                             {item.key === "add-movie" && "A"}
+                                            {item.key === "files" && "F"}
                                             {item.key === "userrequests" && "R"}
                                         </kbd>
                                     )}
@@ -231,6 +240,24 @@ export default function AdminDashboard() {
                                             Press <kbd className="px-1.5 py-0.5 bg-[#111] border border-gray-700 rounded text-xs">R</kbd>
                                         </span>
                                     </button>
+
+                                    <button
+                                        onClick={() => setActiveTab("files")}
+                                        className="relative flex items-center gap-4 bg-[#1a1a1a] border border-gray-800 rounded-xl p-5 hover:bg-[#262626] transition text-left group"
+                                    >
+                                        <FaFolderOpen className="text-yellow-400 text-2xl" />
+
+                                        <div className="flex-1">
+                                            <p className="font-semibold">Manage Files</p>
+                                            <p className="text-sm text-gray-400">
+                                                View all uploaded file IDs
+                                            </p>
+                                        </div>
+
+                                        <span className="absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition">
+                                            Press <kbd className="px-1.5 py-0.5 bg-[#111] border border-gray-700 rounded text-xs">F</kbd>
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -265,6 +292,7 @@ export default function AdminDashboard() {
                     )
                 )}
                 {activeTab === "add-movie" && <MovieForm />}
+                {activeTab === "files" && <AdminFiles />}
                 {activeTab === "userrequests" && <UserRequests />}
             </main>
         </div>
