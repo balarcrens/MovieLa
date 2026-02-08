@@ -216,7 +216,7 @@ export default function AdminDashboard() {
                                         </div>
 
                                         {/* Hint */}
-                                        <span className="absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none"
+                                        <span className="hidden sm:absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none"
                                         >
                                             Press <kbd className="px-1.5 py-0.5 bg-[#111] border border-gray-700 rounded text-xs">A</kbd>
                                         </span>
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
                                         </div>
 
                                         {/* Hint */}
-                                        <span className="sm:absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none"
+                                        <span className="hidden sm:absolute bottom-3 right-4  text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none"
                                         >
                                             Press <kbd className="px-1.5 py-0.5 bg-[#111] border border-gray-700 rounded text-xs">R</kbd>
                                         </span>
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
                                             </p>
                                         </div>
 
-                                        <span className="absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition">
+                                        <span className="hidden sm:absolute bottom-3 right-4 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition">
                                             Press <kbd className="px-1.5 py-0.5 bg-[#111] border border-gray-700 rounded text-xs">F</kbd>
                                         </span>
                                     </button>

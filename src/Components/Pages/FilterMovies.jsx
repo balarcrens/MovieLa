@@ -4,6 +4,7 @@ import axios from "axios";
 import { SkeletonCard } from "../Skeleton";
 import { ChevronRight, Download } from "lucide-react";
 import { Helmet } from "react-helmet";
+import Skeleton from "../UI/skeleton";
 // import AdBanner from "../AdBanner";
 
 const DB_URL = import.meta.env.VITE_DB_URL;
@@ -36,6 +37,12 @@ export default function FilterMovies() {
     if (loading) {
         return (
             <div className="bg-[#0f0f0f] min-h-screen py-5 px-2 sm:px-4 text-white">
+                <div className="max-w-7xl mx-auto mb-5">
+                    <Skeleton className="h-4 w-28" />
+                </div>
+                <div className="max-w-7xl mx-auto mb-5">
+                    <Skeleton className="h-6 w-44" />
+                </div>
                 <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                     {Array.from({ length: 20 }).map((_, i) => (
                         <SkeletonCard key={i} />

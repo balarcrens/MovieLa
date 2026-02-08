@@ -33,33 +33,54 @@ const links = [
 
 export default function Header() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [activeMenu, setActiveMenu] = useState(null); // movies | genres | industries
+    const [desktopMenu, setDesktopMenu] = useState(null); // desktop dropdowns
+    const [mobileMenu, setMobileMenu] = useState(null);   // mobile accordion
     const [query, setQuery] = useState("");
+
     const navigate = useNavigate();
     const headerRef = useRef(null);
 
     const handleSearch = () => {
         if (!query.trim()) return;
         navigate(`/?search=${encodeURIComponent(query.trim())}`);
-        setSidebarOpen(false);
+        setTimeout(() => {
+            setSidebarOpen(false);
+            setMobileMenu(null);
+        }, 150);
     };
 
-    // Close dropdowns on outside click
+    const closeSidebarAfterNav = () => {
+        setTimeout(() => {
+            setSidebarOpen(false);
+            setMobileMenu(null);
+        }, 150);
+    };
+
+    const toggleDesktopMenu = (menu) => {
+        setDesktopMenu(desktopMenu === menu ? null : menu);
+    };
+
+    const toggleMobileMenu = (menu) => {
+        setMobileMenu(mobileMenu === menu ? null : menu);
+    };
+
+    // Close desktop dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (headerRef.current && !headerRef.current.contains(e.target)) {
-                setActiveMenu(null);
+                setDesktopMenu(null);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Close on ESC
+    // Close everything on ESC
     useEffect(() => {
         const esc = (e) => {
             if (e.key === "Escape") {
-                setActiveMenu(null);
+                setDesktopMenu(null);
+                setMobileMenu(null);
                 setSidebarOpen(false);
             }
         };
@@ -67,14 +88,10 @@ export default function Header() {
         return () => document.removeEventListener("keydown", esc);
     }, []);
 
-    // Reset dropdowns when sidebar closes
+    // Reset mobile menus when sidebar closes
     useEffect(() => {
-        if (!sidebarOpen) setActiveMenu(null);
+        if (!sidebarOpen) setMobileMenu(null);
     }, [sidebarOpen]);
-
-    const toggleMenu = (menu) => {
-        setActiveMenu(activeMenu === menu ? null : menu);
-    };
 
     return (
         <>
@@ -87,11 +104,7 @@ export default function Header() {
                 <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
                     {/* LOGO */}
                     <Link to="/" className="flex items-center gap-3">
-                        <img
-                            src={logo}
-                            alt="MovieLa Logo"
-                            className="h-9 w-9 rounded-full"
-                        />
+                        <img src={logo} alt="MovieLa Logo" className="h-9 w-9 rounded-full" />
                         <span className="text-xl font-extrabold text-white">
                             MovieLa
                         </span>
@@ -99,13 +112,11 @@ export default function Header() {
 
                     {/* SEARCH (DESKTOP) */}
                     <div className="hidden md:flex w-1/3">
-                        <div className="flex w-full bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden backdrop-blur">
+                        <div className="flex w-full bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden">
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) =>
-                                    e.key === "Enter" && handleSearch()
-                                }
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                                 placeholder="Search movies, genres..."
                                 className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                             />
@@ -142,24 +153,23 @@ export default function Header() {
                     {/* MOVIES */}
                     <div className="relative">
                         <button
-                            onClick={() => toggleMenu("movies")}
+                            onClick={() => toggleDesktopMenu("movies")}
                             className="flex items-center gap-1 hover:text-blue-400 font-medium"
                         >
                             Movies
                             <ChevronDown
                                 size={16}
-                                className={`transition ${activeMenu === "movies" ? "rotate-180" : ""
-                                    }`}
+                                className={`transition ${desktopMenu === "movies" ? "rotate-180" : ""}`}
                             />
                         </button>
 
-                        {activeMenu === "movies" && (
-                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
+                        {desktopMenu === "movies" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden">
                                 {movies.map((item) => (
                                     <Link
                                         key={item}
                                         to={`/movie/filter/${item.toLowerCase()}`}
-                                        onClick={() => setActiveMenu(null)}
+                                        onClick={() => setDesktopMenu(null)}
                                         className="block px-4 py-2 hover:bg-gray-700"
                                     >
                                         {item}
@@ -172,24 +182,23 @@ export default function Header() {
                     {/* INDUSTRY */}
                     <div className="relative">
                         <button
-                            onClick={() => toggleMenu("industries")}
+                            onClick={() => toggleDesktopMenu("industries")}
                             className="flex items-center gap-1 hover:text-blue-400 font-medium"
                         >
                             Industry
                             <ChevronDown
                                 size={16}
-                                className={`transition ${activeMenu === "industries" ? "rotate-180" : ""
-                                    }`}
+                                className={`transition ${desktopMenu === "industries" ? "rotate-180" : ""}`}
                             />
                         </button>
 
-                        {activeMenu === "industries" && (
-                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
+                        {desktopMenu === "industries" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden">
                                 {industries.map((item) => (
                                     <Link
                                         key={item}
                                         to={`/movie/filter/${item.toLowerCase()}`}
-                                        onClick={() => setActiveMenu(null)}
+                                        onClick={() => setDesktopMenu(null)}
                                         className="block px-4 py-2 hover:bg-gray-700"
                                     >
                                         {item}
@@ -202,24 +211,23 @@ export default function Header() {
                     {/* GENRES */}
                     <div className="relative">
                         <button
-                            onClick={() => toggleMenu("genres")}
+                            onClick={() => toggleDesktopMenu("genres")}
                             className="flex items-center gap-1 hover:text-blue-400 font-medium"
                         >
                             Genres
                             <ChevronDown
                                 size={16}
-                                className={`transition ${activeMenu === "genres" ? "rotate-180" : ""
-                                    }`}
+                                className={`transition ${desktopMenu === "genres" ? "rotate-180" : ""}`}
                             />
                         </button>
 
-                        {activeMenu === "genres" && (
-                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden z-50">
+                        {desktopMenu === "genres" && (
+                            <div className="absolute left-0 top-8 bg-gray-800 rounded-xl shadow-2xl w-44 overflow-hidden">
                                 {genres.map((category) => (
                                     <Link
                                         key={category}
                                         to={`/movie/category/${category.toLowerCase()}`}
-                                        onClick={() => setActiveMenu(null)}
+                                        onClick={() => setDesktopMenu(null)}
                                         className="block px-4 py-2 hover:bg-gray-700"
                                     >
                                         {category}
@@ -240,17 +248,11 @@ export default function Header() {
                     className={`fixed left-0 top-0 h-full w-3/4 bg-gray-900 transform transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
                         }`}
                 >
-                    {/* SIDEBAR HEADER */}
+                    {/* HEADER */}
                     <div className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
                         <div className="flex items-center gap-3">
-                            <img
-                                src={logo}
-                                alt="Logo"
-                                className="h-8 w-8 rounded-full"
-                            />
-                            <span className="text-lg font-bold text-white">
-                                MovieLa
-                            </span>
+                            <img src={logo} alt="Logo" className="h-8 w-8 rounded-full" />
+                            <span className="text-lg font-bold text-white">MovieLa</span>
                         </div>
                         <button onClick={() => setSidebarOpen(false)}>
                             <X className="text-white" size={24} />
@@ -263,16 +265,11 @@ export default function Header() {
                             <input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) =>
-                                    e.key === "Enter" && handleSearch()
-                                }
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                                 placeholder="Search movies..."
                                 className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                             />
-                            <button
-                                onClick={handleSearch}
-                                className="px-4 text-white"
-                            >
+                            <button onClick={handleSearch} className="px-4 text-white">
                                 <SearchIcon size={18} />
                             </button>
                         </div>
@@ -284,7 +281,7 @@ export default function Header() {
                             <Link
                                 key={link.name}
                                 to={link.to}
-                                onClick={() => setSidebarOpen(false)}
+                                onClick={closeSidebarAfterNav}
                                 className="block text-gray-200 font-medium"
                             >
                                 {link.name}
@@ -294,32 +291,21 @@ export default function Header() {
                         {/* MOVIES */}
                         <div>
                             <button
-                                onClick={() =>
-                                    setActiveMenu(
-                                        activeMenu === "movies"
-                                            ? null
-                                            : "movies"
-                                    )
-                                }
+                                onClick={() => toggleMobileMenu("movies")}
                                 className="w-full flex justify-between text-gray-300 font-semibold"
                             >
                                 Movies
                                 <ChevronDown
-                                    className={`transition ${activeMenu === "movies"
-                                        ? "rotate-180"
-                                        : ""
-                                        }`}
+                                    className={`transition ${mobileMenu === "movies" ? "rotate-180" : ""}`}
                                 />
                             </button>
-                            {activeMenu === "movies" && (
+                            {mobileMenu === "movies" && (
                                 <div className="mt-2 ml-3 space-y-2">
                                     {movies.map((item) => (
                                         <Link
                                             key={item}
                                             to={`/movie/filter/${item.toLowerCase()}`}
-                                            onClick={() =>
-                                                setSidebarOpen(false)
-                                            }
+                                            onClick={closeSidebarAfterNav}
                                             className="block text-gray-400"
                                         >
                                             {item}
@@ -332,35 +318,24 @@ export default function Header() {
                         {/* INDUSTRY */}
                         <div>
                             <button
-                                onClick={() =>
-                                    setActiveMenu(
-                                        activeMenu === "industries"
-                                            ? null
-                                            : "industries"
-                                    )
-                                }
+                                onClick={() => toggleMobileMenu("industries")}
                                 className="w-full flex justify-between text-gray-300 font-semibold"
                             >
                                 Industry
                                 <ChevronDown
-                                    className={`transition ${activeMenu === "industries"
-                                        ? "rotate-180"
-                                        : ""
-                                        }`}
+                                    className={`transition ${mobileMenu === "industries" ? "rotate-180" : ""}`}
                                 />
                             </button>
-                            {activeMenu === "industries" && (
+                            {mobileMenu === "industries" && (
                                 <div className="mt-2 ml-3 space-y-2">
-                                    {industries.map((filter) => (
+                                    {industries.map((item) => (
                                         <Link
-                                            key={filter}
-                                            to={`/movie/filter/${filter.toLowerCase()}`}
-                                            onClick={() =>
-                                                setSidebarOpen(false)
-                                            }
+                                            key={item}
+                                            to={`/movie/filter/${item.toLowerCase()}`}
+                                            onClick={closeSidebarAfterNav}
                                             className="block text-gray-400"
                                         >
-                                            {filter}
+                                            {item}
                                         </Link>
                                     ))}
                                 </div>
@@ -370,37 +345,21 @@ export default function Header() {
                         {/* GENRES */}
                         <div>
                             <button
-                                onClick={() =>
-                                    setActiveMenu(
-                                        activeMenu === "genres"
-                                            ? null
-                                            : "genres"
-                                    )
-                                }
+                                onClick={() => toggleMobileMenu("genres")}
                                 className="w-full flex justify-between text-gray-300 font-semibold"
                             >
                                 Genres
                                 <ChevronDown
-                                    className={`transition ${activeMenu === "genres"
-                                        ? "rotate-180"
-                                        : ""
-                                        }`}
+                                    className={`transition ${mobileMenu === "genres" ? "rotate-180" : ""}`}
                                 />
                             </button>
-                            {activeMenu === "genres" && (
+                            {mobileMenu === "genres" && (
                                 <div className="mt-2 ml-3 space-y-2">
                                     {genres.map((category) => (
                                         <Link
                                             key={category}
                                             to={`/movie/category/${category.toLowerCase()}`}
-                                            state={{
-                                                from: "category",
-                                                label: category,
-                                                path: `/movie/category/${category.toLowerCase()}`
-                                            }}
-                                            onClick={() =>
-                                                setSidebarOpen(false)
-                                            }
+                                            onClick={closeSidebarAfterNav}
                                             className="block text-gray-400"
                                         >
                                             {category}
@@ -414,7 +373,7 @@ export default function Header() {
             </div>
 
             {/* HEADER SPACER */}
-            <div className="h-13 md:h-26"></div>
+            <div className="h-13 md:h-26" />
         </>
     );
 }
