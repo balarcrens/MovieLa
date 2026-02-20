@@ -50,7 +50,7 @@ export default function AdminFiles() {
         const fetchFiles = async () => {
             try {
                 const res = await axios.get(
-                    `${DB_URL}/api/v1/files/all`,
+                    `${DB_URL}/api/v1/file/all`,
                     authHeader
                 );
 
