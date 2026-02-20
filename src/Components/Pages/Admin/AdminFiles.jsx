@@ -117,12 +117,12 @@ export default function AdminFiles() {
                             <div className="flex-1">
                                 <p className="flex items-center gap-2 font-semibold text-white text-lg">
                                     <FaFilm className="text-yellow-400" />
-                                    {file.movie?.movie_name}
+                                    {file?.movie_name}
                                 </p>
 
                                 <div className="flex flex-wrap items-center gap-3 mt-1">
                                     <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300">
-                                        {file.movie?.type}
+                                        {file?.type}
                                     </span>
 
                                     <span className="text-xs text-gray-500">
