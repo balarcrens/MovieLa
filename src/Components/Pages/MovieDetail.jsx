@@ -283,7 +283,7 @@ export default function MovieDetail() {
 
             {/* ================= TRAILER ================= */}
             {movie.trailer_link ?
-                (<div className="my-10 text-center">
+                (<div className="my-10 text-center" id="trailer">
                     <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-red-500">
                         Download <span className="text-white">{movie.movie_name}</span> Full Movie Hindi HD | Watch Online Full Trailer
                     </h2>

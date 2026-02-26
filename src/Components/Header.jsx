@@ -4,14 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "/favicon.ico";
 
 const genres = [
-    "Action",
-    "Drama",
-    "Comedy",
-    "Romance",
-    "Thriller",
-    "Horror",
-    "Sci-Fi",
-    "Adventure",
+    "Action", "Drama",
+    "Comedy", "Romance",
+    "Thriller", "Horror",
+    "Sci-Fi", "Adventure",
+    "Animation", "Mystery",
+    "Sports", "Crime", "History"
 ];
 
 const movies = ["Latest", "Popular", "Rating"];

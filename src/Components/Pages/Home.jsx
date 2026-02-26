@@ -97,6 +97,9 @@ const MovieCards = () => {
                                     />
                                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent"></div>
                                     <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        {/* <p className="font-semibold text-xs text-white w-full leading-tight ml-1 line-clamp-2">
+                                            {movie.movie_name}
+                                        </p> */}
                                         {movie.categories?.map((category, i) => (
                                             <span key={i} className="px-1.5 py-1 text-xs text-white bg-white/20 backdrop-blur-sm rounded-md">
                                                 {category}
@@ -106,7 +109,7 @@ const MovieCards = () => {
                                 </div>
 
                                 <div className="p-4 text-sm space-y-2">
-                                    <p className="font-semibold text-white leading-tight line-clamp-2">
+                                    <p className="font-semibold text-white leading-tight line-clamp-1">
                                         {movie.movie_name}
                                     </p>
                                     <p className="text-gray-400 text-xs leading-snug line-clamp-2">

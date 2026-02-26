@@ -39,6 +39,7 @@ export default function MovieForm() {
         meta_description: "",
         review: "",
     });
+    const [loading, setLoading] = useState(false);
 
     const [episodes, setEpisodes] = useState([]);
     const [posterFile, setPosterFile] = useState(null);
@@ -200,6 +201,7 @@ export default function MovieForm() {
                 data.append("episodes", JSON.stringify(episodes));
             }
 
+            setLoading(true);
             await axios({
                 method: isEditMode ? "put" : "post",
                 url: isEditMode
@@ -210,6 +212,7 @@ export default function MovieForm() {
             });
 
             toast.success(isEditMode ? "Updated successfully" : "Added successfully");
+            setLoading(false);
 
             if (!isEditMode) {
                 setFormData({
@@ -613,7 +616,7 @@ export default function MovieForm() {
 
                                 {/* Submit */}
                                 <div className="flex justify-center mt-6">
-                                    <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-10 py-3 rounded-xl transition-all duration-300">
+                                    <button type="submit" className={`bg-yellow-500 hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-50 text-black font-bold px-10 py-3 rounded-xl transition-all duration-300`} disabled={loading}>
                                         <Plus className="inline mr-2" />
                                         {isEditMode ? "Update" : "Add"} {formData.type}
                                     </button>
