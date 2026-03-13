@@ -86,7 +86,8 @@ export default function AdminDashboard() {
             if (e.key.toLowerCase() === "a") {
                 setActiveTab("add-movie");
             }
-
+            
+            // F → Files
             if (e.key.toLowerCase() === "f") {
                 setActiveTab("files");
             }
@@ -95,7 +96,8 @@ export default function AdminDashboard() {
             if (e.key.toLowerCase() === "r") {
                 setActiveTab("userrequests");
             }
-
+            
+            // L → Logout
             if (e.key.toLowerCase() === "l") {
                 handleLogout();
             }
@@ -110,16 +112,14 @@ export default function AdminDashboard() {
     return (
         <div className="flex min-h-screen bg-[#111] text-white">
             {/* SIDEBAR */}
-            <aside className="w-18 md:w-64 bg-[#1a1a1a] border-r border-gray-800 flex flex-col">
-                {/* Logo */}
-                <div className="h-16 hidden md:flex items-center justify-center border-b border-gray-800">
-                    <span className="text-xl font-bold text-yellow-400">
-                        Moviela
-                    </span>
-                </div>
-
+            <aside className="relative w-18 md:w-64 bg-[#1a1a1a] border-r border-gray-800 flex justify-center">
                 {/* Menu */}
-                <nav className="flex-1 px-3 md:px-4 py-4 space-y-2">
+                <nav className="flex-1 fixed px-3 md:px-4 py-4 space-y-2">
+                    <div className="h-16 hidden md:flex items-center justify-center border-b border-gray-800">
+                        <span className="text-xl font-bold text-yellow-400">
+                            Moviela
+                        </span>
+                    </div>
                     {menuItems.map(item => (
                         <button key={item.key} onClick={() => setActiveTab(item.key)}
                             className={`relative w-full flex items-center gap-3 justify-center md:justify-start px-0 md:px-4 py-2.5 rounded-lg transition group ${activeTab === item.key
@@ -155,27 +155,27 @@ export default function AdminDashboard() {
                             </span>
                         </button>
                     ))}
+                    <div className="px-3 md:px-4 py-3 border-t border-gray-800">
+                        <button
+                            onClick={handleLogout}
+                            className="relative w-full flex items-center gap-3 justify-center md:justify-start px-0 md:px-4 py-2.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition group"
+                        >
+                            <FaSignOutAlt className="text-base md:text-lg" />
+
+                            <span className="hidden md:flex items-center gap-2 font-medium">
+                                Logout
+                                <kbd className="ml-1 px-1.5 py-0.5 text-xs border rounded opacity-0 group-hover:opacity-100 transition bg-white/10 border-white/20 text-white">
+                                    L
+                                </kbd>
+                            </span>
+                        </button>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="hidden md:block text-white/90 text-xs text-center py-4 border-t border-gray-800">
+                        © {new Date().getFullYear()} Moviela Admin
+                    </div>
                 </nav>
-                <div className="px-3 md:px-4 py-3 border-t border-gray-800">
-                    <button
-                        onClick={handleLogout}
-                        className="relative w-full flex items-center gap-3 justify-center md:justify-start px-0 md:px-4 py-2.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition group"
-                    >
-                        <FaSignOutAlt className="text-base md:text-lg" />
-
-                        <span className="hidden md:flex items-center gap-2 font-medium">
-                            Logout
-                            <kbd className="ml-1 px-1.5 py-0.5 text-xs border rounded opacity-0 group-hover:opacity-100 transition bg-white/10 border-white/20 text-white">
-                                L
-                            </kbd>
-                        </span>
-                    </button>
-                </div>
-
-                {/* Footer */}
-                <div className="hidden md:block text-white/90 text-xs text-center py-4 border-t border-gray-800">
-                    © 2025 Moviela Admin
-                </div>
             </aside>
 
             {/* MAIN CONTENT */}
