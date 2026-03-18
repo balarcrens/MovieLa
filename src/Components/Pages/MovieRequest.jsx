@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 
 const DB_URL = import.meta.env.VITE_DB_URL;

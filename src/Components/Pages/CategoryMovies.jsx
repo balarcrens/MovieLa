@@ -2,8 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SkeletonCard } from "../Skeleton";
-import { ChevronRight, Download } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { ChevronRight, Download, SearchX } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import Skeleton from "../UI/skeleton";
 // import AdBanner from "../AdBanner";
 
@@ -98,14 +98,30 @@ export default function CategoryMovies() {
                         </span>
                     </div>
 
-                    <h2 className="text-xl font-bold mb-4">
+                    <h1 className="text-xl font-bold mb-4">
                         🎬 <span className="text-yellow-500">
                             {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}
                         </span>{" "} Movies
-                    </h2>
+                    </h1>
 
                     {movies.length === 0 ? (
-                        <p className="text-center text-gray-400">No movies found.</p>
+                        <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-[#1a1a1a] rounded-2xl border border-gray-800 shadow-xl my-6">
+                            <div className="w-20 h-20 bg-gray-800/50 rounded-full flex items-center justify-center mb-5">
+                                <SearchX size={40} className="text-gray-400" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2">No Movies Found</h3>
+                            <p className="text-gray-400 max-w-md mb-6">
+                                We don't have any movies in the <span className="text-yellow-400 font-semibold">{categoryName}</span> category yet. Check back later or explore other popular genres!
+                            </p>
+                            <div className="flex gap-4">
+                                <Link to="/" className="px-6 py-2 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition">
+                                    Go Home
+                                </Link>
+                                <Link to="/movie/filter/popular" className="px-6 py-2 bg-[#222] text-white font-semibold rounded-lg hover:bg-[#333] transition border border-gray-700">
+                                    View Popular
+                                </Link>
+                            </div>
+                        </div>
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                             {movies.map((movie, index) => (

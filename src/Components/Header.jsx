@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown, SearchIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "/favicon.ico";
+import axios from "axios";
+
+const DB_URL = import.meta.env.VITE_DB_URL;
 
 const genres = [
     "Action", "Drama",
@@ -34,12 +37,16 @@ export default function Header() {
     const [desktopMenu, setDesktopMenu] = useState(null); // desktop dropdowns
     const [mobileMenu, setMobileMenu] = useState(null);   // mobile accordion
     const [query, setQuery] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [showResults, setShowResults] = useState(false);
 
     const navigate = useNavigate();
     const headerRef = useRef(null);
 
     const handleSearch = () => {
         if (!query.trim()) return;
+        setShowResults(false);
         navigate(`/?search=${encodeURIComponent(query.trim())}`);
         setTimeout(() => {
             setSidebarOpen(false);
@@ -48,6 +55,7 @@ export default function Header() {
     };
 
     const closeSidebarAfterNav = () => {
+        setShowResults(false);
         setTimeout(() => {
             setSidebarOpen(false);
             setMobileMenu(null);
@@ -67,6 +75,7 @@ export default function Header() {
         const handleClickOutside = (e) => {
             if (headerRef.current && !headerRef.current.contains(e.target)) {
                 setDesktopMenu(null);
+                setShowResults(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -80,6 +89,7 @@ export default function Header() {
                 setDesktopMenu(null);
                 setMobileMenu(null);
                 setSidebarOpen(false);
+                setShowResults(false);
             }
         };
         document.addEventListener("keydown", esc);
@@ -88,8 +98,37 @@ export default function Header() {
 
     // Reset mobile menus when sidebar closes
     useEffect(() => {
-        if (!sidebarOpen) setMobileMenu(null);
+        if (!sidebarOpen) {
+            setMobileMenu(null);
+            setShowResults(false);
+        }
     }, [sidebarOpen]);
+
+    // Live search debounce
+    useEffect(() => {
+        const fetchSearch = async () => {
+            if (!query.trim() || query.length < 2) {
+                setSearchResults([]);
+                return;
+            }
+            try {
+                setIsSearching(true);
+                const res = await axios.get(`${DB_URL}/api/v1/movie/getmovie?search=${encodeURIComponent(query.trim())}`);
+                setSearchResults(res.data.movies?.slice(0, 5) || []);
+            } catch (err) {
+                console.error("Search error:", err);
+                setSearchResults([]);
+            } finally {
+                setIsSearching(false);
+            }
+        };
+
+        const timeoutId = setTimeout(() => {
+            fetchSearch();
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [query]);
 
     return (
         <>
@@ -109,22 +148,69 @@ export default function Header() {
                     </Link>
 
                     {/* SEARCH (DESKTOP) */}
-                    <div className="hidden md:flex w-1/3">
-                        <div className="flex w-full bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden">
+                    <div className="hidden md:flex w-1/3 relative">
+                        <div className="flex w-full bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden focus-within:border-gray-500 transition-colors">
                             <input
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                                onChange={(e) => {
+                                    setQuery(e.target.value);
+                                    if(e.target.value.length > 0) setShowResults(true);
+                                }}
+                                onFocus={() => {
+                                    if(query.length > 0) setShowResults(true);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleSearch();
+                                }}
                                 placeholder="Search movies, genres..."
                                 className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                             />
                             <button
                                 onClick={handleSearch}
-                                className="px-4 text-gray-300 hover:text-blue-400"
+                                className="px-4 text-gray-300 hover:text-yellow-400 transition"
                             >
                                 <SearchIcon size={18} />
                             </button>
                         </div>
+
+                        {/* DESKTOP SEARCH DROPDOWN */}
+                        {showResults && (query.trim().length >= 2) && (
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50">
+                                {isSearching ? (
+                                    <div className="p-4 text-center text-gray-400 text-sm">Searching...</div>
+                                ) : searchResults.length > 0 ? (
+                                    <div className="flex flex-col">
+                                        {searchResults.map((m) => (
+                                            <Link
+                                                key={m._id}
+                                                to={`/movie/${m.slug}`}
+                                                onClick={() => {
+                                                    setShowResults(false);
+                                                    setQuery("");
+                                                }}
+                                                className="flex items-center gap-3 p-3 hover:bg-[#262626] transition border-b border-gray-800"
+                                            >
+                                                {m.poster && (
+                                                    <img src={m.poster} alt={m.movie_name} className="w-10 h-14 object-cover rounded" />
+                                                )}
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-semibold text-white truncate">{m.movie_name}</p>
+                                                    <p className="text-xs text-gray-400">{m.releaseDate?.substring(0,4)} • {m.type}</p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        <button 
+                                            onClick={handleSearch}
+                                            className="p-3 bg-[#111] text-center text-sm text-yellow-500 font-semibold hover:bg-[#1a1a1a] transition"
+                                        >
+                                            View all results
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="p-4 text-center text-gray-400 text-sm">No results found</div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* MOBILE MENU BUTTON */}
@@ -258,19 +344,64 @@ export default function Header() {
                     </div>
 
                     {/* MOBILE SEARCH */}
-                    <div className="px-4 py-4">
+                    <div className="px-4 py-4 relative">
                         <div className="flex bg-gray-700/20 border border-gray-600/30 rounded-xl overflow-hidden">
                             <input
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                                onChange={(e) => {
+                                    setQuery(e.target.value);
+                                    if(e.target.value.length > 0) setShowResults(true);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleSearch();
+                                }}
                                 placeholder="Search movies..."
                                 className="w-full px-4 py-2 bg-transparent text-white focus:outline-none"
                             />
-                            <button onClick={handleSearch} className="px-4 text-white">
+                            <button onClick={handleSearch} className="px-4 text-white hover:text-yellow-400">
                                 <SearchIcon size={18} />
                             </button>
                         </div>
+                        
+                        {/* MOBILE SEARCH DROPDOWN */}
+                        {showResults && (query.trim().length >= 2) && (
+                            <div className="absolute top-full mt-1 left-4 right-4 bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50">
+                                {isSearching ? (
+                                    <div className="p-4 text-center text-gray-400 text-sm">Searching...</div>
+                                ) : searchResults.length > 0 ? (
+                                    <div className="flex flex-col">
+                                        {searchResults.map((m) => (
+                                            <Link
+                                                key={m._id}
+                                                to={`/movie/${m.slug}`}
+                                                onClick={() => {
+                                                    setShowResults(false);
+                                                    setSidebarOpen(false);
+                                                    setQuery("");
+                                                }}
+                                                className="flex items-center gap-3 p-3 hover:bg-[#262626] border-b border-gray-800"
+                                            >
+                                                {m.poster && (
+                                                    <img src={m.poster} alt={m.movie_name} className="w-10 h-14 object-cover rounded" />
+                                                )}
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-semibold text-white truncate">{m.movie_name}</p>
+                                                    <p className="text-xs text-gray-400">{m.releaseDate?.substring(0,4)} • {m.type}</p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        <button 
+                                            onClick={handleSearch}
+                                            className="p-3 bg-[#111] w-full text-center text-sm text-yellow-500 font-semibold hover:bg-[#1a1a1a] transition"
+                                        >
+                                            View all results
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="p-4 text-center text-gray-400 text-sm">No results found</div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* MOBILE NAV */}

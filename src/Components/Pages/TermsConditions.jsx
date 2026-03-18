@@ -1,5 +1,5 @@
 // import AdBanner from "../AdBanner";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export default function TermsConditions() {
     return (

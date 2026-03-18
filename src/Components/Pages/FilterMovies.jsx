@@ -2,8 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SkeletonCard } from "../Skeleton";
-import { ChevronRight, Download } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { ChevronRight, Download, SearchX } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import Skeleton from "../UI/skeleton";
 // import AdBanner from "../AdBanner";
 
@@ -101,45 +101,31 @@ export default function FilterMovies() {
                 </div>
 
                 {/* Title */}
-                <h2 className="text-xl font-bold mb-4">
+                <h1 className="text-xl font-bold mb-4">
                     🎬 <span className="text-yellow-500">
                         {filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase()}
                     </span>{" "} Movies
-                </h2>
+                </h1>
 
                 {/* Movies Grid */}
                 {movies.length === 0 ? (
                     // No Movie Found
-                    <div className="text-center py-10">
-                        <p className="text-gray-400 mb-4 text-lg">
-                            😔 Sorry! No{" "}
-                            <span className="text-yellow-400 font-semibold">
-                                {filter}
-                            </span>{" "}
-                            movies found.
+                    <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-[#1a1a1a] rounded-2xl border border-gray-800 shadow-xl my-6">
+                        <div className="w-20 h-20 bg-gray-800/50 rounded-full flex items-center justify-center mb-5">
+                            <SearchX size={40} className="text-gray-400" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-2">No Movies Found</h3>
+                        <p className="text-gray-400 max-w-md mb-6">
+                            We couldn't find any <span className="text-yellow-400 font-semibold">{filter}</span> movies right now. Try exploring different categories or checking out our latest releases.
                         </p>
-
-                        {/* Call-to-action links */}
-                        <div className="flex flex-wrap justify-center gap-3">
-                            <Link
-                                to="/movie/filter/popular"
-                                className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition"
-                            >
-                                Browse Popular Movies
+                        <div className="flex gap-4">
+                            <Link to="/" className="px-6 py-2 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition">
+                                Home
                             </Link>
-                            <Link
-                                to="/movie/filter/latest"
-                                className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-400 transition"
-                            >
-                                See Latest Releases
+                            <Link to="/movie/filter/popular" className="px-6 py-2 bg-[#222] text-white font-semibold rounded-lg hover:bg-[#333] transition border border-gray-700">
+                                View Popular
                             </Link>
                         </div>
-
-                        <p className="mt-6 text-sm text-gray-300 max-w-lg mx-auto">
-                            Discover trending, latest, and top-rated movies across Bollywood,
-                            Hollywood, Tollywood, and more. Explore movie details, watch trailers,
-                            and find official streaming platforms — all in one place.
-                        </p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">

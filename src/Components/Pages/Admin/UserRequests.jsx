@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -7,6 +7,7 @@ const DB_URL = import.meta.env.VITE_DB_URL;
 export default function UserRequests() {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchRequests = async () => {
@@ -39,20 +40,41 @@ export default function UserRequests() {
         }
     };
 
+    const filteredRequests = useMemo(() => {
+        if (!searchTerm) return requests;
+        const lowerSearch = searchTerm.toLowerCase();
+        return requests.filter(r => 
+            r.user_name?.toLowerCase().includes(lowerSearch) || 
+            r.movie_name?.toLowerCase().includes(lowerSearch) ||
+            r.user_email?.toLowerCase().includes(lowerSearch)
+        );
+    }, [requests, searchTerm]);
+
     return (
         <div className="bg-[#111] p-3 md:p-6">
-            <h1 className="text-2xl font-bold text-yellow-400 mb-6">
-                User Requests
-            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h1 className="text-2xl font-bold text-yellow-400">
+                    User Requests
+                </h1>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search by user or movie..."
+                    className="w-full sm:w-64 px-4 py-2 bg-[#1a1a1a] border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 transition"
+                />
+            </div>
 
             {loading ? (
                 <p className="text-gray-400">Loading...</p>
             ) : requests.length === 0 ? (
                 <p className="text-gray-400">No requests found.</p>
+            ) : filteredRequests.length === 0 ? (
+                <p className="text-gray-400">No requests match your search.</p>
             ) : (
                 <>
                     <div className="space-y-4 md:hidden">
-                        {requests.map((req, index) => (
+                        {filteredRequests.map((req, index) => (
                             <div
                                 key={req._id}
                                 className="bg-[#1a1a1a] border flex flex-col border-gray-700 rounded-xl p-4 space-y-2"
@@ -97,7 +119,7 @@ export default function UserRequests() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {requests.map((req, index) => (
+                                {filteredRequests.map((req, index) => (
                                     <tr
                                         key={req._id}
                                         className="border-t border-gray-700 hover:bg-[#222]"

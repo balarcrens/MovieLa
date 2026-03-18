@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { FaCopy, FaFilm } from "react-icons/fa";
 
@@ -9,6 +9,7 @@ export default function AdminFiles() {
     const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [copiedId, setCopiedId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const DUMMY_FILES = [
         {
@@ -80,6 +81,15 @@ export default function AdminFiles() {
         }, 1500);
     };
 
+    const filteredFiles = useMemo(() => {
+        if (!searchTerm) return files;
+        const lowerSearch = searchTerm.toLowerCase();
+        return files.filter(f => 
+            f.movie_name?.toLowerCase().includes(lowerSearch) || 
+            f.fileid?.toLowerCase().includes(lowerSearch)
+        );
+    }, [files, searchTerm]);
+
     if (loading) {
         return (
             <div className="text-center py-10 text-gray-400">
@@ -106,9 +116,22 @@ export default function AdminFiles() {
                 </span>
             </div>
 
+            {/* Search Bar */}
+            <div className="relative">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search by movie name or file ID..."
+                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-gray-800 focus:border-yellow-500/50 rounded-xl text-white transition focus:outline-none"
+                />
+            </div>
+
             {/* File List */}
             <div className="space-y-4">
-                {files.map(file => (
+                {filteredFiles.length === 0 ? (
+                    <div className="text-center py-10 text-gray-500">No files match your search.</div>
+                ) : filteredFiles.map(file => (
                     <div
                         key={file._id}
                         className="group bg-[#1a1a1a] border border-gray-800 rounded-2xl p-5 hover:border-yellow-500/40 transition"

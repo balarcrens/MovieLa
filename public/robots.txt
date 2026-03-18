@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /movie/admin/
 
 Sitemap: https://moviela.vercel.app/sitemap.xml

@@ -9,7 +9,7 @@ import {
     Trash2
 } from "lucide-react";
 import MovieDetailSkeleton from "../MovieDetailSkeleton";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 // import AdBanner from "../AdBanner";
@@ -20,6 +20,7 @@ export default function MovieDetail() {
     const { slug } = useParams();
     const [movie, setMovie] = useState(null);
     const [related, setRelated] = useState([]);
+    const [error, setError] = useState(false);
     const isAdmin = Boolean(localStorage.getItem("auth-token"));
     const location = useLocation();
     const state = location.state;
@@ -47,8 +48,26 @@ export default function MovieDetail() {
                         );
                     });
             }
+        }).catch(err => {
+            console.error("Fetch Error:", err);
+            setError(true);
         });
     }, [slug]);
+
+    if (error) {
+        return (
+            <div className="bg-[#0f0f0f] min-h-screen text-white px-3 py-10">
+                <div className="max-w-xl mx-auto mt-10 p-8 rounded-2xl border border-red-500/20 bg-[#1a1a1a] shadow-2xl text-center">
+                    <h3 className="text-2xl font-bold text-red-500 mb-3">Network Error</h3>
+                    <p className="text-gray-400 mb-6">Failed to retrieve movie details. Please check your connection or try again later.</p>
+                    <button onClick={() => window.location.reload()} className="px-6 py-2 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition">
+                        Retry Connection
+                    </button>
+                    <Link to="/" className="block mt-4 text-sm text-gray-400 hover:text-white transition">Return to Home</Link>
+                </div>
+            </div>
+        );
+    }
 
     if (!movie) return <MovieDetailSkeleton />;
 
@@ -78,8 +97,26 @@ export default function MovieDetail() {
                     content={`https://moviela.vercel.app/movie/${movie.slug}`}
                 />
                 {movie.posterUrl && (
-                    <meta property="og:image" content={movie.posterUrl} />
+                    <>
+                        <meta property="og:image" content={movie.posterUrl} />
+                        <meta name="twitter:card" content="summary_large_image" />
+                        <meta name="twitter:image" content={movie.posterUrl} />
+                    </>
                 )}
+                
+                <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "Movie",
+                    "name": movie.movie_name,
+                    "image": movie.posterUrl,
+                    "description": movie.summary || movie.description,
+                    "director": movie.director ? { "@type": "Person", "name": movie.director } : undefined,
+                    "actor": movie.actors?.map(actor => ({ "@type": "Person", "name": actor })),
+                    "datePublished": movie.releaseDate,
+                    "genre": movie.categories || []
+                })}
+                </script>
             </Helmet>
 
             {/* ================= BREADCRUMB ================= */}
@@ -111,6 +148,7 @@ export default function MovieDetail() {
                         alt={movie.movie_name}
                         className="rounded-xl shadow-lg max-h-[460px] object-cover"
                         loading="lazy"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/300x450/111/444?text=No+Poster' }}
                     />
                 </div>
 
@@ -202,8 +240,9 @@ export default function MovieDetail() {
                                 key={i}
                                 src={img}
                                 alt={`Screenshot ${i + 1}`}
-                                className="rounded-lg"
+                                className="rounded-lg object-cover w-full h-auto aspect-video"
                                 loading="lazy"
+                                onError={(e) => { e.target.src = 'https://via.placeholder.com/600x338/111/444?text=Image+Unavailable' }}
                             />
                         ))}
                     </div>
@@ -313,16 +352,19 @@ export default function MovieDetail() {
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         {related.map((m) => (
-                            <Link key={m.slug} to={`/movie/${m.slug}`}>
+                            <Link key={m.slug} to={`/movie/${m.slug}`} className="group relative overflow-hidden rounded-lg">
                                 <img
                                     src={m.posterUrl}
                                     alt={m.movie_name}
-                                    className="rounded-lg hover:scale-105 transition"
+                                    className="w-full h-48 sm:h-64 object-cover group-hover:scale-105 transition duration-300"
+                                    loading="lazy"
+                                    onError={(e) => { e.target.src = 'https://via.placeholder.com/300x450/111/444?text=No+Poster' }}
                                 />
-                                <p className="text-sm mt-2 text-gray-400">
-                                    {m.movie_name}
-                                    {m.description && ` - ${m.description.substring(0, 50)}...`}
-                                </p>
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent pt-10 pb-2 px-2">
+                                    <p className="text-xs font-bold text-white truncate drop-shadow-md">
+                                        {m.movie_name}
+                                    </p>
+                                </div>
                             </Link>
                         ))}
                     </div>

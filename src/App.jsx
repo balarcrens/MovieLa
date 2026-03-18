@@ -14,6 +14,7 @@ import HowToDownload from './Components/Pages/HowToDownload'
 import FilterMovies from './Components/Pages/FilterMovies'
 import PrivacyPolicy from './Components/Pages/PrivacyPolicy'
 import TermsConditions from './Components/Pages/TermsConditions'
+import NotFound from './Components/Pages/NotFound'
 import ScrollToTop from './Components/ScrollToTop'
 import './App.css'
 import UserRequests from './Components/Pages/Admin/UserRequests'
@@ -37,6 +38,7 @@ export default function App() {
                 <Route path="/admin/movie/add" element={<MovieForm />} />
                 <Route path="/admin/movie/edit/:id" element={<MovieForm />} />
                 <Route path='/movie/admin/requests' element={<UserRequests />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
             <TelegramFloat />
             <Toaster position="top-right" reverseOrder={false} />
